@@ -1,34 +1,69 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+  <div class="flex">
+    <p>Nombre de prospects inscrit: {{ prospects.length }}</p>
+    <doughnut-chart :chart-data="chartData" :options="options"></doughnut-chart>
   </div>
 </template>
 
 <script>
+import Doughnut  from '../chart/Doughnut';
+
 export default {
+  components: {
+    'doughnut-chart': Doughnut
+  },
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      prospects: [],
+      chartData: null,
+      options: {
+        responsive: false, maintainAspectRatio: false
+      }
     }
+  },
+  watch: {
+    prospects: function () {
+      this.fillData();
+    }
+  },
+  methods: {
+    fillData () {
+      this.chartData = {
+        labels: ['home', 'femme'],
+        datasets: [{
+            data: [
+              this.prospects.filter( item => item.gender == 'm' ).length,
+              this.prospects.filter( item => item.gender == 'f' ).length
+            ],
+            backgroundColor: [
+              'rgb(0, 100, 150)',
+              'rgb(150, 0, 75)',
+            ],
+            borderWidth: 1
+        }]
+      };
+    }
+  },
+  created () {
+    for (var i = 0; i < 10; i++) {
+      this.prospects.push({
+        gender: (Math.random()>0.5)? 'm': 'f'
+      })
+    };
+
+    setInterval( () => {
+      this.prospects.push({
+        gender: (Math.random()>0.5)? 'm': 'f'
+      })
+    }, 1500);
+  },
+  mounted () {
+    this.fillData();
   }
 }
+
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -36,15 +71,9 @@ export default {
 h1, h2 {
   font-weight: normal;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+
+.flex{
+  display: flex;
+  justify-content: space-around;
 }
 </style>
