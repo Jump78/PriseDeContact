@@ -27,7 +27,7 @@ app.use( (req, res, next) => {
 })
 
 // Récupère le controlleur 'prospect' du fichier 'Prospect.controller'
-const prospect = require('./Prospect.controller')
+const prospect = require('./src/controller/Prospect.controller')
 // Créé la requete get sur l'URL '/prospect'
 // En faisant cette requete: la fonction executé est prospect.findAll
 app.get 		('/prospect', 				prospect.findAll)
@@ -36,7 +36,9 @@ app.get 		('/prospect', 				prospect.findAll)
 app.get 		('/prospect/:id', 		prospect.find)
 // Créé la requete get sur l'URL '/prospect'
 // En faisant cette requete: la fonction executé est prospect.create
-app.post 		('/prospect', 				prospect.create)
+app.post 		('/prospect', 				(req, res) => {
+	prospect.create(req, res)
+})
 // Créé la requete get sur l'URL '/prospect/:id'
 // En faisant cette requete: la fonction executé est prospect.update
 app.put 		('/prospect/:id', 		prospect.update)

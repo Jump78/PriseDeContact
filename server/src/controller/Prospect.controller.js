@@ -1,4 +1,4 @@
-const Prospect = require('./Prospect.model')
+const Prospect = require('./../model/Prospect.model')
 
 module.exports = {
 	findAll : ( req, res ) => {
@@ -28,7 +28,9 @@ module.exports = {
 		console.log(req.body)
 		newProspect
 			.save()
-			.then( ppct => res.json( {success: 1, message:'prospect add'} ) )
+			.then( ppct => {
+				res.json( {success: 1, message:'prospect add'} )
+			})
 			.catch( err => res.json( {error: 1, message: err.message} ) )
 	},
 
