@@ -1,4 +1,4 @@
-const Prospect = require('./Prospect.model')
+const Prospect = require('./../model/Prospect.model')
 
 module.exports = {
 	findAll : ( req, res ) => {
