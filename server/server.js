@@ -59,6 +59,7 @@ app.get 		('/prospect/:id', 		prospect.find)
 app.post 		('/prospect', 				(req, res) => {
 	prospect.create(req, res)
 	io.sockets.emit( 'prospectAdd', req.body )
+	console.log('alakon')
 })
 // Créé la requete get sur l'URL '/prospect/:id'
 // En faisant cette requete: la fonction executé est prospect.update
