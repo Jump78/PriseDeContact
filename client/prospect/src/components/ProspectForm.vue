@@ -107,7 +107,7 @@ export default {
           body: JSON.stringify(this.prospect)
       })
       .then(checkErrors)
-      .then(res.json)
+      .then((res) => res.json)
       .catch(function(res){ console.log(res) })
     }
   }
