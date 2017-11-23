@@ -2,16 +2,22 @@
   <div class="flex">
     <p>Nombre de prospects inscrit: {{ prospects.length }}</p>
     <doughnut-chart :chart-data="chartData" :options="options"></doughnut-chart>
+    <div class="">
+
+      <qrcode value="http://192.168.21.124:8081/"></qrcode>
+    </div>
   </div>
 </template>
 
 <script>
 import Doughnut  from '../chart/Doughnut';
 import io from 'socket.io-client';
+import VueQrcode from '@xkeshi/vue-qrcode'
 
 export default {
   components: {
-    'doughnut-chart': Doughnut
+    'doughnut-chart': Doughnut,
+    'qrcode': VueQrcode
   },
   name: 'HelloWorld',
   data () {
