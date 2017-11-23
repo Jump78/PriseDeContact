@@ -7,6 +7,7 @@
 
 <script>
 import Doughnut  from '../chart/Doughnut';
+import io from 'socket.io-client';
 
 export default {
   components: {
@@ -46,21 +47,44 @@ export default {
     }
   },
   created () {
-    for (var i = 0; i < 10; i++) {
-      this.prospects.push({
-        gender: (Math.random()>0.5)? 'm': 'f'
-      })
-    };
 
-    setInterval( () => {
-      this.prospects.push({
-        gender: (Math.random()>0.5)? 'm': 'f'
+    var socket = io('http://192.168.20.254:8020');
+    socket.on('prospectAdd', (data) => {
+      this.prospects.push(data);
+      this.fillData();
+    })
+
+    fetch('http://192.168.20.254:8020/prospect')
+      .then( (res) =>{
+        if (res.status>= '200' && res.status<'300') {
+          return res.json()
+        }
+        return {
+          error: 1,
+          message: 'Error server'
+        }
+       })
+      .then( (res) => {
+        if (res.error) {
+            throw "Http error";
+        }
+        this.prospects = res;
+        this.fillData();
       })
-    }, 1500);
+      .catch( (err) => console.log(err));
+
+    // for (var i = 0; i < 10; i++) {
+    //   this.prospects.push({
+    //     gender: (Math.random()>0.5)? 'm': 'f'
+    //   })
+    // };
+
+    // setInterval( () => {
+    //   this.prospects.push({
+    //     gender: (Math.random()>0.5)? 'm': 'f'
+    //   })
+    // }, 1500);
   },
-  mounted () {
-    this.fillData();
-  }
 }
 
 

@@ -5,13 +5,6 @@
 </template>
 
 <script>
-import io from 'socket.io-client';
-
-var socket = io('http://192.168.20.254:8020');
-socket.on('prospectAdd', (data) => {
-  console.log(data);
-})
-
 export default {
   name: 'app'
 }
