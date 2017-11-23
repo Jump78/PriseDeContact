@@ -29,7 +29,7 @@ app.use( express.static('client') );
 // middleware qui permet d'autoriser les requête Ajax provenant d'un autre domaine
 app.use( (req, res, next) => {
 	// le serveur accepte les requête ajax qui proviennent de tous les domaines
-	let p = ['http://localhost:8080', 'http://localhost:8081']
+	let p = ['http://localhost:8080', 'http://localhost:8081', 'http://192.168.21.124:8080', 'http://192.168.21.124:8081']
 	if (p.indexOf(req.headers.origin) > -1) {
 		res.header('Access-Control-Allow-Origin', req.headers.origin)
 	}
@@ -50,9 +50,7 @@ io.on('connection', () => {
 const prospect = require('./src/controller/Prospect.controller')
 // Créé la requete get sur l'URL '/prospect'
 // En faisant cette requete: la fonction executé est prospect.findAll
-app.get 		('/prospect', 				(req, res) => {
-	prospect.findAll(req, res)
-})
+app.get 		('/prospect', 				prospect.findAll)
 // Créé la requete get sur l'URL '/prospect/:id'
 // En faisant cette requete: la fonction executé est prospect.find
 app.get 		('/prospect/:id', 		prospect.find)
