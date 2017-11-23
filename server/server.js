@@ -46,27 +46,28 @@ io.on('connection', () => {
 	console.log(`Somone just connected`)
 })
 
-// Récupère le controlleur 'prospect' du fichier 'Prospect.controller'
+// CRUD Prospects
 const prospect = require('./src/controller/Prospect.controller')
-// Créé la requete get sur l'URL '/prospect'
-// En faisant cette requete: la fonction executé est prospect.findAll
-app.get 		('/prospect', 				prospect.findAll)
-// Créé la requete get sur l'URL '/prospect/:id'
-// En faisant cette requete: la fonction executé est prospect.find
-app.get 		('/prospect/:id', 		prospect.find)
-// Créé la requete get sur l'URL '/prospect'
-// En faisant cette requete: la fonction executé est prospect.create
 app.post 		('/prospect', 				(req, res) => {
 	prospect.create(req, res)
 	io.sockets.emit( 'prospectAdd', req.body )
-	console.log('alakon')
 })
-// Créé la requete get sur l'URL '/prospect/:id'
-// En faisant cette requete: la fonction executé est prospect.update
+app.get 		('/prospect', 				prospect.findAll)
+app.get 		('/prospect/:id', 		prospect.find)
 app.put 		('/prospect/:id', 		prospect.update)
-// Créé la requete get sur l'URL '/prospect/:id'
-// En faisant cette requete: la fonction executé est prospect.remove
 app.delete 	('/prospect/:id', 		prospect.remove)
+
+// CRUD Campaigns
+const campaign = require('./src/controller/Campaign.controller')
+app.post 		('/campaign', 				(req, res) => {
+	campaign.create(req, res)
+	io.sockets.emit( 'prospectAdd', req.body )
+})
+app.get 		('/campaign', 				campaign.findAll)
+app.get 		('/campaign/:id', 		campaign.find)
+app.put 		('/campaign/:id', 		campaign.update)
+app.delete 	('/campaign/:id', 		campaign.remove)
+
 
 // Indique à mongoose que les promesse à utiliser
 // sont celles par défaut dans Node.js (objet global)
