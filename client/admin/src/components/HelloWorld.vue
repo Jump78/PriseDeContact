@@ -53,7 +53,6 @@ export default {
     }
   },
   created () {
-
     var socket = io('http://192.168.20.254:8020');
     socket.on('prospectAdd', (data) => {
       this.prospects.push(data);
@@ -78,22 +77,8 @@ export default {
         this.fillData();
       })
       .catch( (err) => console.log(err));
-
-    // for (var i = 0; i < 10; i++) {
-    //   this.prospects.push({
-    //     gender: (Math.random()>0.5)? 'm': 'f'
-    //   })
-    // };
-
-    // setInterval( () => {
-    //   this.prospects.push({
-    //     gender: (Math.random()>0.5)? 'm': 'f'
-    //   })
-    // }, 1500);
   },
 }
-
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
