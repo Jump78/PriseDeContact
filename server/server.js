@@ -1,13 +1,21 @@
 require('colors')
 
 const path = require('path')
+
+// express
 const express = require('express')
+const app = express()
+// socket
+const server = require('http').createServer(app)
+const io = require('socket.io').listen(server, {
+	serveClient: false,
+})
+
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+
 const port = 8020
 
-// Création d'une application ExpressJS
-const app = express()
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -15,22 +23,36 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+// Création du server
+app.use( express.static('client') );
+
 // middleware qui permet d'autoriser les requête Ajax provenant d'un autre domaine
 app.use( (req, res, next) => {
 	// le serveur accepte les requête ajax qui proviennent de tous les domaines
-	res.header('Access-Control-Allow-Origin', '*')
+	let p = ['http://localhost:8080', 'http://localhost:8081']
+	if (p.indexOf(req.headers.origin) > -1) {
+		res.header('Access-Control-Allow-Origin', req.headers.origin)
+	}
 	// autorise les type de requête get put post et delete
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
 	// autorise le Content-Type pour la réponse
 	res.header('Access-Control-Allow-Headers', 'Content-Type')
+	// j'sais pas ce que ça fait
+	res.header('Access-Control-Allow-Credentials', 'true')
 	next()
+})
+
+io.on('connection', () => {
+	console.log(`Somone just connected`)
 })
 
 // Récupère le controlleur 'prospect' du fichier 'Prospect.controller'
 const prospect = require('./src/controller/Prospect.controller')
 // Créé la requete get sur l'URL '/prospect'
 // En faisant cette requete: la fonction executé est prospect.findAll
-app.get 		('/prospect', 				prospect.findAll)
+app.get 		('/prospect', 				(req, res) => {
+	prospect.findAll(req, res)
+})
 // Créé la requete get sur l'URL '/prospect/:id'
 // En faisant cette requete: la fonction executé est prospect.find
 app.get 		('/prospect/:id', 		prospect.find)
@@ -38,6 +60,7 @@ app.get 		('/prospect/:id', 		prospect.find)
 // En faisant cette requete: la fonction executé est prospect.create
 app.post 		('/prospect', 				(req, res) => {
 	prospect.create(req, res)
+	io.sockets.emit( 'prospectAdd', req.body )
 })
 // Créé la requete get sur l'URL '/prospect/:id'
 // En faisant cette requete: la fonction executé est prospect.update
@@ -51,13 +74,13 @@ app.delete 	('/prospect/:id', 		prospect.remove)
 mongoose.Promise = global.Promise
 
 // Connexion à la base de données MONGO
-// 'mongodb://localhost:27017/intranet' qu'est-ce que c'est ?
+// 'mongodb://localhost:27017/pdc' qu'est-ce que c'est ?
 // 		Quand on se connecte à la bdd mongoose en lançant `mongo`
 // 		dans la console, il est indiqué `connecting to: mongodb://127.0.0.1:27017`
 // 		127.0.0.1 = localhost
 // 		27017 = port utilisé (arbitrairement) par mongo
-// 		intranet = nom de la bdd (`use intranet` dans mongo)
-mongoose.connect('mongodb://localhost:27017/intranet', { useMongoClient: true })
+// 		pdc = nom de la bdd (`use pdc` dans mongo)
+mongoose.connect('mongodb://localhost:27017/pdc', { useMongoClient: true })
 	// Une fois connecté ( .then( successCallback(), errorCallback() ) )
 	.then(
 		() => console.log(' MongoDB '.bgGreen, 'Connection établie !'.green),
@@ -69,7 +92,7 @@ mongoose.connect('mongodb://localhost:27017/intranet', { useMongoClient: true })
 	.then(
 		() => {
 			// App écoute le port 8080, puis on execute une fonction de call back
-			app.listen(
+			server.listen(
 				port,
 				() => console.log(' App Started '.bgGreen.black, `Le serveur http://localhost:${port} est prêt !`.green))
 		}

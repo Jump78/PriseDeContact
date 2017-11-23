@@ -2,6 +2,7 @@ const Prospect = require('./../model/Prospect.model')
 
 module.exports = {
 	findAll : ( req, res ) => {
+		console.log('findAll detected')
 		Prospect
 			.find({})
 			.then( ppcts => {
@@ -25,7 +26,7 @@ module.exports = {
 
 	create : ( req, res ) => {
 		const newProspect = new Prospect( req.body )
-		console.log(req.body)
+		//console.log(req.body)
 		newProspect
 			.save()
 			.then( ppct => {
