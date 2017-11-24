@@ -1,8 +1,8 @@
-#Pdc API
+# Pdc API
 
-##Prospects
+## Prospects
 
-###structure in database:
+### structure in database:
 prospect:
 ```
 {
@@ -21,7 +21,8 @@ prospect:
 }
 ```
 
-###create prospect:
+### create prospect:
+
 Add one prospect to database
 
 url: /prospect
@@ -43,7 +44,8 @@ body: {
 }
 ```
 
-###update prospect:
+### update prospect:
+
 Edit one or more prospect's properties
 
 url: /prospect/:\_id
@@ -65,7 +67,7 @@ body: {
 }
 ```
 
-###remove prospect:
+### remove prospect:
 Remove one prospect
 
 url: /prospect/:\_id
@@ -74,7 +76,8 @@ url: /prospect/:\_id
 method: DELETE
 ```
 
-###find all prospects:
+### find all prospects:
+
 Get all prospects from database
 
 url: /prospect
@@ -83,7 +86,7 @@ url: /prospect
 method: GET
 ```
 
-###find prospect:
+### find prospect:
 Get one prospects from database
 
 url: /prospect/:\_id
@@ -95,7 +98,7 @@ method: GET
 
 ## Admins
 
-###structure in database:
+### structure in database:
 admin:
 ```
 {
@@ -105,7 +108,8 @@ admin:
 }
 ```
 
-###create admin:
+### create admin:
+
 Add one admin to database
 
 url: /admin
@@ -118,7 +122,7 @@ body: {
 }
 ```
 
-###update admin password:
+### update admin password:
 Edit one admin password
 
 url: /admin/password/:\_id
@@ -130,7 +134,8 @@ body: {
 }
 ```
 
-###remove admin:
+### remove admin:
+
 Remove one admin
 
 url: /admin/:\_id
@@ -139,7 +144,8 @@ url: /admin/:\_id
 method: DELETE
 ```
 
-###find all admins:
+### find all admins:
+
 Get all admins from database
 
 url: /admin
@@ -148,7 +154,8 @@ url: /admin
 method: GET
 ```
 
-###find admin:
+### find admin:
+
 Get one admins from database
 
 url: /admin/:\_id
@@ -160,7 +167,7 @@ method: GET
 
 ## Campaigns
 
-###structure in database:
+### structure in database:
 prospect:
 ```
 {
@@ -172,7 +179,8 @@ prospect:
 }
 ```
 
-###create campaign:
+### create campaign:
+
 Add one campaign to database
 
 url: /campaign
@@ -187,7 +195,8 @@ body: {
 }
 ```
 
-###update campaign:
+### update campaign:
+
 Edit one or more campaign's properties
 
 url: /campaign/:\_id
@@ -202,7 +211,8 @@ body: {
 }
 ```
 
-###remove campaign:
+### remove campaign:
+
 Remove one campaign
 
 url: /campaign/:\_id
@@ -211,7 +221,8 @@ url: /campaign/:\_id
 method: DELETE
 ```
 
-###find all campaigns:
+### find all campaigns:
+
 Get all campaigns from database
 
 url: /campaign
@@ -220,7 +231,8 @@ url: /campaign
 method: GET
 ```
 
-###find campaign:
+### find campaign:
+
 Get one campaigns from database
 
 url: /campaign/:\_id
