@@ -21,7 +21,7 @@ export default {
     'doughnut-chart': Doughnut,
     'qrcode': VueQrcode
   },
-  name: 'HelloWorld',
+  name: 'HomeCampaign',
   data () {
     return {
       prospects: [],
