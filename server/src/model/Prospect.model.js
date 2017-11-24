@@ -19,9 +19,6 @@ const prospectSchema = new mongoose.Schema(
 	{ collection: 'prospects' }
 )
 
-// Fabricatioin d'un "Modèle" à partir de ce schéma de données
-// Un modèle mongoose contient les méthodes permétant d'aller chercher/modifier/supprimer
-// dans la base
 const prospectModel = mongoose.model('Prospect', prospectSchema)
 
 module.exports = prospectModel

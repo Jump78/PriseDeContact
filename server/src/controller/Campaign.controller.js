@@ -8,7 +8,7 @@ module.exports = {
 			.then( camps => {
 				res.json(camps)
 			})
-			.catch( err => { // (normalement, il ne peut pas y avoir d'erreur ici, mais bon)
+			.catch( err => {
 				res.json( {error: 1, message: err.message} )
 			})
 	},
@@ -43,8 +43,10 @@ module.exports = {
 					return Promise.reject('unknown campaign id')
 				} else {
 					camp.name = req.body.name || camp.name
+					camp.type = req.body.type || camp.type
 					camp.date = req.body.date || camp.date
 					camp.outro_text = req.body.outro_text || camp.outro_text
+					return camp.save()
 				}
 			})
 			.then(() => res.json({success: 1, message:'campaign udated'}))
