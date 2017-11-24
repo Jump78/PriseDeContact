@@ -36,15 +36,11 @@ import moment from 'moment';
 
 export default {
   name: 'CampaignForm',
-  components: {
-  },
-  data () {
-    return {
-      campaign:{
-        name: '',
-        type: '',
-        date: '',
-        outro_text: ''
+  props: {
+    campaign: {
+      type: Object,
+      default: function() {
+        return {}
       }
     }
   },

@@ -5,9 +5,7 @@
       <div class="flex">
         <ul>
           <li v-for="item in futurCampaigns">
-            <p>{{item.name}}</p>
-            <p>{{item.date}}</p>
-            <p @click="deleteCampaign(item._id)"> X </p>
+              <CardCampaign :campaign="item" @deleteCampaign="deleteCampaign(item._id)"/>
           </li>
         </ul>
         <div class="cardAddCampaign">
@@ -18,19 +16,14 @@
       <h2>Campagnes du jour</h2>
       <ul>
         <li v-for="item in todayCampaigns">
-          <p>{{item.name}}</p>
-          <p>{{item.date}}</p>
-          <p @click="deleteCampaign(item._id)"> X </p>
-          <router-link :to="{ name: 'HomeCampaign', params: {id: item._id} }">Details</router-link>
+            <CardCampaign :campaign="item" @deleteCampaign="deleteCampaign(item._id)"/>
         </li>
       </ul>
 
       <h2>Campagnes passées</h2>
       <ul>
         <li v-for="item in passedCampaigns">
-          <p>{{item.name}}</p>
-          <p>{{item.date}}</p>
-          <p @click="deleteCampaign(item._id)"> X </p>
+            <CardCampaign :campaign="item" @deleteCampaign="deleteCampaign(item._id)"/>
         </li>
       </ul>
     </div>
@@ -47,11 +40,13 @@ import config from '../../config/config.json';
 import moment from 'moment';
 
 import CampaignForm from './CampaignForm';
+import CardCampaign from './CardCampaign';
 
 export default {
   name: 'ListCampaign',
   components: {
-    CampaignForm
+    CampaignForm,
+    CardCampaign
   },
   data () {
     return {
@@ -59,33 +54,21 @@ export default {
       futurCampaigns: [],
       todayCampaigns: [],
       passedCampaigns: [],
-      campaign:{
-        name: '',
-        type: '',
-        date: '',
-        outro_text: ''
-      }
     }
   },
   methods: {
+    goToDetail (id) {
+      this.$router.push({name: 'HomeCampaign', params:{id:id}});
+    },
     deleteCampaign (id) {
       fetch(config.apiEndPoint+':'+config.apiPort+'/campaign/'+id,
       {
         method: "DELETE"
       })
-      .then( res => res.json )
+      .then( res => res.json() )
       .catch( err => console.error(err) )
     },
-    cancelAddCampaign () {
-      this.campaign = {
-        name: '',
-        type: '',
-        date: '',
-        outro_text: ''
-      }
-    },
     addCampaign (campaign) {
-      console.log(campaign)
       fetch(config.apiEndPoint+':'+config.apiPort+'/campaign',
       {
         headers: {
@@ -95,7 +78,7 @@ export default {
         method: "POST",
         body: JSON.stringify(campaign)
       })
-      .then( res => res.json )
+      .then( res => res.json() )
       .catch( err => console.error(err) )
     }
   },
@@ -114,13 +97,10 @@ export default {
 
          this.allCampaigns.forEach( (item) => {
            if (moment(parseInt(item.date)).isAfter(Date.now(), 'day')) {
-             console.log('futur');
              this.futurCampaigns.push(item);
            } else if (moment(parseInt(item.date)).isBefore(Date.now(), 'day')) {
-             console.log('passer');
              this.passedCampaigns.push(item);
            } else if (moment(parseInt(item.date)).isSame(Date.now(), 'day')){
-             console.log('auj');
              this.todayCampaigns.push(item);
            }
          })
