@@ -43,6 +43,7 @@ module.exports = {
 					return Promise.reject('unknown campaign id')
 				} else {
 					camp.name = req.body.name || camp.name
+					camp.type = req.body.type || camp.type
 					camp.date = req.body.date || camp.date
 					camp.outro_text = req.body.outro_text || camp.outro_text
 					return camp.save()
