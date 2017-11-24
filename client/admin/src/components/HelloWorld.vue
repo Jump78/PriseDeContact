@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import config from '../../config/config.json';
+
 import Doughnut  from '../chart/Doughnut';
 import io from 'socket.io-client';
 import VueQrcode from '@xkeshi/vue-qrcode'
@@ -53,13 +55,13 @@ export default {
     }
   },
   created () {
-    var socket = io('http://192.168.20.254:8020');
+    var socket = io(config.apiEndPoint+":"+config.apiPort);
     socket.on('prospectAdd', (data) => {
       this.prospects.push(data);
       this.fillData();
     })
 
-    fetch('http://192.168.20.254:8020/prospect')
+    fetch(config.apiEndPoint+":"+config.apiPort+'/prospect')
       .then( (res) =>{
         if (res.status>= '200' && res.status<'300') {
           return res.json()
