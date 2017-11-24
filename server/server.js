@@ -68,6 +68,16 @@ app.get 		('/campaign/:id', 		campaign.find)
 app.put 		('/campaign/:id', 		campaign.update)
 app.delete 	('/campaign/:id', 		campaign.remove)
 
+// CRUD Admin accounts
+const admin = require('./src/controller/Admin.controller')
+app.post 		('/admin', 				(req, res) => {
+	admin.create(req, res)
+	io.sockets.emit( 'adminAdd', req.body )
+})
+app.get 		('/admin', 							admin.findAll)
+app.get 		('/admin/:id', 					admin.find)
+app.put 		('/admin/password/:id', admin.updatePassword)
+app.delete 	('/admin/:id', 					admin.remove)
 
 // Indique à mongoose que les promesse à utiliser
 // sont celles par défaut dans Node.js (objet global)
