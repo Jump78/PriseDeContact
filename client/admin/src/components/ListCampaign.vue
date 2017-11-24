@@ -11,33 +11,7 @@
           </li>
         </ul>
         <div class="cardAddCampaign">
-          <form @submit.prevent>
-            <div class="block-input input-radio">
-              <label for="type">Type de la campagne</label>
-              <input required type="radio" name="type" value="jpo" v-model="campaign.type">JPO
-              <input required type="radio" name="type" value="salon" v-model="campaign.type">Salon
-            </div>
-
-            <div class="">
-              <label for="name">Nom de la campagne</label>
-              <input required type="text" name="name" v-model="campaign.name">
-            </div>
-
-            <div class="">
-              <label for="date">Date de la campagne</label>
-              <input required type="date" name="date" v-model="campaign.date">
-            </div>
-
-            <div class="">
-              <label for="outro_text">Message de fin de formulaire</label>
-              <textarea required name="outro_text" v-model="campaign.outro_text"></textarea>
-            </div>
-
-            <div class="">
-              <button type="button" name="cancel" @click="cancelAddCampaign">Annuler</button>
-              <button type="submit" name="validate" @click="addCampaign">Ajout</button>
-            </div>
-          </form>
+          <CampaignForm @submit="addCampaign"/>
         </div>
       </div>
 
@@ -69,11 +43,15 @@
 
 <script>
 import config from '../../config/config.json';
+
 import moment from 'moment';
+
+import CampaignForm from './CampaignForm';
 
 export default {
   name: 'ListCampaign',
   components: {
+    CampaignForm
   },
   data () {
     return {
@@ -106,15 +84,8 @@ export default {
         outro_text: ''
       }
     },
-    addCampaign () {
-      let campaignToSend = {};
-      // Copy the model in a new object
-      Object.assign(campaignToSend, this.campaign);
-      // Convert the date in a date instance
-      let date = new Date(campaignToSend.date);
-      // Get the timestamp
-      campaignToSend.date = date.getTime();
-
+    addCampaign (campaign) {
+      console.log(campaign)
       fetch(config.apiEndPoint+':'+config.apiPort+'/campaign',
       {
         headers: {
@@ -122,7 +93,7 @@ export default {
           'Content-Type': 'application/json'
         },
         method: "POST",
-        body: JSON.stringify(campaignToSend)
+        body: JSON.stringify(campaign)
       })
       .then( res => res.json )
       .catch( err => console.error(err) )
