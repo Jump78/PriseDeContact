@@ -77,6 +77,8 @@
 </template>
 
 <script>
+import config from '../../config/config.json';
+
 export default {
   name: 'ProspectForm',
   data () {
@@ -97,7 +99,7 @@ export default {
   },
   methods: {
     onSubmit () {
-      fetch("http://192.168.20.254:8020/prospect",
+      fetch(config.apiEndPoint+":"+config.apiPort+"/prospect",
       {
           headers: {
             'Accept': 'application/json',
