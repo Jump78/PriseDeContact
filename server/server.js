@@ -28,7 +28,7 @@ app.use( express.static('client') );
 
 // middleware qui permet d'autoriser les requête Ajax provenant d'un autre domaine
 app.use( (req, res, next) => {
-	// le serveur accepte les requête ajax qui proviennent de tous les domaines
+	// le serveur accepte les requête ajax provenant de certains domaines
 	let p = ['http://localhost:8080', 'http://localhost:8081', 'http://192.168.21.124:8080', 'http://192.168.21.124:8081']
 	if (p.indexOf(req.headers.origin) > -1) {
 		res.header('Access-Control-Allow-Origin', req.headers.origin)
@@ -37,7 +37,6 @@ app.use( (req, res, next) => {
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
 	// autorise le Content-Type pour la réponse
 	res.header('Access-Control-Allow-Headers', 'Content-Type')
-	// j'sais pas ce que ça fait
 	res.header('Access-Control-Allow-Credentials', 'true')
 	next()
 })
@@ -83,24 +82,16 @@ app.delete 	('/admin/:id', 					admin.remove)
 mongoose.Promise = global.Promise
 
 // Connexion à la base de données MONGO
-// 'mongodb://localhost:27017/pdc' qu'est-ce que c'est ?
-// 		Quand on se connecte à la bdd mongoose en lançant `mongo`
-// 		dans la console, il est indiqué `connecting to: mongodb://127.0.0.1:27017`
-// 		127.0.0.1 = localhost
-// 		27017 = port utilisé (arbitrairement) par mongo
-// 		pdc = nom de la bdd (`use pdc` dans mongo)
 mongoose.connect('mongodb://localhost:27017/pdc', { useMongoClient: true })
 	// Une fois connecté ( .then( successCallback(), errorCallback() ) )
 	.then(
 		() => console.log(' MongoDB '.bgGreen, 'Connection établie !'.green),
 		() => console.log(' MongoDB error '.bgRed, 'Auriez vous oublié de lancer `mongod` ?'.red)
 	)
-	// S'il y a eu une erreur sur le .connect() on lance le catch
 	.catch(err => console.log('err::'.red, err))
-	// Une fois le then ou le catch executé .then( successFuction() )
 	.then(
 		() => {
-			// App écoute le port 8080, puis on execute une fonction de call back
+			// server écoute le port PORT
 			server.listen(
 				port,
 				() => console.log(' App Started '.bgGreen.black, `Le serveur http://localhost:${port} est prêt !`.green))

@@ -8,7 +8,7 @@ module.exports = {
 			.then( camps => {
 				res.json(camps)
 			})
-			.catch( err => { // (normalement, il ne peut pas y avoir d'erreur ici, mais bon)
+			.catch( err => {
 				res.json( {error: 1, message: err.message} )
 			})
 	},
