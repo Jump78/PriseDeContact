@@ -45,6 +45,7 @@ module.exports = {
 					camp.name = req.body.name || camp.name
 					camp.date = req.body.date || camp.date
 					camp.outro_text = req.body.outro_text || camp.outro_text
+					return camp.save()
 				}
 			})
 			.then(() => res.json({success: 1, message:'campaign udated'}))

@@ -52,6 +52,8 @@ module.exports = {
 					ppct.study_level = req.body.study_level || ppct.study_level
 					ppct.asked_level = req.body.asked_level || ppct.asked_level
 					ppct.current_level = req.body.current_level || ppct.current_level
+
+					return ppct.save()
 				}
 			})
 			.then(() => res.json({success: 1, message:'prospect udated'}))
