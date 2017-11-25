@@ -1,17 +1,20 @@
 import config from '../../config/config';
 
-export default {
-  baseUrl: config.apiEndPoint+':'+config.apiPort,
+export default class {
+
+  constructor () {
+    this.baseUrl= config.apiEndPoint+':'+config.apiPort;
+  }
 
   async checkErrors(res) {
-    if(res.ok) return resp;
+    if(res.ok) return res;
 
     let errorMsg = `ERROR ${res.status} (${res.statusText})`;
     let serverText = await res.text();
     if(serverText) errorMsg = `${errorMsg}: ${serverText}`;
 
     var error = new Error(errorMsg);
-    error.response = resp;
+    error.response = res;
     throw error;
   }
 }

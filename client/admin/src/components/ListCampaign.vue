@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import config from '../../config/config.json';
+import CampaignService from '../services/CampaignService';
 
 import moment from 'moment';
 
@@ -50,6 +50,8 @@ export default {
   },
   data () {
     return {
+      campaignService: new CampaignService(),
+
       allCampaigns: [],
       futurCampaigns: [],
       todayCampaigns: [],
@@ -83,32 +85,19 @@ export default {
     }
   },
   created () {
-    fetch(config.apiEndPoint+':'+config.apiPort+'/campaign')
-     .then( res => {
-       if (res.status>=200 && res.status<300) {
-         return res.json()
-       }
+    this.campaignService.getAll().then( res =>{
+      this.allCampaigns = res;
 
-       return {error: 1, message: 'Serv error'}
-     })
-     .then( res => {
-       if (!res.error) {
-         this.allCampaigns = res;
-
-         this.allCampaigns.forEach( (item) => {
-           if (moment(parseInt(item.date)).isAfter(Date.now(), 'day')) {
-             this.futurCampaigns.push(item);
-           } else if (moment(parseInt(item.date)).isBefore(Date.now(), 'day')) {
-             this.passedCampaigns.push(item);
-           } else if (moment(parseInt(item.date)).isSame(Date.now(), 'day')){
-             this.todayCampaigns.push(item);
-           }
-         })
-       } else {
-         this.allCampaigns = null;
-       }
-     })
-     .catch( err => console.error(err));
+      this.allCampaigns.forEach( (item) => {
+        if (moment(parseInt(item.date)).isAfter(Date.now(), 'day')) {
+          this.futurCampaigns.push(item);
+        } else if (moment(parseInt(item.date)).isBefore(Date.now(), 'day')) {
+          this.passedCampaigns.push(item);
+        } else if (moment(parseInt(item.date)).isSame(Date.now(), 'day')){
+          this.todayCampaigns.push(item);
+        }
+      })
+    })
   },
 }
 </script>
