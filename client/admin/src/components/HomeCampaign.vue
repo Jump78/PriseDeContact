@@ -1,31 +1,38 @@
 <template>
-  <div class="flex">
-    <p>Nombre de prospects inscrit: {{ prospects.length }}</p>
-    <doughnut-chart :chart-data="chartData" :options="options"></doughnut-chart>
-    <div class="">
+  <div>
+    <NavBar :id="this.$route.params.id"/>
+    <div class="flex">
+      <p>Nombre de prospects inscrit: {{ prospects.length }}</p>
+      <doughnut-chart :chart-data="chartData" :options="options"></doughnut-chart>
+      <div class="">
 
-      <qrcode value="http://192.168.21.124:8081/"></qrcode>
+        <qrcode value="http://192.168.21.124:8081/"></qrcode>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import config from '../../config/config';
+import io from 'socket.io-client';
+
 import CampaignService from '../services/CampaignService';
 
 import Doughnut  from '../chart/Doughnut';
-import io from 'socket.io-client';
 import VueQrcode from '@xkeshi/vue-qrcode';
+import NavBar from './NavBar';
 
 export default {
   components: {
     'doughnut-chart': Doughnut,
-    'qrcode': VueQrcode
+    'qrcode': VueQrcode,
+    NavBar
   },
   name: 'HomeCampaign',
   data () {
     return {
       campaignService: new CampaignService(),
+      campaign: {},
       prospects: [],
       chartData: null,
       options: {
@@ -62,6 +69,10 @@ export default {
       this.prospects.push(data);
       this.fillData();
     })
+
+    this.campaignService.find(this.$route.params.id)
+      .then( res => this.campaign = res[0] )
+      .catch( err => console.log(err) );
 
     fetch(config.apiEndPoint+":"+config.apiPort+'/prospect')
       .then( (res) =>{

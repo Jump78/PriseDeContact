@@ -1,21 +1,24 @@
 <template>
   <section>
+    <NavBar :id="this.$route.params.id"/>
     <h1>Edit campaign</h1>
     <CampaignForm :campaign="campaign" @submit="submit"/>
   </section>
 </template>
 
 <script>
-import CampaignService from '../services/CampaignService';
-
 import moment from 'moment';
 
+import CampaignService from '../services/CampaignService';
+
 import CampaignForm from './CampaignForm';
+import NavBar from './NavBar';
 
 export default {
   name: 'EditCampaign',
   components: {
-    CampaignForm
+    CampaignForm,
+    NavBar
   },
   data () {
     return {
