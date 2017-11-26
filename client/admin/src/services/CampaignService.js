@@ -14,14 +14,14 @@ export default class extends ApiService{
   }
 
   find (id) {
-    fetch(this.baseUrl+'/'+this.ressource+'/'+id)
-      .then( res => res.json() )
+    return fetch(this.baseUrl+'/'+this.ressource+'/'+id)
       .then( this.checkErrors )
+      .then( res => res.json() )
       .catch( err => console.log(err) )
   }
 
   add (campaign) {
-    fetch(this.baseUrl+'/'+this.ressource,
+    return fetch(this.baseUrl+'/'+this.ressource,
     {
       headers: {
         'Accept': 'application/json',
@@ -30,13 +30,13 @@ export default class extends ApiService{
       method: "POST",
       body: JSON.stringify(campaign)
     })
-    .then( res => res.json() )
     .then( this.checkErrors )
+    .then( res => res.json() )
     .catch( err => console.log(err) )
   }
 
   update (id, campaign) {
-    fetch(this.baseUrl+'/'+this.ressource+'/'+id,
+    return fetch(this.baseUrl+'/'+this.ressource+'/'+id,
     {
       headers: {
         'Accept': 'application/json',
@@ -45,18 +45,18 @@ export default class extends ApiService{
       method: "PUT",
       body: JSON.stringify(campaign)
     })
-    .then( res => res.json() )
     .then( this.checkErrors )
+    .then( res => res.json() )
     .catch( err => console.log(err) )
   }
 
   delete (id) {
-    fetch(this.baseUrl+'/'+this.ressource+'/'+id,
+    return fetch(this.baseUrl+'/'+this.ressource+'/'+id,
     {
       method: "DELETE"
     })
-    .then( res => res.json() )
     .then( this.checkErrors )
+    .then( res => res.json() )
     .catch( err => console.log(err) )
   }
 }
