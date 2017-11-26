@@ -63,25 +63,28 @@ export default {
       this.$router.push({name: 'HomeCampaign', params:{id:id}});
     },
     deleteCampaign (id) {
-      fetch(config.apiEndPoint+':'+config.apiPort+'/campaign/'+id,
-      {
-        method: "DELETE"
-      })
-      .then( res => res.json() )
-      .catch( err => console.error(err) )
-    },
+      this.campaignService.delete(id);
+    //   fetch(config.apiEndPoint+':'+config.apiPort+'/campaign/'+id,
+    //   {
+    //     method: "DELETE"
+    //   })
+    //   .then( res => res.json() )
+    //   .catch( err => console.error(err) )
+     },
     addCampaign (campaign) {
-      fetch(config.apiEndPoint+':'+config.apiPort+'/campaign',
-      {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify(campaign)
-      })
-      .then( res => res.json() )
-      .catch( err => console.error(err) )
+      this.campaignService.add(campaign);
+
+      // fetch(config.apiEndPoint+':'+config.apiPort+'/campaign',
+      // {
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Content-Type': 'application/json'
+      //   },
+      //   method: "POST",
+      //   body: JSON.stringify(campaign)
+      // })
+      // .then( res => res.json() )
+      // .catch( err => console.error(err) )
     }
   },
   created () {
