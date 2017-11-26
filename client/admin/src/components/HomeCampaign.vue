@@ -10,11 +10,12 @@
 </template>
 
 <script>
-import config from '../../config/config.json';
+import config from '../../config/config';
+import CampaignService from '../services/CampaignService';
 
 import Doughnut  from '../chart/Doughnut';
 import io from 'socket.io-client';
-import VueQrcode from '@xkeshi/vue-qrcode'
+import VueQrcode from '@xkeshi/vue-qrcode';
 
 export default {
   components: {
@@ -24,6 +25,7 @@ export default {
   name: 'HomeCampaign',
   data () {
     return {
+      campaignService: new CampaignService(),
       prospects: [],
       chartData: null,
       options: {

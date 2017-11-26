@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import config from '../../config/config.json';
+import CampaignService from '../services/CampaignService';
 
 import moment from 'moment';
 
@@ -19,29 +19,21 @@ export default {
   },
   data () {
     return {
+      campaignService: new CampaignService(),
       campaign: {}
     }
   },
   methods: {
     submit (campaign) {
-      fetch(config.apiEndPoint+':'+config.apiPort+'/campaign/'+this.campaign._id,
-      {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "PUT",
-        body: JSON.stringify(campaign)
-      })
-      .then( res => res.json() )
-      .catch( err => console.error(err) )
-    }
+      this.campaignService.update(this.$route.params.id, campaign)
+        .then( res => console.log(res) )
+        .catch( err => console.log(err) )
+    },
   },
   created () {
-    fetch(config.apiEndPoint+':'+config.apiPort+'/campaign/'+this.$route.params.id)
-    .then( res => res.json() )
-    .then( res => this.campaign = res[0] )
-    .catch( err => console.error(err) )
+    this.campaignService.find(this.$route.params.id)
+      .then( res => this.campaign = res[0] )
+      .catch( err => console.log(err) );
   }
 }
 </script>
