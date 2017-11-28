@@ -72,6 +72,7 @@ export default {
     //   .catch( err => console.error(err) )
      },
     addCampaign (campaign) {
+      this.populateArray(campaign);
       this.campaignService.add(campaign);
 
       // fetch(config.apiEndPoint+':'+config.apiPort+'/campaign',
@@ -85,21 +86,22 @@ export default {
       // })
       // .then( res => res.json() )
       // .catch( err => console.error(err) )
+    },
+    populateArray (item){
+      if (moment(parseInt(item.date)).isAfter(Date.now(), 'day')) {
+        this.futurCampaigns.push(item);
+      } else if (moment(parseInt(item.date)).isBefore(Date.now(), 'day')) {
+        this.passedCampaigns.push(item);
+      } else if (moment(parseInt(item.date)).isSame(Date.now(), 'day')){
+        this.todayCampaigns.push(item);
+      }
     }
   },
   created () {
     this.campaignService.getAll().then( res =>{
       this.allCampaigns = res;
 
-      this.allCampaigns.forEach( (item) => {
-        if (moment(parseInt(item.date)).isAfter(Date.now(), 'day')) {
-          this.futurCampaigns.push(item);
-        } else if (moment(parseInt(item.date)).isBefore(Date.now(), 'day')) {
-          this.passedCampaigns.push(item);
-        } else if (moment(parseInt(item.date)).isSame(Date.now(), 'day')){
-          this.todayCampaigns.push(item);
-        }
-      })
+      this.allCampaigns.forEach( (item) => this.populateArray(item))
     })
   },
 }
