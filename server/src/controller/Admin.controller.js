@@ -54,15 +54,17 @@ module.exports = {
 			.catch( err => res.json( {error: 1, message: err.message} ) )
 	},
 
-	updatePassword : ( req, res ) => {
+	update : ( req, res ) => {
 		Admin
 			.findOne( {_id: req.params.id} )
 			.then( admin => {
 				if( admin === null ) {
 					return Promise.reject('unknown admin id')
 				} else {
-					console.log(req.body)
-					admin.password = req.body.password
+					req.body.password = sha256( req.body.password )
+
+					admin.login = req.body.login || admin.login
+					admin.password = req.body.password || admin.password
 					return admin.save()
 				}
 			})
