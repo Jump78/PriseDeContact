@@ -64,6 +64,10 @@ app.post 		('/campaign', 				(req, res) => {
 })
 app.get 		('/campaign', 				campaign.findAll)
 app.get 		('/campaign/:id', 		campaign.find)
+app.get 		('/campaign/:id/prospects', ( req, res ) => {
+	campaign.find( req, res )
+	console.log( res.json )
+})
 app.put 		('/campaign/:id', 		campaign.update)
 app.delete 	('/campaign/:id', 		campaign.remove)
 
