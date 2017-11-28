@@ -58,18 +58,21 @@ export default {
       passedCampaigns: [],
     }
   },
+  watch: {
+    allCampaigns: function (val) {
+      this.futurCampaigns = [];
+      this.todayCampaigns = [];
+      this.passedCampaigns = [];
+      val.map( (item) => this.populateArray(item) )
+    }
+  },
   methods: {
     goToDetail (id) {
       this.$router.push({name: 'HomeCampaign', params:{id:id}});
     },
     deleteCampaign (id) {
+      this.allCampaigns = this.allCampaigns.filter(item => item._id !== id);
       this.campaignService.delete(id);
-    //   fetch(config.apiEndPoint+':'+config.apiPort+'/campaign/'+id,
-    //   {
-    //     method: "DELETE"
-    //   })
-    //   .then( res => res.json() )
-    //   .catch( err => console.error(err) )
      },
     addCampaign (campaign) {
       this.campaignService
@@ -89,8 +92,9 @@ export default {
   created () {
     this.campaignService.getAll().then( res =>{
       this.allCampaigns = res;
-
-      this.allCampaigns.forEach( (item) => this.populateArray(item))
+      if (Array.isArray(this.allCampaigns)) {
+        this.allCampaigns.forEach( (item) => this.populateArray(item))
+      }
     })
   },
 }
