@@ -60,6 +60,5 @@ export default {
   a{
     display: block;
     text-decoration: none;
-    color: red;
   }
 </style>
