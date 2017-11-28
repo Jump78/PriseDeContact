@@ -48,8 +48,8 @@ module.exports = {
 					return admin.save()
 				}
 			})
-			.then(() => res.json({success: 1, message:'admin password udated'}))
-			.catch(err => res.json({error: 1, message: err.message}))
+			.then( admin => res.json({success: 1, message:'admin password udated', admin: admin}) )
+			.catch( err => res.json({error: 1, message: err.message}))
 	},
 
 	remove : ( req, res ) => {
