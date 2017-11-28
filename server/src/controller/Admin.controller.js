@@ -1,4 +1,5 @@
 const Admin = require('./../model/Admin.model')
+const sha256 = require('js-sha256')
 
 module.exports = {
 	findAll : ( req, res ) => {
@@ -25,8 +26,8 @@ module.exports = {
 	},
 
 	create : ( req, res ) => {
+		req.body.password = sha256( req.body.password )
 		const newAdmin = new Admin( req.body )
-		console.log(req.body)
 		newAdmin
 			.save()
 			.then( admin => {
