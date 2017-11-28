@@ -25,6 +25,24 @@ module.exports = {
 			})
 	},
 
+	connect : ( req, res ) => {
+		req.params.password = sha256( req.body.password )
+		Admin
+			.find( {login: req.body.login, password: req.body.password} )
+			.then( admin => {
+				if (admin.length > 0) {
+					res.json( {success: 1, message: 'Admin account found', admin: admin[0]} )
+					console.log( req.body.login, 'connection' )
+				} else {
+					res.json( {error: 1, message: 'login / password couple not found'} )
+					console.log( `try to connect on ${req.body.login} account` )
+				}
+			})
+			.catch( err => {
+				res.json( {error: 1, message: err.message} )
+			})
+	},
+
 	create : ( req, res ) => {
 		req.body.password = sha256( req.body.password )
 		const newAdmin = new Admin( req.body )
