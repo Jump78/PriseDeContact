@@ -72,20 +72,9 @@ export default {
     //   .catch( err => console.error(err) )
      },
     addCampaign (campaign) {
-      this.populateArray(campaign);
-      this.campaignService.add(campaign);
-
-      // fetch(config.apiEndPoint+':'+config.apiPort+'/campaign',
-      // {
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json'
-      //   },
-      //   method: "POST",
-      //   body: JSON.stringify(campaign)
-      // })
-      // .then( res => res.json() )
-      // .catch( err => console.error(err) )
+      this.campaignService
+          .add(campaign)
+          .then( res => this.populateArray(res.campaign));
     },
     populateArray (item){
       if (moment(parseInt(item.date)).isAfter(Date.now(), 'day')) {
