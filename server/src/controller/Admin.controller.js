@@ -31,7 +31,7 @@ module.exports = {
 		newAdmin
 			.save()
 			.then( admin => {
-				res.json( {success: 1, message:'New admin account !'} )
+				res.json( {success: 1, message:'New admin account !', admin: admin} )
 			})
 			.catch( err => res.json( {error: 1, message: err.message} ) )
 	},

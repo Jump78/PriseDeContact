@@ -30,7 +30,7 @@ module.exports = {
 		newCampaign
 			.save()
 			.then( camp => {
-				res.json( {success: 1, message:'campaign add'} )
+				res.json( {success: 1, message:'campaign add', campaign: camp} )
 			})
 			.catch( err => res.json( {error: 1, message: err.message} ) )
 	},
