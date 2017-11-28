@@ -25,8 +25,11 @@ module.exports = {
 	},
 
 	create : ( req, res ) => {
-		const newProspect = new Prospect( req.body )
-		//console.log(req.body)
+		let newPpct = req.body
+		newPpct.campaigns = [req.body.campaign_id]
+		delete newPpct.campaign_id
+		const newProspect = new Prospect( newPpct )
+		console.log("newPpct", newPpct)
 		newProspect
 			.save()
 			.then( ppct => {
