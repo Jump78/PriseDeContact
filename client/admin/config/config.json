@@ -1,4 +1,4 @@
 {
-  "apiEndPoint": "http://localhost",
-  "apiPort": "8020"
+  "apiEndPoint": "",
+  "apiPort": ""
 }
