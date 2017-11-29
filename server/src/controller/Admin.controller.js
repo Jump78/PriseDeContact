@@ -26,7 +26,7 @@ module.exports = {
 	},
 
 	connect : ( req, res ) => {
-		req.params.password = sha256( req.body.password )
+		req.body.password = sha256( req.body.password )
 		Admin
 			.find( {login: req.body.login, password: req.body.password} )
 			.then( admin => {
