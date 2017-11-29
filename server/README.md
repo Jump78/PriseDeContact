@@ -46,7 +46,7 @@ body: {
 
 ### update prospect:
 
-Edit one or more prospect's properties
+Edit one or more properties of one prospect
 
 url: /prospect/:\_id
 
@@ -121,16 +121,30 @@ body: {
   password:  { type: String, required: true }
 }
 ```
+### login admin:
 
-### update admin password:
-Edit one admin password
+Check if login/password couple is in database
 
-url: /admin/password/:\_id
+url: /admin/login
+
+```
+method: POST
+body: {
+  login:     { type: String, required: false }
+  password:  { type: String, required: false }
+}
+```
+
+### update admin:
+Edit one or more properties of one admin
+
+url: /admin/:\_id
 
 ```
 method: PUT
 body: {
-  password:  { type: String, required: true }
+  login:     { type: String, required: false }
+  password:  { type: String, required: false }
 }
 ```
 
@@ -197,7 +211,7 @@ body: {
 
 ### update campaign:
 
-Edit one or more campaign's properties
+Edit one or more properties of one campain
 
 url: /campaign/:\_id
 

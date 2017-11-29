@@ -26,11 +26,11 @@ module.exports = {
 
 	create : ( req, res ) => {
 		const newCampaign = new Campaign( req.body )
-		console.log(req.body)
+		
 		newCampaign
 			.save()
 			.then( camp => {
-				res.json( {success: 1, message:'campaign add'} )
+				res.json( {success: 1, message:'campaign add', campaign: camp} )
 			})
 			.catch( err => res.json( {error: 1, message: err.message} ) )
 	},
@@ -49,8 +49,8 @@ module.exports = {
 					return camp.save()
 				}
 			})
-			.then(() => res.json({success: 1, message:'campaign udated'}))
-			.catch(err => res.json({error: 1, message: err.message}))
+			.then( camp => res.json({success: 1, message:'campaign udated', campaign: camp}) )
+			.catch( err => res.json({error: 1, message: err.message}) )
 	},
 
 	remove : ( req, res ) => {

@@ -30,7 +30,7 @@ module.exports = {
 		newProspect
 			.save()
 			.then( ppct => {
-				res.json( {success: 1, message:'prospect add'} )
+				res.json( {success: 1, message:'prospect add', prospect: ppct} )
 			})
 			.catch( err => res.json( {error: 1, message: err.message} ) )
 	},
@@ -56,7 +56,7 @@ module.exports = {
 					return ppct.save()
 				}
 			})
-			.then(() => res.json({success: 1, message:'prospect udated'}))
+			.then( ppct => res.json({success: 1, message:'prospect udated', prospect: ppct}) )
 			.catch(err => res.json({error: 1, message: err.message}))
 	},
 

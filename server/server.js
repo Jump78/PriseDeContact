@@ -72,9 +72,10 @@ const admin = require('./src/controller/Admin.controller')
 app.post 		('/admin', 				(req, res) => {
 	admin.create(req, res)
 })
+app.post 		('/admin/login', 				admin.connect)
 app.get 		('/admin', 							admin.findAll)
 app.get 		('/admin/:id', 					admin.find)
-app.put 		('/admin/password/:id', admin.updatePassword)
+app.put 		('/admin/:id', 					admin.update)
 app.delete 	('/admin/:id', 					admin.remove)
 
 // Indique à mongoose que les promesse à utiliser
