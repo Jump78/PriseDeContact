@@ -25,7 +25,9 @@ module.exports = {
 	},
 
 	create : ( req, res ) => {
-		const newCampaign = new Campaign( req.body )
+		let newCamp = req.body
+		newCamp.prospects = []
+		const newCampaign = new Campaign( newCamp )
 		
 		newCampaign
 			.save()

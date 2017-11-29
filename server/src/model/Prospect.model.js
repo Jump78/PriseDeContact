@@ -14,7 +14,8 @@ const prospectSchema = new mongoose.Schema(
 	  phone: 					{ type: String, required: true },
 	  study_level: 		{ type: String, required: true },
 	  asked_class: 		{ type: String, required: true },
-	  current_class: 	{ type: String, required: true }
+	  current_class: 	{ type: String, required: true },
+	  campaigns: 			{ type: Array, required: false }
 	},
 	{ collection: 'prospects' }
 )
