@@ -17,7 +17,8 @@ prospect:
   "phone": String,
   "study_level": String,
   "asked_class": String,
-  "current_class": String	
+  "current_class": String,
+  "campaigns" : Array
 }
 ```
 
@@ -189,7 +190,8 @@ prospect:
   "name": String,
   "type": String,
   "date": String,
-  "outro_text": String
+  "outro_text": String,
+  "prospects": Array 
 }
 ```
 
@@ -250,6 +252,16 @@ method: GET
 Get one campaigns from database
 
 url: /campaign/:\_id
+
+```
+method: GET
+```
+
+### find campaign prospects:
+
+Get all prospects of specific campaign
+
+url: /campaign/:id/prospect
 
 ```
 method: GET
