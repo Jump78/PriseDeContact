@@ -92,7 +92,7 @@ module.exports = {
 				res.json({
 					status: 200,
 					success: 1,
-					message:'admin password udated',
+					message:'admin updated',
 					content: admin
 				})
 			})
