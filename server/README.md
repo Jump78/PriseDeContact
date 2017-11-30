@@ -28,6 +28,7 @@ Add one prospect to database
 
 url: /prospect
 
+request
 ```
 method: POST
 body: {
@@ -46,12 +47,23 @@ body: {
 }
 ```
 
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'prospect add' },
+  content : { type: Object, description: prospect just add in database }
+}
+```
+
 ### update prospect:
 
 Edit one or more properties of one prospect
 
 url: /prospect/:\_id
 
+request
 ```
 method: PUT
 body: {
@@ -69,13 +81,33 @@ body: {
 }
 ```
 
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'prospect udated' },
+  content : { type: Object, description: prospect just edited in database }
+}
+```
+
 ### remove prospect:
 Remove one prospect
 
 url: /prospect/:\_id
 
+request
 ```
 method: DELETE
+```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 204 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'prospect deleted' }
+}
 ```
 
 ### find all prospects:
@@ -84,8 +116,19 @@ Get all prospects from database
 
 url: /prospect
 
+request
 ```
 method: GET
+```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'all prospects found' },
+  content : { type: Array, description: array of prospect schema }
+}
 ```
 
 ### find prospect:
@@ -93,8 +136,19 @@ Get one prospects from database
 
 url: /prospect/:\_id
 
+request
 ```
 method: GET
+```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'prospect found' },
+  content : { type: Object, description: prospect schema }
+}
 ```
 
 
@@ -116,6 +170,7 @@ Add one admin to database
 
 url: /admin
 
+request
 ```
 method: POST
 body: {
@@ -123,17 +178,39 @@ body: {
   password:  { type: String, required: true }
 }
 ```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'new admin account !' },
+  content : { type: Object, description: admin schema without password }
+}
+```
+
 ### login admin:
 
 Check if login/password couple is in database
 
 url: /admin/login
 
+request
 ```
 method: POST
 body: {
   login:     { type: String, required: false }
   password:  { type: String, required: false }
+}
+```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'admin account found' },
+  content : { type: Object, description: admin schema without password }
 }
 ```
 
@@ -142,11 +219,22 @@ Edit one or more properties of one admin
 
 url: /admin/:\_id
 
+request
 ```
 method: PUT
 body: {
   login:     { type: String, required: false }
   password:  { type: String, required: false }
+}
+```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'admin udated' },
+  content : { type: Object, description: admin schema without password }
 }
 ```
 
@@ -156,8 +244,18 @@ Remove one admin
 
 url: /admin/:\_id
 
+request
 ```
 method: DELETE
+```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 204 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'admin deleted' }
+}
 ```
 
 ### find all admins:
@@ -166,8 +264,19 @@ Get all admins from database
 
 url: /admin
 
+request
 ```
 method: GET
+```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'all admins found' },
+  content : { type: Array, description: array of admins schemas without password }
+}
 ```
 
 ### find admin:
@@ -176,8 +285,19 @@ Get one admins from database
 
 url: /admin/:\_id
 
+request
 ```
 method: GET
+```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'admin found' },
+  content : { type: Object, description: admin schema without password }
+}
 ```
 
 
@@ -202,6 +322,7 @@ Add one campaign to database
 
 url: /campaign
 
+request
 ```
 method: POST
 body: {
@@ -212,12 +333,23 @@ body: {
 }
 ```
 
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'campaign add' },
+  content : { type: Object, description: campaign just add in database }
+}
+```
+
 ### update campaign:
 
 Edit one or more properties of one campain
 
 url: /campaign/:\_id
 
+request
 ```
 method: PUT
 body: {
@@ -228,14 +360,34 @@ body: {
 }
 ```
 
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'campaign update' },
+  content : { type: Object, description: campaign just edited in database }
+}
+```
+
 ### remove campaign:
 
 Remove one campaign
 
 url: /campaign/:\_id
 
+request
 ```
 method: DELETE
+```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 204 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'campaign deleted' }
+}
 ```
 
 ### find all campaigns:
@@ -244,8 +396,19 @@ Get all campaigns from database
 
 url: /campaign
 
+request
 ```
 method: GET
+```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'all campaigns found' },
+  content : { type: Array, description: array of campaigns schemas }
+}
 ```
 
 ### find campaign:
@@ -254,8 +417,19 @@ Get one campaigns from database
 
 url: /campaign/:\_id
 
+request
 ```
 method: GET
+```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'campaign found' },
+  content : { type: Object, description: campaign schema }
+}
 ```
 
 ### find campaign prospects:
@@ -264,6 +438,17 @@ Get all prospects of specific campaign
 
 url: /campaign/:id/prospect
 
+request
 ```
 method: GET
+```
+
+success response
+```
+{
+  status :  { type: Number, description: value = 200 },
+  success : { type: Number, description: value = 1 },
+  message : { type: String, description: value = 'campaign found' },
+  content : { type: Array, description: array of prospects schemas }
+}
 ```
