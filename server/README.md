@@ -31,17 +31,18 @@ url: /prospect
 ```
 method: POST
 body: {
-  email :         { type: String, required: true },
-  firstname :     { type: String, required: true },
-  lastname :      { type: String, required: true },
-  gender :        { type: String, required: true },
-  adress :        { type: String, required: true },
-  postcode :      { type: Number, required: true },
+  email:          { type: String, required: true },
+  firstname:      { type: String, required: true },
+  lastname:       { type: String, required: true },
+  gender:         { type: String, required: true },
+  adress:         { type: String, required: true },
+  postcode:       { type: Number, required: true },
   city:           { type: String, required: true },
   phone:          { type: String, required: true },
   study_level:    { type: String, required: true },
   asked_class:    { type: String, required: true },
-  current_class:  { type: String, required: true }
+  current_class:  { type: String, required: true },
+  campaign_id:    { type: ObjectId, required: false}
 }
 ```
 
