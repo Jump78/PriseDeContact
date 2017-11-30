@@ -1,6 +1,7 @@
 <template>
   <div>
     <NavBar :id="this.$route.params.id"/>
+    <button type="button" name="button" @click="exportCSV">Export</button>
     <div class="flex">
       <p>Nombre de prospects inscrit: {{ prospects.length }}</p>
       <doughnut-chart :chart-data="chartData" :options="options"></doughnut-chart>
@@ -15,6 +16,7 @@
 <script>
 import config from '../../config/config';
 import io from 'socket.io-client';
+import {JSONToCSVConvertor} from '../helper/exportToCSV';
 
 import CampaignService from '../services/CampaignService';
 
@@ -61,6 +63,30 @@ export default {
             borderWidth: 1
         }]
       };
+    },
+    exportCSV () {
+      let prompt = window.prompt('Nom du fichier');
+      if (prompt) {
+        let data = this.prospects.map( item => {
+          let a = {
+            email : item.email,
+            'prénom' : item.firstname,
+            nom : item.lastname,
+            sexe : (item.gender === 'm')? 'Homme' :'Femme',
+            adresse : item.adresse,
+            'code postal' : item.postcode,
+            ville : item.city,
+            tel : item.phone,
+            'niveau d\'étude' : item.study_level,
+            'formation souhaitée' : item.asked_class,
+            'formation actuelle' : item.current_class,
+            'campagne visitée' : item.campaigns.length         
+          };
+
+          return a;
+        });
+        JSONToCSVConvertor(JSON.stringify(data), prompt, true);
+      }
     }
   },
   created () {
@@ -88,7 +114,7 @@ export default {
         if (res.error) {
             throw "Http error";
         }
-        this.prospects = res;
+        this.prospects = res.content;
         this.fillData();
       })
       .catch( (err) => console.log(err));
