@@ -7,10 +7,15 @@ module.exports = {
 		Admin
 			.find({})
 			.then( admins => {
-				res.json(admins)
+				res.json({
+					status: 200,
+					success: 1,
+					message: 'All prospects find',
+					content: admins
+				})
 			})
 			.catch( err => {
-				res.json( {error: 1, message: err.message} )
+				res.json( {status: 400, error: 1, message: err.message} )
 			})
 	},
 
@@ -18,10 +23,15 @@ module.exports = {
 		Admin
 			.find( {_id: req.params.id} )
 			.then( admin => {
-				res.json( admin )
+				res.json({
+					status: 200,
+					success: 1,
+					message: 'Admin find',
+					content: admin
+				})
 			})
 			.catch( err => {
-				res.json( {error: 1, message: err.message} )
+				res.json( {status: 400, error: 1, message: err.message} )
 			})
 	},
 
@@ -31,15 +41,20 @@ module.exports = {
 			.find( {login: req.body.login, password: req.body.password} )
 			.then( admin => {
 				if (admin.length > 0) {
-					res.json( {success: 1, message: 'Admin account found', admin: admin[0]} )
+					res.json({
+						status: 200,
+						success: 1,
+						message: 'Admin account found',
+						content: admin[0]
+					})
 					console.log( req.body.login, 'connection' )
 				} else {
-					res.json( {error: 1, message: 'login / password couple not found'} )
+					res.json( {status: 400, error: 1, message: 'login / password couple not found'} )
 					console.log( `try to connect on ${req.body.login} account` )
 				}
 			})
 			.catch( err => {
-				res.json( {error: 1, message: err.message} )
+				res.json( {status: 400, error: 1, message: err.message} )
 			})
 	},
 
@@ -49,9 +64,14 @@ module.exports = {
 		newAdmin
 			.save()
 			.then( admin => {
-				res.json( {success: 1, message:'New admin account !', admin: admin} )
+				res.json({
+					status: 200,
+					success: 1,
+					message:'New admin account !',
+					content: admin
+				})
 			})
-			.catch( err => res.json( {error: 1, message: err.message} ) )
+			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	},
 
 	update : ( req, res ) => {
@@ -68,14 +88,27 @@ module.exports = {
 					return admin.save()
 				}
 			})
-			.then( admin => res.json({success: 1, message:'admin password udated', admin: admin}) )
-			.catch( err => res.json({error: 1, message: err.message}))
+			.then( admin => {
+				res.json({
+					status: 200,
+					success: 1,
+					message:'admin password udated',
+					content: admin
+				})
+			})
+			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	},
 
 	remove : ( req, res ) => {
 		Admin
 			.findOneAndRemove( {_id: req.params.id} )
-			.then( admin => res.json( {success: 1, message:'admin deleted'} ) )
-			.catch( err => res.json( {error: 1, message: err.message} ) )
+			.then( admin => {
+				res.json({
+					status: 204,
+					success: 1,
+					message:'admin deleted'
+				})
+			})
+			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	}
 }

@@ -7,10 +7,15 @@ module.exports = {
 		Campaign
 			.find({})
 			.then( camps => {
-				res.json( {success: 1, campaigns: camps} )
+				res.json({
+					status: 200,
+					success: 1,
+					message: 'All campaigns find',
+					content: camps
+				})
 			})
 			.catch( err => {
-				res.json( {error: 1, message: err.message} )
+				res.json( {status: 400, error: 1, message: err.message} )
 			})
 	},
 
@@ -20,10 +25,15 @@ module.exports = {
 			.findOne( {_id: req.params.id} )
 			.populate('prospects')
 			.then( camp => {
-		    res.json( {success: 1, prospects: camp.prospects} )
+		    res.json({
+		    	status: 200,
+		    	success: 1,
+		    	message: 'Campaign prospects find',
+		    	content: camp.prospects
+		    })
 		  })
 			.catch( err => {
-				res.json( {error: 1, message: err.message} )
+				res.json( {status: 400, error: 1, message: err.message} )
 			})
 	},
 
@@ -31,10 +41,15 @@ module.exports = {
 		Campaign
 			.find( {_id: req.params.id} )
 			.then( camp => {
-				res.json( {success: 1, campaign: camp} )
+				res.json({
+					status: 200,
+					success: 1,
+					message: 'Campaign find',
+					content: camp
+				})
 			})
 			.catch( err => {
-				res.json( {error: 1, message: err.message} )
+				res.json( {status: 400, error: 1, message: err.message} )
 			})
 	},
 
@@ -46,9 +61,14 @@ module.exports = {
 		newCampaign
 			.save()
 			.then( camp => {
-				res.json( {success: 1, message:'campaign add', campaign: camp} )
+				res.json({
+					status: 200,
+					success: 1,
+					message:'campaign add',
+					content: camp
+				})
 			})
-			.catch( err => res.json( {error: 1, message: err.message} ) )
+			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	},
 
 	update : ( req, res ) => {
@@ -66,14 +86,27 @@ module.exports = {
 					return camp.save()
 				}
 			})
-			.then( camp => res.json({success: 1, message:'campaign udated', campaign: camp}) )
-			.catch( err => res.json({error: 1, message: err.message}) )
+			.then( camp => {
+				res.json({
+					status: 200,
+					success: 1,
+					message:'campaign udated',
+					content: camp
+				})
+			})
+			.catch( err => res.json({status: 400, error: 1, message: err.message}) )
 	},
 
 	remove : ( req, res ) => {
 		Campaign
 			.findOneAndRemove( {_id: req.params.id} )
-			.then( camp => res.json( {success: 1, message:'campaign deleted'} ) )
-			.catch( err => res.json( {error: 1, message: err.message} ) )
+			.then( camp => {
+				res.json({
+					status: 204,
+					success: 1,
+					message:'campaign deleted'
+				})
+			})
+			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	}
 }

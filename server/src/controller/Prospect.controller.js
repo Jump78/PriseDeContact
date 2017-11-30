@@ -3,14 +3,19 @@ const Campaign = require('./../model/Campaign.model')
 
 module.exports = {
 	findAll : ( req, res ) => {
-		console.log('findAll detected')
+		console.log('Prospect.findAll detected')
 		Prospect
 			.find({})
 			.then( ppcts => {
-				res.json(ppcts)
+				res.json({
+					status: 200,
+					success: 1,
+					message: 'All prospects find',
+					content: ppcts
+				})
 			})
 			.catch(err => {
-				res.json( {error: 1, message: err.message} )
+				res.json( {status: 400, error: 1, message: err.message} )
 			})
 	},
 
@@ -18,10 +23,15 @@ module.exports = {
 		Prospect
 			.find( {_id: req.params.id} )
 			.then( ppct => {
-				res.json( ppct )
+				res.json({
+					status: 200,
+					success: 1,
+					message: 'Prospect find',
+					content: ppcts
+				})
 			})
 			.catch( err => {
-				res.json( {error: 1, message: err.message} )
+				res.json( {status: 400, error: 1, message: err.message} )
 			})
 	},
 
@@ -34,9 +44,14 @@ module.exports = {
 		newProspect
 			.save()
 			.then( ppct => {
-				res.json( {success: 1, message:'prospect add', prospect: ppct} )
+				res.json({
+					status: 200,
+					success: 1,
+					message:'prospect add',
+					content: ppct
+				})
 			})
-			.catch( err => res.json( {error: 1, message: err.message} ) )
+			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	},
 
 	update : ( req, res ) => {
@@ -60,14 +75,27 @@ module.exports = {
 					return ppct.save()
 				}
 			})
-			.then( ppct => res.json({success: 1, message:'prospect udated', prospect: ppct}) )
-			.catch(err => res.json({error: 1, message: err.message}))
+			.then( ppct => {
+				res.json({
+					status: 200,
+					success: 1,
+					message:'prospect udated',
+					content: ppct
+				})
+			})
+			.catch(err => res.json( {status: 400, error: 1, message: err.message} ) )
 	},
 
 	remove : ( req, res ) => {
 		Prospect
 			.findOneAndRemove( {_id: req.params.id} )
-			.then( ppct => res.json( {success: 1, message:'prospect deleted'} ) )
-			.catch( err => res.json( {error: 1, message: err.message} ) )
+			.then( ppct => {
+				res.json({
+					status: 204,
+					success: 1,
+					message:'prospect deleted'
+				})
+			})
+			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	}
 }
