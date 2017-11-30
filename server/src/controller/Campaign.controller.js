@@ -1,4 +1,5 @@
 const Campaign = require('./../model/Campaign.model')
+const Prospect = require('./../model/Prospect.model')
 
 module.exports = {
 	findAll : ( req, res ) => {
@@ -6,8 +7,21 @@ module.exports = {
 		Campaign
 			.find({})
 			.then( camps => {
-				res.json(camps)
+				res.json( {success: 1, campaigns: camps} )
 			})
+			.catch( err => {
+				res.json( {error: 1, message: err.message} )
+			})
+	},
+
+	findMyProspects : ( req, res ) => {
+		console.log('find prospect from Campaign')
+		Campaign
+			.findOne( {_id: req.params.id} )
+			.populate('prospects')
+			.then( camp => {
+		    res.json( {success: 1, prospects: camp.prospects} )
+		  })
 			.catch( err => {
 				res.json( {error: 1, message: err.message} )
 			})
@@ -17,7 +31,7 @@ module.exports = {
 		Campaign
 			.find( {_id: req.params.id} )
 			.then( camp => {
-				res.json( camp )
+				res.json( {success: 1, campaign: camp} )
 			})
 			.catch( err => {
 				res.json( {error: 1, message: err.message} )

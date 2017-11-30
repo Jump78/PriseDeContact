@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 mongoose.Promise = global.Promise
 
@@ -15,7 +16,7 @@ const prospectSchema = new mongoose.Schema(
 	  study_level: 		{ type: String, required: true },
 	  asked_class: 		{ type: String, required: true },
 	  current_class: 	{ type: String, required: true },
-	  campaigns: 			{ type: Array, required: false }
+	  campaigns: 			[ { type: Schema.Types.ObjectId, ref:'campaigns' } ]
 	},
 	{ collection: 'prospects' }
 )

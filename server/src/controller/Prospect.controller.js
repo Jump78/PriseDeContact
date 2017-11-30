@@ -1,4 +1,5 @@
 const Prospect = require('./../model/Prospect.model')
+const Campaign = require('./../model/Campaign.model')
 
 module.exports = {
 	findAll : ( req, res ) => {
