@@ -10,7 +10,7 @@ module.exports = {
 				res.json({
 					status: 200,
 					success: 1,
-					message: 'All campaigns find',
+					message: 'all campaigns found',
 					content: camps
 				})
 			})
@@ -28,7 +28,7 @@ module.exports = {
 		    res.json({
 		    	status: 200,
 		    	success: 1,
-		    	message: 'Campaign prospects find',
+		    	message: 'campaign prospects found',
 		    	content: camp.prospects
 		    })
 		  })
@@ -44,7 +44,7 @@ module.exports = {
 				res.json({
 					status: 200,
 					success: 1,
-					message: 'Campaign find',
+					message: 'campaign found',
 					content: camp
 				})
 			})
@@ -90,7 +90,7 @@ module.exports = {
 				res.json({
 					status: 200,
 					success: 1,
-					message:'campaign udated',
+					message:'campaign updated',
 					content: camp
 				})
 			})

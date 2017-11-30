@@ -10,7 +10,7 @@ module.exports = {
 				res.json({
 					status: 200,
 					success: 1,
-					message: 'All prospects find',
+					message: 'all prospects found',
 					content: ppcts
 				})
 			})
@@ -26,7 +26,7 @@ module.exports = {
 				res.json({
 					status: 200,
 					success: 1,
-					message: 'Prospect find',
+					message: 'prospect found',
 					content: ppcts
 				})
 			})
@@ -47,7 +47,7 @@ module.exports = {
 				res.json({
 					status: 200,
 					success: 1,
-					message:'prospect add',
+					message: 'prospect add',
 					content: ppct
 				})
 			})
@@ -79,7 +79,7 @@ module.exports = {
 				res.json({
 					status: 200,
 					success: 1,
-					message:'prospect udated',
+					message: 'prospect updated',
 					content: ppct
 				})
 			})
@@ -93,7 +93,7 @@ module.exports = {
 				res.json({
 					status: 204,
 					success: 1,
-					message:'prospect deleted'
+					message: 'prospect deleted'
 				})
 			})
 			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )

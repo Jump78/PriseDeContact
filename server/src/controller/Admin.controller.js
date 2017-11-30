@@ -10,7 +10,7 @@ module.exports = {
 				res.json({
 					status: 200,
 					success: 1,
-					message: 'All prospects find',
+					message: 'all prospects found',
 					content: admins
 				})
 			})
@@ -26,7 +26,7 @@ module.exports = {
 				res.json({
 					status: 200,
 					success: 1,
-					message: 'Admin find',
+					message: 'admin found',
 					content: admin
 				})
 			})
@@ -44,7 +44,7 @@ module.exports = {
 					res.json({
 						status: 200,
 						success: 1,
-						message: 'Admin account found',
+						message: 'admin account found',
 						content: admin[0]
 					})
 					console.log( req.body.login, 'connection' )
@@ -67,7 +67,7 @@ module.exports = {
 				res.json({
 					status: 200,
 					success: 1,
-					message:'New admin account !',
+					message:'new admin account !',
 					content: admin
 				})
 			})
