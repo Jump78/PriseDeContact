@@ -448,7 +448,7 @@ success response
 {
   status :  { type: Number, description: value = 200 },
   success : { type: Number, description: value = 1 },
-  message : { type: String, description: value = 'campaign found' },
+  message : { type: String, description: value = 'campaign prospects found' },
   content : { type: Array, description: array of prospects schemas }
 }
 ```
