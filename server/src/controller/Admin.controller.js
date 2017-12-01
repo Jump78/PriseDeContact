@@ -109,13 +109,20 @@ module.exports = {
 
 	remove : ( req, res ) => {
 		Admin
-			.findOneAndRemove( {_id: req.params.id} )
+			.findOne( {_id: req.params.id} )
 			.then( admin => {
-				res.json({
-					status: 204,
-					success: 1,
-					message:'admin deleted'
-				})
+				utils.foundVerify( admin, res, 'admin not found' )
+			})
+			.then( _ => {
+				return Admin
+					.findOneAndRemove( {_id: req.params.id} )
+					.then( admin => {
+						res.json({
+							status: 204,
+							success: 1,
+							message:'admin deleted'
+						})
+					})
 			})
 			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	}

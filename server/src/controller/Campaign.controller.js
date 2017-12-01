@@ -105,13 +105,20 @@ module.exports = {
 
 	remove : ( req, res ) => {
 		Campaign
-			.findOneAndRemove( {_id: req.params.id} )
+			.findOne( {_id: req.params.id} )
 			.then( camp => {
-				res.json({
-					status: 204,
-					success: 1,
-					message:'campaign deleted'
-				})
+				utils.foundVerify( camp, res, 'campaign not found' )
+			})
+			.then( _ => {
+				return Campaign
+					.findOneAndRemove( {_id: req.params.id} )
+					.then( camp => {
+						res.json({
+							status: 204,
+							success: 1,
+							message:'campaign deleted'
+						})
+					})
 			})
 			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	}
