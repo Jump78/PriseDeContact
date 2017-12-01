@@ -1,11 +1,19 @@
 const Admin = require('./../model/Admin.model')
 const sha256 = require('js-sha256')
+const utils = require('./../utils');
 
 module.exports = {
 	findAll : ( req, res ) => {
 		console.log('Admin.findAll detected')
 		Admin
 			.find({})
+			.then( admins => {
+				let a = []
+				admins.forEach( admin => {
+					a.push( utils.adminReturnObjectNorm( admin ) )
+				})
+				return a
+			})
 			.then( admins => {
 				res.json({
 					status: 200,
@@ -21,13 +29,16 @@ module.exports = {
 
 	find : ( req, res ) => {
 		Admin
-			.find( {_id: req.params.id} )
+			.findOne( {_id: req.params.id} )
+			.then( admin => {
+				return utils.foundVerify( admin, res, 'admin not found' )
+			})
 			.then( admin => {
 				res.json({
 					status: 200,
 					success: 1,
 					message: 'admin found',
-					content: admin
+					content: utils.adminReturnObjectNorm( admin )
 				})
 			})
 			.catch( err => {
@@ -38,20 +49,18 @@ module.exports = {
 	connect : ( req, res ) => {
 		req.body.password = sha256( req.body.password )
 		Admin
-			.find( {login: req.body.login, password: req.body.password} )
+			.findOne( {login: req.body.login, password: req.body.password} )
 			.then( admin => {
-				if (admin.length > 0) {
-					res.json({
-						status: 200,
-						success: 1,
-						message: 'admin account found',
-						content: admin[0]
-					})
-					console.log( req.body.login, 'connection' )
-				} else {
-					res.json( {status: 400, error: 1, message: 'login / password couple not found'} )
-					console.log( `try to connect on ${req.body.login} account` )
-				}
+				return utils.foundVerify( admin, res, 'login / password couple not found' )
+			})
+			.then( admin => {
+				res.json({
+					status: 200,
+					success: 1,
+					message: 'admin account found',
+					content: utils.adminReturnObjectNorm( admin )
+				})
+				console.log( req.body.login, 'connection' )
 			})
 			.catch( err => {
 				res.json( {status: 400, error: 1, message: err.message} )
@@ -68,7 +77,7 @@ module.exports = {
 					status: 200,
 					success: 1,
 					message:'new admin account !',
-					content: admin
+					content: utils.adminReturnObjectNorm( admin )
 				})
 			})
 			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
@@ -78,15 +87,14 @@ module.exports = {
 		Admin
 			.findOne( {_id: req.params.id} )
 			.then( admin => {
-				if( admin === null ) {
-					return Promise.reject('unknown admin id')
-				} else {
-					req.body.password = sha256( req.body.password )
+				return utils.foundVerify( admin, res, 'admin not found' )
+			})
+			.then( admin => {
+				req.body.password = sha256( req.body.password )
 
-					admin.login = req.body.login || admin.login
-					admin.password = req.body.password || admin.password
-					return admin.save()
-				}
+				admin.login = req.body.login || admin.login
+				admin.password = req.body.password || admin.password
+				return admin.save()
 			})
 			.then( admin => {
 				res.json({
