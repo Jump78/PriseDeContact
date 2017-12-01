@@ -1,5 +1,6 @@
-const Campaign = require('./../model/Campaign.model')
-const Prospect = require('./../model/Prospect.model')
+const Campaign = require('./../model/Campaign.model');
+const Prospect = require('./../model/Prospect.model');
+const utils = require('./../utils');
 
 module.exports = {
 	findAll : ( req, res ) => {
@@ -25,6 +26,9 @@ module.exports = {
 			.findOne( {_id: req.params.id} )
 			.populate('prospects')
 			.then( camp => {
+				return utils.foundVerify( camp, res, 'campaign not found' )
+			})
+			.then( camp => {
 		    res.json({
 		    	status: 200,
 		    	success: 1,
@@ -39,7 +43,10 @@ module.exports = {
 
 	find : ( req, res ) => {
 		Campaign
-			.find( {_id: req.params.id} )
+			.findOne( {_id: req.params.id} )
+			.then( camp => {
+				return utils.foundVerify( camp, res, 'campaign not found' )
+			})
 			.then( camp => {
 				res.json({
 					status: 200,
@@ -75,16 +82,15 @@ module.exports = {
 		Campaign
 			.findOne( {_id: req.params.id} )
 			.then( camp => {
-				if( camp === null ) {
-					return Promise.reject('unknown campaign id')
-				} else {
-					camp.name = req.body.name || camp.name
-					camp.type = req.body.type || camp.type
-					camp.date = req.body.date || camp.date
-					camp.outro_text = req.body.outro_text || camp.outro_text
-					camp.prospects = req.body.prospects || camp.prospects
-					return camp.save()
-				}
+				return utils.foundVerify( camp, res, 'campaign not found' )
+			})
+			.then( camp => {
+				camp.name = req.body.name || camp.name
+				camp.type = req.body.type || camp.type
+				camp.date = req.body.date || camp.date
+				camp.outro_text = req.body.outro_text || camp.outro_text
+				camp.prospects = req.body.prospects || camp.prospects
+				return camp.save()
 			})
 			.then( camp => {
 				res.json({
