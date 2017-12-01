@@ -16,7 +16,7 @@ const prospectSchema = new mongoose.Schema(
 	  study_level: 		{ type: String, required: true },
 	  asked_class: 		{ type: String, required: true },
 	  current_class: 	{ type: String, required: true },
-	  campaigns: 			[ { type: Schema.Types.ObjectId, ref:'campaigns' } ]
+	  campaigns: 			[ { type: Schema.Types.ObjectId, ref:'Campaign' } ]
 	},
 	{ collection: 'prospects' }
 )

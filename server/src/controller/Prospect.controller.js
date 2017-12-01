@@ -19,6 +19,24 @@ module.exports = {
 			})
 	},
 
+	findMyCampaigns : ( req, res ) => {
+		console.log('find campaign from Prospect')
+		Prospect
+			.findOne( {_id: req.params.id} )
+			.populate('campaigns')
+			.then( ppct => {
+		    res.json({
+		    	status: 200,
+		    	success: 1,
+		    	message: 'prospect campaigns found',
+		    	content: ppct.campaigns
+		    })
+		  })
+			.catch( err => {
+				res.json( {status: 400, error: 1, message: err.message} )
+			})
+	},
+
 	find : ( req, res ) => {
 		Prospect
 			.find( {_id: req.params.id} )

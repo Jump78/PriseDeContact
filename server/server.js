@@ -53,6 +53,7 @@ app.post 		('/prospect', 				(req, res) => {
 })
 app.get 		('/prospect', 				prospect.findAll)
 app.get 		('/prospect/:id', 		prospect.find)
+app.get 		('/prospect/:id/campaign', prospect.findMyCampaigns)
 app.put 		('/prospect/:id', 		prospect.update)
 app.delete 	('/prospect/:id', 		prospect.remove)
 
