@@ -1,5 +1,6 @@
 const Prospect = require('./../model/Prospect.model')
 const Campaign = require('./../model/Campaign.model')
+const utils = require('./../utils');
 
 module.exports = {
 	findAll : ( req, res ) => {
@@ -14,7 +15,7 @@ module.exports = {
 					content: ppcts
 				})
 			})
-			.catch(err => {
+			.catch( err => {
 				res.json( {status: 400, error: 1, message: err.message} )
 			})
 	},
@@ -24,6 +25,9 @@ module.exports = {
 		Prospect
 			.findOne( {_id: req.params.id} )
 			.populate('campaigns')
+			.then( ppct => {
+				return utils.foundVerify( ppct, res, 'prospect not found' )
+			})
 			.then( ppct => {
 		    res.json({
 		    	status: 200,
@@ -39,13 +43,16 @@ module.exports = {
 
 	find : ( req, res ) => {
 		Prospect
-			.find( {_id: req.params.id} )
+			.findOne( {_id: req.params.id} )
+			.then( ppct => {
+				return utils.foundVerify( ppct, res, 'prospect not found' )
+			})
 			.then( ppct => {
 				res.json({
 					status: 200,
 					success: 1,
 					message: 'prospect found',
-					content: ppcts
+					content: ppct
 				})
 			})
 			.catch( err => {
@@ -58,7 +65,7 @@ module.exports = {
 		newPpct.campaigns = [req.body.campaign_id]
 		delete newPpct.campaign_id
 		const newProspect = new Prospect( newPpct )
-		console.log("newPpct", newPpct)
+		//console.log("newPpct", newPpct)
 		newProspect
 			.save()
 			.then( ppct => {
@@ -76,22 +83,21 @@ module.exports = {
 		Prospect
 			.findOne( {_id: req.params.id} )
 			.then( ppct => {
-				if( ppct === null ) {
-					return Promise.reject('id du prospect inconnu')
-				} else {
-					ppct.email = req.body.email || ppct.email
-					ppct.firstname = req.body.firstname || ppct.firstname
-					ppct.lastname = req.body.lastname || ppct.lastname
-					ppct.gender = req.body.gender || ppct.gender
-					ppct.postcode = req.body.postcode || ppct.postcode
-					ppct.city = req.body.city || ppct.city
-					ppct.phone = req.body.phone || ppct.phone
-					ppct.study_level = req.body.study_level || ppct.study_level
-					ppct.asked_level = req.body.asked_level || ppct.asked_level
-					ppct.current_level = req.body.current_level || ppct.current_level
-
-					return ppct.save()
-				}
+				return utils.foundVerify( ppct, res, 'prospect not found' )
+			})
+			.then( ppct => {
+				ppct.email = req.body.email || ppct.email
+				ppct.firstname = req.body.firstname || ppct.firstname
+				ppct.lastname = req.body.lastname || ppct.lastname
+				ppct.gender = req.body.gender || ppct.gender
+				ppct.postcode = req.body.postcode || ppct.postcode
+				ppct.city = req.body.city || ppct.city
+				ppct.phone = req.body.phone || ppct.phone
+				ppct.study_level = req.body.study_level || ppct.study_level
+				ppct.asked_level = req.body.asked_level || ppct.asked_level
+				ppct.current_level = req.body.current_level || ppct.current_level
+				
+				return ppct.save()
 			})
 			.then( ppct => {
 				res.json({
@@ -106,13 +112,20 @@ module.exports = {
 
 	remove : ( req, res ) => {
 		Prospect
-			.findOneAndRemove( {_id: req.params.id} )
+			.findOne( {_id: req.params.id} )
 			.then( ppct => {
-				res.json({
-					status: 204,
-					success: 1,
-					message: 'prospect deleted'
-				})
+				utils.foundVerify( ppct, res, 'prospect not found' )
+			})
+			.then( _ => {
+				return Prospect
+					.findOneAndRemove( {_id: req.params.id} )
+					.then( ppct => {
+						res.json({
+							status: 204,
+							success: 1,
+							message: 'prospect deleted'
+						})
+					})
 			})
 			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	}
