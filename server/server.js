@@ -41,8 +41,12 @@ app.use( (req, res, next) => {
 	next()
 })
 
-io.on('connection', () => {
+io.on('connection', (socket) => {
 	console.log(`Somone just connected`)
+	let roomId = socket.handshake.query.roomId;
+	console.log(roomId);
+	socket.join('room-'+roomId);
+	io.sockets.in("room-"+roomId).emit('connectToRoom', "You are in room"+roomId);
 })
 
 // CRUD Prospects
