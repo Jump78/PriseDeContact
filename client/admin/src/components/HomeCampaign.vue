@@ -80,7 +80,7 @@ export default {
             'niveau d\'étude' : item.study_level,
             'formation souhaitée' : item.asked_class,
             'formation actuelle' : item.current_class,
-            'campagne visitée' : item.campaigns.length         
+            'campagne visitée' : item.campaigns.length
           };
 
           return a;
@@ -97,7 +97,7 @@ export default {
     })
 
     this.campaignService.find(this.$route.params.id)
-      .then( res => this.campaign = res[0] )
+      .then( res => this.campaign = res.content )
       .catch( err => console.log(err) );
 
     fetch(config.apiEndPoint+":"+config.apiPort+'/prospect')

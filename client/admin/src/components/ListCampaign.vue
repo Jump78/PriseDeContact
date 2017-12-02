@@ -91,7 +91,7 @@ export default {
   },
   created () {
     this.campaignService.getAll().then( res =>{
-      this.allCampaigns = res;
+      this.allCampaigns = res.content;
       if (Array.isArray(this.allCampaigns)) {
         this.allCampaigns.forEach( (item) => this.populateArray(item))
       }
