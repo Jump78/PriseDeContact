@@ -5,5 +5,13 @@ module.exports = {
 		}	else {
 			return item
 		}
+	},
+	adminReturnObjectNorm : ( obj ) => {
+		let result = {
+			_id : obj._id,
+			login: obj.login,
+			__v: obj.__v
+		}
+		return result
 	}
 }
