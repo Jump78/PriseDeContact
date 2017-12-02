@@ -90,7 +90,7 @@ export default {
     }
   },
   created () {
-    var socket = io(config.apiEndPoint+":"+config.apiPort);
+    var socket = io(config.apiEndPoint+":"+config.apiPort, {query: 'roomId='+this.$route.params.id});
     socket.on('prospectAdd', (data) => {
       this.prospects.push(data);
       this.fillData();
