@@ -69,6 +69,7 @@ module.exports = {
 		newProspect
 			.save()
 			.then( ppct => {
+				req.body = ppct;
 				res.json({
 					status: 200,
 					success: 1,
@@ -96,7 +97,7 @@ module.exports = {
 				ppct.study_level = req.body.study_level || ppct.study_level
 				ppct.asked_level = req.body.asked_level || ppct.asked_level
 				ppct.current_level = req.body.current_level || ppct.current_level
-				
+
 				return ppct.save()
 			})
 			.then( ppct => {

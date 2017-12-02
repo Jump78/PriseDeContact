@@ -51,8 +51,21 @@ io.on('connection', (socket) => {
 
 // CRUD Prospects
 const prospect = require('./src/controller/Prospect.controller')
+const campaign = require('./src/controller/Campaign.controller')
 app.post 		('/prospect', 				(req, res) => {
-	prospect.create(req, res)
+	let idCampaigns = req.body.campaign_id;
+
+	prospect.create(req, res);
+	req.params.id = idCampaigns;
+
+	setTimeout((a) => {
+		req.body = {
+			prospects: [req.body._id]
+		}
+
+		campaign.update(req, res);
+		console.log("Session: %j", req.body);
+	},500)
 	io.sockets.emit( 'prospectAdd', req.body )
 })
 app.get 		('/prospect', 				prospect.findAll)
@@ -62,7 +75,6 @@ app.put 		('/prospect/:id', 		prospect.update)
 app.delete 	('/prospect/:id', 		prospect.remove)
 
 // CRUD Campaigns
-const campaign = require('./src/controller/Campaign.controller')
 app.post 		('/campaign', 				(req, res) => {
 	campaign.create(req, res)
 	io.sockets.emit( 'campaignAdd', req.body )
