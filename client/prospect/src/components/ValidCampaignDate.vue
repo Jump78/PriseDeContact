@@ -31,7 +31,7 @@ export default {
   created () {
     this.campaignService.getAll()
         .then(res => {
-          this.campaigns = res.filter((item) => moment(parseInt(item.date)).isSame(Date.now(), 'day'));
+          this.campaigns = res.content.filter((item) => moment(parseInt(item.date)).isSame(Date.now(), 'day'));
 
           if (this.campaigns.length == 1) {
             this.$router.push({name: 'ProspectForm', params:{id: this.campaigns[0]._id}})
