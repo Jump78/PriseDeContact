@@ -59,4 +59,11 @@ export default class extends ApiService{
     .then( res => res.json() )
     .catch( err => console.log(err) )
   }
+
+  getProspects (id) {
+    return fetch(this.baseUrl+'/'+this.ressource+'/'+id+'/prospect')
+    .then( this.checkErrors )
+    .then( res => res.json() )
+    .catch( err => console.log(err) )
+  }
 }
