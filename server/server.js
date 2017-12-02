@@ -44,7 +44,7 @@ app.use( (req, res, next) => {
 io.on('connection', (socket) => {
 	console.log(`Somone just connected`)
 	let roomId = socket.handshake.query.roomId;
-	console.log(roomId);
+	console.log('Join :'+roomId);
 	socket.join('room-'+roomId);
 	io.sockets.in("room-"+roomId).emit('connectToRoom', "You are in room"+roomId);
 })
@@ -66,7 +66,8 @@ app.post 		('/prospect', 				(req, res) => {
 		campaign.update(req, res);
 		console.log("Session: %j", req.body);
 	},500)
-	io.sockets.emit( 'prospectAdd', req.body )
+	console.log('Room: '+idCampaigns);
+	io.sockets.in("room-"+idCampaigns).emit( 'prospectAdd', req.body )
 })
 app.get 		('/prospect', 				prospect.findAll)
 app.get 		('/prospect/:id', 		prospect.find)

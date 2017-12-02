@@ -64,7 +64,7 @@ module.exports = {
 		let newCamp = req.body
 		newCamp.prospects = []
 		const newCampaign = new Campaign( newCamp )
-		
+
 		newCampaign
 			.save()
 			.then( camp => {
@@ -89,7 +89,11 @@ module.exports = {
 				camp.type = req.body.type || camp.type
 				camp.date = req.body.date || camp.date
 				camp.outro_text = req.body.outro_text || camp.outro_text
-				camp.prospects = req.body.prospects || camp.prospects
+
+				if (req.body.prospects) {
+					camp.prospects = camp.prospects.concat( req.body.prospects )
+				}
+
 				return camp.save()
 			})
 			.then( camp => {
