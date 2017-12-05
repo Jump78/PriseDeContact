@@ -80,7 +80,7 @@ export default {
             'niveau d\'étude' : item.study_level,
             'formation souhaitée' : item.asked_class,
             'formation actuelle' : item.current_class,
-            'campagne visitée' : item.campaigns.length         
+            'campagne visitée' : item.campaigns.length
           };
 
           return a;
@@ -90,34 +90,41 @@ export default {
     }
   },
   created () {
-    var socket = io(config.apiEndPoint+":"+config.apiPort);
+    var socket = io(config.apiEndPoint+":"+config.apiPort, {query: 'roomId='+this.$route.params.id});
     socket.on('prospectAdd', (data) => {
       this.prospects.push(data);
       this.fillData();
     })
 
     this.campaignService.find(this.$route.params.id)
-      .then( res => this.campaign = res[0] )
+      .then( res => this.campaign = res.content )
       .catch( err => console.log(err) );
 
-    fetch(config.apiEndPoint+":"+config.apiPort+'/prospect')
-      .then( (res) =>{
-        if (res.status>= '200' && res.status<'300') {
-          return res.json()
-        }
-        return {
-          error: 1,
-          message: 'Error server'
-        }
-       })
-      .then( (res) => {
-        if (res.error) {
-            throw "Http error";
-        }
-        this.prospects = res.content;
+    this.campaignService.getProspects(this.$route.params.id)
+      .then( res => {
+        this.prospects = res.content
         this.fillData();
-      })
-      .catch( (err) => console.log(err));
+      } )
+      .catch( err => console.log(err) );
+
+    // fetch(config.apiEndPoint+":"+config.apiPort+'/prospect')
+    //   .then( (res) =>{
+    //     if (res.status>= '200' && res.status<'300') {
+    //       return res.json()
+    //     }
+    //     return {
+    //       error: 1,
+    //       message: 'Error server'
+    //     }
+    //    })
+    //   .then( (res) => {
+    //     if (res.error) {
+    //         throw "Http error";
+    //     }
+    //     this.prospects = res.content;
+    //     this.fillData();
+    //   })
+    //   .catch( (err) => console.log(err));
   },
 }
 </script>

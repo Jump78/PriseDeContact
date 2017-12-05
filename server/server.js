@@ -41,15 +41,33 @@ app.use( (req, res, next) => {
 	next()
 })
 
-io.on('connection', () => {
+io.on('connection', (socket) => {
 	console.log(`Somone just connected`)
+	let roomId = socket.handshake.query.roomId;
+	console.log('Join :'+roomId);
+	socket.join('room-'+roomId);
+	io.sockets.in("room-"+roomId).emit('connectToRoom', "You are in room"+roomId);
 })
 
 // CRUD Prospects
 const prospect = require('./src/controller/Prospect.controller')
+const campaign = require('./src/controller/Campaign.controller')
 app.post 		('/prospect', 				(req, res) => {
-	prospect.create(req, res)
-	io.sockets.emit( 'prospectAdd', req.body )
+	let idCampaigns = req.body.campaign_id;
+
+	prospect.create(req, res);
+	req.params.id = idCampaigns;
+
+	setTimeout((a) => {
+		req.body = {
+			prospects: [req.body._id]
+		}
+
+		campaign.update(req, res);
+		console.log("Session: %j", req.body);
+	},500)
+	console.log('Room: '+idCampaigns);
+	io.sockets.in("room-"+idCampaigns).emit( 'prospectAdd', req.body )
 })
 app.get 		('/prospect', 				prospect.findAll)
 app.get 		('/prospect/:id', 		prospect.find)
@@ -58,7 +76,6 @@ app.put 		('/prospect/:id', 		prospect.update)
 app.delete 	('/prospect/:id', 		prospect.remove)
 
 // CRUD Campaigns
-const campaign = require('./src/controller/Campaign.controller')
 app.post 		('/campaign', 				(req, res) => {
 	campaign.create(req, res)
 	io.sockets.emit( 'campaignAdd', req.body )

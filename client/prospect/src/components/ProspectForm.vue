@@ -93,7 +93,8 @@ export default {
         study_level: '',
         asked_class: '',
         current_class: '',
-        phone:''
+        phone:'',
+        campaign_id: this.$route.params.id
       }
     }
   },
