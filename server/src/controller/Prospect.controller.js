@@ -41,6 +41,57 @@ module.exports = {
 			})
 	},
 
+	addOneCampaign : ( req, res ) => {
+		console.log('find prospect from Prospect')
+		Prospect
+			.findOne( {_id: req.params.id} )
+			.then( ppct => {
+				return utils.foundVerify( ppct, res, 'prospect not found' )
+			})
+			.then( ppct => {
+				console.log('bodyydyydydydydyd:', req.body)
+				ppct.campaigns = ppct.campaigns.concat( req.body.campaign )
+
+				return ppct.save()
+			})
+			.then( ppct => {
+		    res.json({
+		    	status: 200,
+		    	success: 1,
+		    	message: 'prospect add to campain',
+		    	content: ppct
+		    })
+		  })
+			.catch( err => {
+				res.json( {status: 400, error: 1, message: err.message} )
+			})
+	},
+
+	removeOneCampaign : ( req, res ) => {
+		console.log('find campain from Prospect')
+		Prospect
+			.findOne( {_id: req.params.prospectid} )
+			.then( ppct => {
+				return utils.foundVerify( ppct, res, 'prospect not found' )
+			})
+			.then( ppct => {
+				ppct.campaigns = ppct.campaigns.filter( ppct => ppct != req.params.campaignid )
+
+				return ppct.save()
+			})
+			.then( ppct => {
+		    res.json({
+		    	status: 200,
+		    	success: 1,
+		    	message: 'campain remove from prospect',
+		    	content: ppct
+		    })
+		  })
+			.catch( err => {
+				res.json( {status: 400, error: 1, message: err.message} )
+			})
+	},
+
 	find : ( req, res ) => {
 		Prospect
 			.findOne( {_id: req.params.id} )

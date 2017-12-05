@@ -73,7 +73,9 @@ app.get 		('/prospect', 							prospect.findAll)
 app.get 		('/prospect/:id', 					prospect.find)
 app.get 		('/prospect/:id/campaign', 	prospect.findMyCampaigns)
 app.put 		('/prospect/:id', 					prospect.update)
+app.post 		('/prospect/:id/campaign', 	prospect.addOneCampaign)
 app.delete 	('/prospect/:id', 					prospect.remove)
+app.delete 	('/prospect/:prospectid/campaign/:campaignid', 	prospect.removeOneCampaign)
 
 // CRUD Campaigns
 app.post 		('/campaign', 				(req, res) => {
