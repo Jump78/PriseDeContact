@@ -69,22 +69,24 @@ app.post 		('/prospect', 				(req, res) => {
 	console.log('Room: '+idCampaigns);
 	io.sockets.in("room-"+idCampaigns).emit( 'prospectAdd', req.body )
 })
-app.get 		('/prospect', 				prospect.findAll)
-app.get 		('/prospect/:id', 		prospect.find)
-app.get 		('/prospect/:id/campaign', prospect.findMyCampaigns)
-app.put 		('/prospect/:id', 		prospect.update)
-app.delete 	('/prospect/:id', 		prospect.remove)
+app.get 		('/prospect', 							prospect.findAll)
+app.get 		('/prospect/:id', 					prospect.find)
+app.get 		('/prospect/:id/campaign', 	prospect.findMyCampaigns)
+app.put 		('/prospect/:id', 					prospect.update)
+app.delete 	('/prospect/:id', 					prospect.remove)
 
 // CRUD Campaigns
 app.post 		('/campaign', 				(req, res) => {
 	campaign.create(req, res)
 	io.sockets.emit( 'campaignAdd', req.body )
 })
-app.get 		('/campaign', 				campaign.findAll)
-app.get 		('/campaign/:id', 		campaign.find)
-app.get 		('/campaign/:id/prospect', campaign.findMyProspects)
-app.put 		('/campaign/:id', 		campaign.update)
-app.delete 	('/campaign/:id', 		campaign.remove)
+app.get 		('/campaign', 									campaign.findAll)
+app.get 		('/campaign/:id', 							campaign.find)
+app.get 		('/campaign/:id/prospect', 			campaign.findMyProspects)
+app.put 		('/campaign/:id', 							campaign.update)
+app.post 		('/campaign/:id/prospect', 			campaign.addOneProspect)
+app.delete 	('/campaign/:id', 							campaign.remove)
+app.delete 	('/campaign/:campaignid/prospect/:prospectid', 	campaign.removeOneProspect)
 
 // CRUD Admin accounts
 const admin = require('./src/controller/Admin.controller')
