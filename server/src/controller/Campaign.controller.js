@@ -42,14 +42,14 @@ module.exports = {
 	},
 
 	addOneProspect : ( req, res ) => {
-		console.log('find prospect from Campaign')
 		Campaign
 			.findOne( {_id: req.params.id} )
 			.then( camp => {
 				return utils.foundVerify( camp, res, 'campaign not found' )
 			})
 			.then( camp => {
-				camp.prospects = camp.prospects.concat( req.body.prospect )
+				console.log('req.body', req.body)
+				camp.prospects.push( req.body.prospect )
 
 				return camp.save()
 			})
@@ -67,7 +67,6 @@ module.exports = {
 	},
 
 	removeOneProspect : ( req, res ) => {
-		console.log('find prospect from Campaign')
 		Campaign
 			.findOne( {_id: req.params.campaignid} )
 			.then( camp => {
