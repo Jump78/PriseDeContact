@@ -41,6 +41,56 @@ module.exports = {
 			})
 	},
 
+	addOneProspect : ( req, res ) => {
+		console.log('find prospect from Campaign')
+		Campaign
+			.findOne( {_id: req.params.id} )
+			.then( camp => {
+				return utils.foundVerify( camp, res, 'campaign not found' )
+			})
+			.then( camp => {
+				camp.prospects = camp.prospects.concat( req.body.prospect )
+
+				return camp.save()
+			})
+			.then( camp => {
+		    res.json({
+		    	status: 200,
+		    	success: 1,
+		    	message: 'prospect add to campain',
+		    	content: camp
+		    })
+		  })
+			.catch( err => {
+				res.json( {status: 400, error: 1, message: err.message} )
+			})
+	},
+
+	removeOneProspect : ( req, res ) => {
+		console.log('find prospect from Campaign')
+		Campaign
+			.findOne( {_id: req.params.campaignid} )
+			.then( camp => {
+				return utils.foundVerify( camp, res, 'campaign not found' )
+			})
+			.then( camp => {
+				camp.prospects = camp.prospects.filter( ppct => ppct != req.params.prospectid )
+
+				return camp.save()
+			})
+			.then( camp => {
+		    res.json({
+		    	status: 200,
+		    	success: 1,
+		    	message: 'prospect remove from campain',
+		    	content: camp
+		    })
+		  })
+			.catch( err => {
+				res.json( {status: 400, error: 1, message: err.message} )
+			})
+	},
+
 	find : ( req, res ) => {
 		Campaign
 			.findOne( {_id: req.params.id} )
@@ -109,13 +159,20 @@ module.exports = {
 
 	remove : ( req, res ) => {
 		Campaign
-			.findOneAndRemove( {_id: req.params.id} )
+			.findOne( {_id: req.params.id} )
 			.then( camp => {
-				res.json({
-					status: 204,
-					success: 1,
-					message:'campaign deleted'
-				})
+				utils.foundVerify( camp, res, 'campaign not found' )
+			})
+			.then( _ => {
+				return Campaign
+					.findOneAndRemove( {_id: req.params.id} )
+					.then( camp => {
+						res.json({
+							status: 204,
+							success: 1,
+							message:'campaign deleted'
+						})
+					})
 			})
 			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	}
