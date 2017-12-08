@@ -1,6 +1,6 @@
 <template>
 	<div class="radio-question">
-		<label for="name">{{ title }}</label>
+		<label :for="name">{{ title }}</label>
 
 		<div class="flex-options">
 
