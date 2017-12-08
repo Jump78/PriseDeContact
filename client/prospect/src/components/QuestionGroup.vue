@@ -16,7 +16,13 @@
 
 				<div v-if="question.type == 'radio'" class="radio-box active">
 					<span class="red-line"></span>
-					<label for="question.content.name">{{ question.content.title }}</label>
+
+					<radio-question
+					 :name = "question.content.name"
+					 :title = "question.content.title"
+					 :options = "question.content.options">
+					</radio-question>
+					<!-- <label for="question.content.name">{{ question.content.title }}</label>
 
 					<div class="flex-options">
 
@@ -29,7 +35,7 @@
 					    <label :for="option.value" v-bind:class="{ chose: picked===option.value }">{{ option.label }}</label>
 					  </div>
 
-					</div>
+					</div> -->
 
 					<button class="ok-question" v-on:click="onOk">Ok</button>
 				</div>
@@ -41,6 +47,7 @@
 </template>
 
 <script>
+import RadioQuestion from './RadioQuestion';
 
 export default {
 	name: 'QuestionGroup',
@@ -68,7 +75,10 @@ export default {
 			console.log(`HEEEEY 'ok' button is clicked !`)
 			document.getElementsByClassName("screen")[0].scrollTo(0,150)
 		}
-	}
+	},
+	components: {
+    RadioQuestion
+  },
 }
 
 </script>
