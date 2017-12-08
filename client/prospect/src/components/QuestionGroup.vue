@@ -7,10 +7,14 @@
 
 				<div v-if="question.type == 'input'" class="input-box not-active">
 					<span class="red-line"></span>
-					<label :for="question.content.name">{{ question.content.title }}</label>
-	        <input :type="question.content.type"
-	        :name="question.content.name"
-	        :placeholder="question.content.placeholder">
+					
+	        <text-question
+	         :type = "question.content.type"
+           :name = "question.content.name"
+           :title = "question.content.title"
+           :placeholder = "question.content.placeholder">
+          </text-question>
+
 	        <button class="ok-question" v-on:click="onOk">Ok</button>
 				</div>
 
@@ -22,20 +26,6 @@
 					 :title = "question.content.title"
 					 :options = "question.content.options">
 					</radio-question>
-					<!-- <label for="question.content.name">{{ question.content.title }}</label>
-
-					<div class="flex-options">
-
-						<div v-for="option in question.content.options" class="option">
-					    <input type="radio"
-					     v-model="picked"
-					     :name="question.content.name"
-					     :id="option.value"
-					     :value="option.value">
-					    <label :for="option.value" v-bind:class="{ chose: picked===option.value }">{{ option.label }}</label>
-					  </div>
-
-					</div> -->
 
 					<button class="ok-question" v-on:click="onOk">Ok</button>
 				</div>
@@ -48,6 +38,7 @@
 
 <script>
 import RadioQuestion from './RadioQuestion';
+import TextQuestion from './TextQuestion';
 
 export default {
 	name: 'QuestionGroup',
@@ -77,7 +68,8 @@ export default {
 		}
 	},
 	components: {
-    RadioQuestion
+    RadioQuestion,
+    TextQuestion
   },
 }
 
@@ -117,57 +109,6 @@ h2 {
 	font-size: 2em;
 	margin: 1.5em 0 2em 0;
 	color: #686768;
-}
-
-/* input */
-div.input-box>* {
-	display: block;
-}
-	.input-box>label {
-		margin: 3px auto 15px auto;
-	}
-	.input-box>input {
-		width: 98%;
-		border: 0;
-		border-bottom: 1px solid #DEDEDE;
-		font-size: 1em;
-		margin: 10px 0 20px 0;
-		padding: 5px 8px;
-	}
-	.input-box>input::placeholder {
-		color: #B0B0B0;
-	}
-
-	/* radio */
-div.flex-options {
-	display: flex;
-	flex-wrap: wrap;
-	margin: calc(12px + 2vh) auto;
-}
-	div.flex-options label {
-		display: inline-block;
-		width: 190px;
-		text-align: center;
-		background-color: #F9F9F9;
-		border-radius: 1px;
-		border: 1px solid #DEDEDE;
-		margin: 3px 5px 3px 0;
-		padding: 1px 0;
-		cursor: pointer;
-	}
-	div.flex-options label:hover {
-		border: 1px solid #B0B0B0;
-		background-color: #FBFBFB;
-	}
-	div.flex-options .chose,
-	div.flex-options .chose:hover {
-		background-color: #2C314E; /* blue EcoleM */
-		color: #FFFFFF;
-	}
-
-input[type='radio'] {
-	opacity: 0.2;
-	display: none;
 }
 
 /* ok button */
