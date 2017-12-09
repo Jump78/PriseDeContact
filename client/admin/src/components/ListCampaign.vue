@@ -77,7 +77,7 @@ export default {
     addCampaign (campaign) {
       this.campaignService
           .add(campaign)
-          .then( res => this.populateArray(res.campaign));
+          .then( res => this.populateArray(res.content));
     },
     populateArray (item){
       if (moment(parseInt(item.date)).isAfter(Date.now(), 'day')) {
