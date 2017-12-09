@@ -86,24 +86,21 @@ io.on('connection', (socket) => {
 // CRUD Prospects
 const prospect = require('./src/controller/Prospect.controller')
 const campaign = require('./src/controller/Campaign.controller')
-app.post 		('/prospect', 				(req, res) => {
-	let idCampaigns = req.body.campaign_id;
+app.post 		('/prospect', 	prospect.create, (req, res, next) => {
+	console.log( 'Prospect create pased' )
+	
+	req.params.id = req.locals.campaigns[0];
+	req.body = {
+		prospect: req.locals._id
+	}
 
-	prospect.create(req, res);
-	req.params.id = idCampaigns;
-
-	setTimeout((a) => {
-		req.body = {
-			prospects: [req.body._id]
-		}
-
-		campaign.update(req, res);
-		console.log("Session: %j", req.body);
-	},500)
-	console.log('Room: '+idCampaigns);
-	io.sockets.in("room-"+idCampaigns).emit( 'prospectAdd', req.body )
+	campaign.addOneProspect(req, res);
+	console.log('id: '+req.params.id)
+	io.sockets.in("room-"+req.params.id).emit( 'prospectAdd', req.locals )
 })
-app.get 		('/prospect', 							prospect.findAll)
+app.get 		('/prospect', ( req, res ) => {
+	prospect.findAll( req, res )
+})
 app.get 		('/prospect/:id', 					prospect.find)
 app.get 		('/prospect/:id/campaign', 	prospect.findMyCampaigns)
 app.put 		('/prospect/:id', 					prospect.update)

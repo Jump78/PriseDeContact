@@ -1,44 +1,47 @@
 <template>
   <section>
-    <h1>Formulaire</h1>
     <div class="flex">
+    
       <form class="form" action="#" method="post" @submit.prevent = "onSubmit">
-        <div class="block-input-text">
-          <label for="gender">Sexe</label>
-          <input v-model="prospect.gender" type="radio" name="gender" value="m">Homme
-          <input v-model="prospect.gender" type="radio" name="gender" value="f">Femme
-        </div>
+        
+        <question-group title="Votre formation" :questions="questions"></question-group>
 
+      <!-- <div class="block-input-text">
+        <label for="email">Email</label>
+        <input v-model="prospect.email" type="email" name="email">
+      </div>
+        
+      <div class="block-input-text">
+        <label for="gender">Sexe</label>
+        <input v-model="prospect.gender" type="radio" name="gender" value="m">Homme
+        <input v-model="prospect.gender" type="radio" name="gender" value="f">Femme
+      </div>
+      
       <div class="block-input-text">
         <label for="firstname">Prénom</label>
         <input v-model="prospect.firstname" type="text" name="firstname">
       </div>
-
+      
       <div class="block-input-text">
         <label for="lastname">Nom</label>
         <input v-model="prospect.lastname" type="text" name="lastname">
       </div>
-
+      
       <div class="block-input-text">
         <label for="adress">Adresse</label>
         <input v-model="prospect.adress" type="text" name="adress">
       </div>
-
+      
       <div class="block-input-text">
         <label for="postcode">Code postal</label>
         <input v-model="prospect.postcode" type="text" name="postcode">
       </div>
-
+      
       <div class="block-input-text">
         <label for="city">Ville</label>
         <input v-model="prospect.city" type="text" name="city">
       </div>
-
-      <div class="block-input-text">
-        <label for="email">Email</label>
-        <input v-model="prospect.email" type="email" name="email">
-      </div>
-
+      
       <div class="block-select">
         <label for="study_level">Niveau d'études</label>
         <select class="select" name="study_level" v-model="prospect.study_level">
@@ -48,7 +51,7 @@
           <option value="bac+2">Bac+2</option>
         </select>
       </div>
-
+      
       <div class="block-select">
         <label for="asked_class">Formation souhaitée</label>
         <select class="select" name="asked_class" v-model="prospect.asked_class">
@@ -57,27 +60,28 @@
           <option value="designer">Designer</option>
         </select>
       </div>
-
+      
       <div class="block-input-text">
         <label for="current_class">Formation actuelle</label>
         <input type="text" name="current_class" v-model="prospect.current_class">
       </div>
-
+      
       <div class="block-input-text">
         <label for="phone">Téléphone</label>
         <input type="text" name="phone" v-model="prospect.phone">
       </div>
-
+      
       <div class="block-input-submit">
         <input type="submit" name="submit" value="Envoyer">
-      </div>
-    </form>
+      </div> -->
+      </form>
     </div>
   </section>
 </template>
 
 <script>
 import config from '../../config/config.json';
+import QuestionGroup from './QuestionGroup';
 
 export default {
   name: 'ProspectForm',
@@ -95,8 +99,34 @@ export default {
         current_class: '',
         phone:'',
         campaign_id: this.$route.params.id
-      }
+      },
+      questions: [
+        {
+          type: 'radio',
+          content: {
+            name: 'study_level',
+            title: 'Niveau d\'études',
+            options: [
+              { label: 'Bac+1', value: 'bac+1' },
+              { label: 'Bac+2', value: 'bac+2' },
+              { label: 'Bac+3', value: 'bac+3' }
+            ]
+          }
+        },
+        {
+          type: 'input',
+          content: {
+            type: 'text',
+            name: 'current_class',
+            title: 'Formation actuelle',
+            placeholder: 'DUT, bac scientifique...'
+          }
+        }
+      ]
     }
+  },
+  components: {
+    QuestionGroup
   },
   methods: {
     onSubmit () {
@@ -131,19 +161,26 @@ async function checkErrors(resp) {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-
-h1{
-  text-align: center;
-  margin-bottom: 3em;
-}
 
 form {
-  font-size: 16px;
+  font-size: 1.2em;
 }
 
+input,
+select,
+button,
+input:focus,
+select:focus,
+button:focus {
+  outline: none;
+  border: none;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+}
+/* 
 input, select {
   outline: none;
   border: none;
@@ -174,17 +211,13 @@ input:focus, select:focus{
 }
 
 .block-input-text, .block-select, .block-input-submit{
-/*  opacity: 0.2;*/
+opacity: 0.2;
   margin-top: 0.5em;
 }
 
 .focus{
   opacity: 1
 }
-
-.flex {
-  display: flex;
-  justify-content: center;
-}
+*/
 
 </style>

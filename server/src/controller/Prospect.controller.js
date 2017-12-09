@@ -42,14 +42,12 @@ module.exports = {
 	},
 
 	addOneCampaign : ( req, res ) => {
-		console.log('find prospect from Prospect')
 		Prospect
 			.findOne( {_id: req.params.id} )
 			.then( ppct => {
 				return utils.foundVerify( ppct, res, 'prospect not found' )
 			})
 			.then( ppct => {
-				console.log('bodyydyydydydydyd:', req.body)
 				ppct.campaigns = ppct.campaigns.concat( req.body.campaign )
 
 				return ppct.save()
@@ -68,7 +66,6 @@ module.exports = {
 	},
 
 	removeOneCampaign : ( req, res ) => {
-		console.log('find campain from Prospect')
 		Prospect
 			.findOne( {_id: req.params.prospectid} )
 			.then( ppct => {
@@ -111,7 +108,7 @@ module.exports = {
 			})
 	},
 
-	create : ( req, res ) => {
+	create : ( req, res, next ) => {
 		let newPpct = req.body
 		newPpct.campaigns = [req.body.campaign_id]
 		delete newPpct.campaign_id
@@ -120,13 +117,14 @@ module.exports = {
 		newProspect
 			.save()
 			.then( ppct => {
-				req.body = ppct;
+				req.locals = ppct;
 				res.json({
 					status: 200,
 					success: 1,
 					message: 'prospect add',
 					content: ppct
 				})
+				next()
 			})
 			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	},
