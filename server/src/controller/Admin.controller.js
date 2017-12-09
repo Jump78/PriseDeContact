@@ -1,6 +1,8 @@
 const Admin = require('./../model/Admin.model')
 const sha256 = require('js-sha256')
-const utils = require('./../utils');
+const utils = require('./../utils')
+const randomstring = require("randomstring")
+const jwt = require('jsonwebtoken')
 
 module.exports = {
 	findAll : ( req, res ) => {
@@ -47,18 +49,45 @@ module.exports = {
 	},
 
 	connect : ( req, res ) => {
-		req.body.password = sha256( req.body.password )
+		//req.body.password = sha256( req.body.password )
 		Admin
-			.findOne( {login: req.body.login, password: req.body.password} )
+			.findOne( {login: req.body.login/*, password: req.body.password*/} )
+			.then( admin => {
+				if (admin.password == sha256( req.body.password + admin.salt )) {
+					return admin
+				} else {
+					throw new Error('login / password couple not found')
+				}
+			})
 			.then( admin => {
 				return utils.foundVerify( admin, res, 'login / password couple not found' )
 			})
 			.then( admin => {
+				let payload = {
+					login: admin.login,
+					csrfToken: randomstring.generate()
+				}
+
+				let token = jwt.sign(
+					payload, //Payload
+					'dEA0hDoaCc', //Secret
+					{ //Option
+						expiresIn: '1 days'
+					}
+				)
+				res.cookie(
+					'access_token',
+					token
+					// {
+					// 	httpOnly: true,
+					// 	secure: true
+					// }
+				)
 				res.json({
 					status: 200,
 					success: 1,
 					message: 'admin account found',
-					content: utils.adminReturnObjectNorm( admin )
+					content: payload.csrfToken
 				})
 				console.log( req.body.login, 'connection' )
 			})
@@ -68,7 +97,8 @@ module.exports = {
 	},
 
 	create : ( req, res ) => {
-		req.body.password = sha256( req.body.password )
+		req.body.salt = randomstring.generate()
+		req.body.password = sha256( req.body.password + req.body.salt )
 		const newAdmin = new Admin( req.body )
 		newAdmin
 			.save()
