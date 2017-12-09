@@ -63,7 +63,7 @@ app.use( (req, res, next) => {
 		}
 
 		jwt.verify(token, 'dEA0hDoaCc', function(err, decoded) {
-	    if (decoded.csrfToken != csrfToken) {
+	    if ((decoded.csrfToken != csrfToken) || err) {
 			  res.status(401);
 				res.send('Need authorization')
 	    } else {
