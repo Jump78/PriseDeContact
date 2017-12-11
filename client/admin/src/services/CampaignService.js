@@ -7,10 +7,15 @@ export default class extends ApiService{
   }
 
   getAll () {
-    return fetch(this.baseUrl+'/'+this.ressource)
-      .then( this.checkErrors )
-      .then( res => res.json() )
-      .catch( err => console.log(err) )
+    return fetch(this.baseUrl+'/'+this.ressource, {
+      headers: {
+        Authorization: sessionStorage.getItem('token')
+      },
+      credentials: 'include',
+    })
+    .then( this.checkErrors )
+    .then( res => res.json() )
+    .catch( err => console.log(err) )
   }
 
   find (id) {
