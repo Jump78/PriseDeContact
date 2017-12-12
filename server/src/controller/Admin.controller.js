@@ -77,11 +77,11 @@ module.exports = {
 				)
 				res.cookie(
 					'access_token',
-					token
-					// {
-					// 	httpOnly: true,
+					token,
+					{
+					 	httpOnly: true,
 					// 	secure: true
-					// }
+					}
 				)
 				res.json({
 					status: 200,
