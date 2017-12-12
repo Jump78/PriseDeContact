@@ -63,7 +63,7 @@ app.use( (req, res, next) => {
 		}
 
 		jwt.verify(token, 'dEA0hDoaCc', function(err, decoded) {
-	    if ((decoded.csrfToken != csrfToken) || err) {
+	    if (err || (decoded.csrfToken != csrfToken)) {
 			  res.status(401);
 				res.send('Need authorization')
 	    } else {
@@ -88,7 +88,7 @@ const prospect = require('./src/controller/Prospect.controller')
 const campaign = require('./src/controller/Campaign.controller')
 app.post 		('/prospect', 	prospect.create, (req, res, next) => {
 	console.log( 'Prospect create pased' )
-	
+
 	req.params.id = req.locals.campaigns[0];
 	req.body = {
 		prospect: req.locals._id
