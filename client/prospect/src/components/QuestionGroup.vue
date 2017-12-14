@@ -1,37 +1,58 @@
 <template>
 	<div class="question-group">
-		<h2>{{ title }}</h2>
-		<div class="screen">
-			
-			<div v-for="question in questions">
-
-				<div v-if="question.type == 'input'" class="input-box not-active">
-					<span class="red-line"></span>
-					
-	        <text-question
-	         :type = "question.content.type"
-           :name = "question.content.name"
-           :title = "question.content.title"
-           :placeholder = "question.content.placeholder">
-          </text-question>
-
-	        <button class="ok-question" v-on:click="onOk">Ok</button>
-				</div>
-
-				<div v-if="question.type == 'radio'" class="radio-box active">
-					<span class="red-line"></span>
-
-					<radio-question
-					 :name = "question.content.name"
-					 :title = "question.content.title"
-					 :options = "question.content.options">
-					</radio-question>
-
-					<button class="ok-question" v-on:click="onOk">Ok</button>
-				</div>
-
-
+		<div class="grid-5 global-t-zone">
+			<div class="col-1"></div>
+			<div class="col-3 title-box">
+				<h2>{{ title }}</h2>
 			</div>
+			<div class="col-1"></div>
+		</div>
+		
+		<div class="grid-5 screen global-q-zone">
+			<div class="col-1"></div>
+			<div class="col-3">
+
+				<div class="ghost-block">
+				</div>
+
+				<div v-for="(question, index) in questions">
+
+					<div v-if="question.type == 'text'" class="question-box text-box">
+						<div :class="'flag'+index">
+							<span class="red-line"></span>
+						</div>
+
+			      <text-question
+			       :type = "question.content.type"
+		         :name = "question.content.name"
+		         :title = "question.content.title"
+		         :placeholder = "question.content.placeholder">
+		        </text-question>
+
+			      <button type="button" class="ok-question" v-on:click.prevent="onOk">Ok</button>
+					</div>
+
+					<div v-if="question.type == 'radio'" class="question-box radio-box">
+						<span class="red-line"></span>
+
+						<radio-question
+						 :name = "question.content.name"
+						 :title = "question.content.title"
+						 :options = "question.content.options">
+						</radio-question>
+
+						<button type="button" class="ok-question" v-on:click.prevent="onOk">Ok</button>
+					</div>
+
+				</div>
+
+				<div class="ghost-block">
+				</div>
+				
+			</div>
+			<div class="col-1"></div>
+
+			
 		</div>
 	</div>
 </template>
@@ -86,10 +107,24 @@ button:focus {
   outline: none;
   border: none;
 }
-div.question-group {
-	max-width: calc(500px + 15vw);
-	width: 98vw;
+
+.screen {
+	overflow-x: hidden;
 }
+
+.question-group {
+	width: 100vw;
+	display: inline-block;
+}
+
+.title-box {
+	padding: 5vh 0 1vh 0;
+}
+
+button {
+	font-size: .9em;
+}
+
 span.red-line {
 	display: block;
 	width: 15%;
@@ -99,15 +134,16 @@ span.red-line {
 }
 div.active {
 	opacity: 1;
-	margin: 0 auto 80px auto;
+	margin-bottom: 150px;
 }
 div.not-active {
 	opacity: 0.2;
 }
-
+.question-box {
+	margin-bottom: 110px;
+}
 h2 {
 	font-size: 2em;
-	margin: 1.5em 0 2em 0;
 	color: #686768;
 }
 
@@ -125,6 +161,17 @@ button.ok-question {
 	text-align: left;
 	box-shadow: 0 0 6px 1px rgba(10,10,10,.08);
 	cursor: pointer;
+}
+
+div.ghost-block {
+	height: 17vh;
+	width: 1px;
+}
+
+@media (max-width: 640px) {
+	.question-box {
+		margin-bottom: 50px;
+	}
 }
 
 </style>

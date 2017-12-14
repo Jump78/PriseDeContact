@@ -1,10 +1,23 @@
 <template>
   <section>
-    <div class="flex">
-    
+    <div class="grid-5 bg-w global-bar-zone">
+      <div class="col-1"></div>
+      <div class="col-3">
+        <div id="bar">
+          <span id="progress"></span>
+        </div>
+      </div>
+      <div class="col-1"></div>
+    </div>
+
+    <div class="flex global-questions-zone">
       <form class="form" action="#" method="post" @submit.prevent = "onSubmit">
         
-        <question-group title="Votre formation" :questions="questions"></question-group>
+        <question-group title="Qui êtes vous ?" :questions="nameQuestions"></question-group>
+
+        <question-group title="Votre formation" :questions="studyQuestions"></question-group>
+
+        <question-group title="Coordonnés" :questions="coordinateQuestions"></question-group>
 
       <!-- <div class="block-input-text">
         <label for="email">Email</label>
@@ -100,7 +113,27 @@ export default {
         phone:'',
         campaign_id: this.$route.params.id
       },
-      questions: [
+      nameQuestions: [
+        {
+          type: 'text',
+          content: {
+            type: 'text',
+            name: 'firstname',
+            title: 'Prénom',
+            placeholder: 'Doe'
+          }
+        },
+        {
+          type: 'text',
+          content: {
+            type: 'text',
+            name: 'lastname',
+            title: 'Nom',
+            placeholder: 'John'
+          }
+        }
+      ],
+      studyQuestions: [
         {
           type: 'radio',
           content: {
@@ -114,7 +147,42 @@ export default {
           }
         },
         {
-          type: 'input',
+          type: 'text',
+          content: {
+            type: 'text',
+            name: 'current_class',
+            title: 'Formation actuelle',
+            placeholder: 'DUT, bac scientifique...'
+          }
+        },
+        {
+          type: 'radio',
+          content: {
+            name: 'asked_class',
+            title: 'Formation souhaitée',
+            options: [
+              { label: 'Ba1', value: 'ba1' },
+              { label: 'Ba2', value: 'ba2' },
+              { label: 'Ba3', value: 'ba3' }
+            ]
+          }
+        }
+      ],
+      coordinateQuestions: [
+        {
+          type: 'radio',
+          content: {
+            name: 'panana',
+            title: 'Niveau d\'études',
+            options: [
+              { label: 'Bac+1', value: 'bac+1' },
+              { label: 'Bac+2', value: 'bac+2' },
+              { label: 'Bac+3', value: 'bac+3' }
+            ]
+          }
+        },
+        {
+          type: 'text',
           content: {
             type: 'text',
             name: 'current_class',
@@ -162,8 +230,17 @@ async function checkErrors(resp) {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+section {
+  height: 92vh;
+  max-height: 92vh;
+}
+
 form {
   font-size: 1.2em;
+  display: flex;
+}
+form>question-group {
+  width: 99.9vw;
 }
 
 input,
@@ -178,7 +255,22 @@ button:focus {
 
 .flex {
   display: flex;
-  justify-content: center;
+  width: 100vw;
+  overflow: hidden;
+}
+
+div#bar {
+  display: block;
+  background-color: #EEE;
+  width: 100%;
+  height: 1.2vh;
+  margin: 1.5vh auto 0 auto;
+}
+span#progress {
+  display: block;
+  background-color: #AAA;
+  width: 20%;
+  height: 100%;
 }
 /* 
 input, select {

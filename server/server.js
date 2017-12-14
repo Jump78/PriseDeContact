@@ -29,7 +29,7 @@ app.use( express.static('client') );
 // middleware qui permet d'autoriser les requête Ajax provenant d'un autre domaine
 app.use( (req, res, next) => {
 	// le serveur accepte les requête ajax provenant de certains domaines
-	let p = ['http://localhost:8080', 'http://localhost:8081', 'http://192.168.21.124:8080', 'http://192.168.21.124:8081']
+	let p = ['http://localhost:8080', 'http://localhost:8081', 'http://192.168.21.124:8080', 'http://192.168.21.124:8081', 'http://192.168.10.101:8080']
 	if (p.indexOf(req.headers.origin) > -1) {
 		res.header('Access-Control-Allow-Origin', req.headers.origin)
 	}
