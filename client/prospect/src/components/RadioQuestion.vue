@@ -16,7 +16,7 @@
 			</div>
 
 		</div>
-
+	<button type="button" class="ok-question" v-on:click.prevent="onOk">Ok</button>
 	</div>
 </template>
 
@@ -36,6 +36,12 @@ export default {
 	},
 	methods: {
 		onOk() {
+			this.$emit('send', { val: this.picked, name: this.name} )
+		}
+	},
+	watch: {
+		picked() {
+			this.onOk()
 		}
 	}
 }
@@ -93,7 +99,23 @@ div.flex-options {
 input[type='radio'] {
 	opacity: 0.2;
 	display: none;
-	
+}
+
+/* ok button */
+button.ok-question {
+	background: none;
+	border: none;
+	background-color: #FBFBFB;
+	color: #303030;
+	font-weight: bold;
+	font-size: .9em;
+	border-radius: 1px;
+	border: 1px solid #D0D0D0;
+	padding: 8px;
+	width: 90px;
+	text-align: left;
+	box-shadow: 0 0 6px 1px rgba(10,10,10,.08);
+	cursor: pointer;
 }
 
 </style>

@@ -22,26 +22,24 @@
 							<span class="red-line"></span>
 						</div>
 
-			      <text-question
+			      <text-question @send="send"
 			       :type = "question.content.type"
 		         :name = "question.content.name"
 		         :title = "question.content.title"
 		         :placeholder = "question.content.placeholder">
 		        </text-question>
 
-			      <button type="button" class="ok-question" v-on:click.prevent="onOk">Ok</button>
 					</div>
 
 					<div v-if="question.type == 'radio'" class="question-box radio-box">
 						<span class="red-line"></span>
 
-						<radio-question
+						<radio-question @send="send"
 						 :name = "question.content.name"
 						 :title = "question.content.title"
 						 :options = "question.content.options">
 						</radio-question>
 
-						<button type="button" class="ok-question" v-on:click.prevent="onOk">Ok</button>
 					</div>
 
 				</div>
@@ -83,9 +81,10 @@ export default {
     }
 	},
 	methods: {
-		onOk() {
-			console.log(`HEEEEY 'ok' button is clicked !`)
-			document.getElementsByClassName("screen")[0].scrollTo(0,150)
+		send: function( value ) {
+			console.log('e')
+			this.$emit('send', value)
+			//document.getElementsByClassName("screen")[0].scrollTo(0,150)
 		}
 	},
 	components: {
@@ -121,10 +120,6 @@ button:focus {
 	padding: 5vh 0 1vh 0;
 }
 
-button {
-	font-size: .9em;
-}
-
 span.red-line {
 	display: block;
 	width: 15%;
@@ -145,22 +140,6 @@ div.not-active {
 h2 {
 	font-size: 2em;
 	color: #686768;
-}
-
-/* ok button */
-button.ok-question {
-	background: none;
-	border: none;
-	background-color: #FBFBFB;
-	color: #303030;
-	font-weight: bold;
-	border-radius: 1px;
-	border: 1px solid #D0D0D0;
-	padding: 8px;
-	width: 90px;
-	text-align: left;
-	box-shadow: 0 0 6px 1px rgba(10,10,10,.08);
-	cursor: pointer;
 }
 
 div.ghost-block {

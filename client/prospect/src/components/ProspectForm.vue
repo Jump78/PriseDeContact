@@ -13,11 +13,11 @@
     <div class="flex global-questions-zone">
       <form class="form" action="#" method="post" @submit.prevent = "onSubmit">
         
-        <question-group title="Qui êtes vous ?" :questions="nameQuestions"></question-group>
+        <question-group @send="addParam" title="Qui êtes vous ?" :questions="nameQuestions"></question-group>
 
-        <question-group title="Votre formation" :questions="studyQuestions"></question-group>
+        <question-group @send="addParam" title="Votre formation" :questions="studyQuestions"></question-group>
 
-        <question-group title="Coordonnés" :questions="coordinateQuestions"></question-group>
+        <question-group @send="addParam" title="Coordonnés" :questions="coordinateQuestions"></question-group>
 
       <!-- <div class="block-input-text">
         <label for="email">Email</label>
@@ -196,6 +196,21 @@ export default {
   components: {
     QuestionGroup
   },
+/*  props: {
+    prospect: {
+      firstname: '',
+      lastname: '',
+      adress: '',
+      postcode: '',
+      city: '',
+      email: '',
+      study_level: '',
+      asked_class: '',
+      current_class: '',
+      phone:'',
+      campaign_id: this.$route.params.id
+    }
+  },*/
   methods: {
     onSubmit () {
       fetch(config.apiEndPoint+":"+config.apiPort+"/prospect",
@@ -210,6 +225,9 @@ export default {
       .then(checkErrors)
       .then((res) => res.json)
       .catch(function(res){ console.log(res) })
+    },
+    addParam( param ) {
+      this.prospect[param.name] = param.val
     }
   }
 }
