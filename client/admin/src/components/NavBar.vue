@@ -13,6 +13,9 @@
       <li>
         <router-link :to="{ name: 'EditCampaign', params: {id: id} }" class="link">Editer</router-link>
       </li>
+      <li>
+        <button type="button" name="logout" @click="logout">Deconnecter</button>
+      </li>
     </ul>
   </nav>
 </template>
@@ -28,6 +31,12 @@ export default {
   data () {
     return{}
   },
+  methods: {
+    logout () {
+      sessionStorage.clear();
+      this.$router.push({name: 'Login'})
+    }
+  }
 }
 </script>
 
