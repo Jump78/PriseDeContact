@@ -47,11 +47,32 @@ app.use( (req, res, next) => {
  next()
 })
 
+let cookieNoCheck = [
+	{
+		path: '/admin/login',
+		method: 'OPTIONS'
+	},
+	{
+		path: '/admin/login',
+		method: 'POST'
+	},
+	{
+		path: '/campaign',
+		method: 'GET'
+	},
+	{
+		path: '/propsect',
+		method: 'POST'
+	}
+]
+
 app.use( (req, res, next) => {
 	let csrfToken = req.headers['authorization'];
 	let token = req.cookies['access_token'];
 
-	if (req.url != '/admin/login' && req.method != 'OPTIONS') {
+	let test = cookieNoCheck.filter( (item) => req.url === item.path && req.method == item.method);
+
+	if (!test.length) {
 		if (!csrfToken) {
 			res.status(400);
 			res.send('Headers authorization not found')
