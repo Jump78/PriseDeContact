@@ -1,6 +1,7 @@
 require('colors')
 
 const path = require('path')
+const jwt = require('jsonwebtoken')
 
 // express
 const express = require('express')
@@ -13,6 +14,7 @@ const io = require('socket.io').listen(server, {
 
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 
 const port = 8020
 
@@ -23,11 +25,15 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+// parse cookie
+app.use(cookieParser())
+
 // Création du server
 app.use( express.static('client') );
 
 // middleware qui permet d'autoriser les requête Ajax provenant d'un autre domaine
 app.use( (req, res, next) => {
+	res.header('Access-Control-Allow-Credentials', true);
 	// le serveur accepte les requête ajax provenant de certains domaines
 	let p = ['http://localhost:8080', 'http://localhost:8081', 'http://192.168.21.124:8080', 'http://192.168.21.124:8081', 'http://192.168.10.101:8080']
 	if (p.indexOf(req.headers.origin) > -1) {
@@ -36,9 +42,37 @@ app.use( (req, res, next) => {
 	// autorise les type de requête get put post et delete
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
 	// autorise le Content-Type pour la réponse
-	res.header('Access-Control-Allow-Headers', 'Content-Type')
-	res.header('Access-Control-Allow-Credentials', 'true')
-	next()
+	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+// res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Credentials");
+ next()
+})
+
+app.use( (req, res, next) => {
+	let csrfToken = req.headers['authorization'];
+	let token = req.cookies['access_token'];
+
+	if (req.url != '/admin/login' && req.method != 'OPTIONS') {
+		if (!csrfToken) {
+			res.status(400);
+			res.send('Headers authorization not found')
+		}
+
+		if (!token) {
+			res.status(400);
+			res.send('Cookies with token not found')
+		}
+
+		jwt.verify(token, 'dEA0hDoaCc', function(err, decoded) {
+	    if (err || (decoded.csrfToken != csrfToken)) {
+			  res.status(401);
+				res.send('Need authorization')
+	    } else {
+        next();
+	    }
+		})
+	} else {
+		next();
+	}
 })
 
 io.on('connection', (socket) => {
@@ -54,7 +88,7 @@ const prospect = require('./src/controller/Prospect.controller')
 const campaign = require('./src/controller/Campaign.controller')
 app.post 		('/prospect', 	prospect.create, (req, res, next) => {
 	console.log( 'Prospect create pased' )
-	
+
 	req.params.id = req.locals.campaigns[0];
 	req.body = {
 		prospect: req.locals._id

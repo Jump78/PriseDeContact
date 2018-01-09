@@ -19,9 +19,12 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
     "js-sha256": "^0.8.0",
+    "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.13.4",
+    "randomstring": "^1.1.5",
     "socket.io": "^2.0.4"
   }
 }

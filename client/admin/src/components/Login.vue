@@ -31,8 +31,9 @@ export default {
       await fetch(config.apiEndPoint+':'+config.apiPort+'/admin/login',{
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
+        credentials: 'include',
         method: "POST",
         body: JSON.stringify(this.data)
       })
@@ -43,13 +44,13 @@ export default {
         }
 
         let json = res.json().then(json => {
-          console.log(json);
-          console.log(json.error);
           if (json.error) {
             this.message = json.message;
             return false;
+          } else {
+            sessionStorage.setItem('token', json.content)
+            this.$router.push({name:'ListCampaign'})
           }
-          this.$router.push({name:'ListCampaign'})
         });
       })
       .catch( err => console.log(err))
