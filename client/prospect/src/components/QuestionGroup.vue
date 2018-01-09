@@ -8,7 +8,7 @@
 			<div class="col-1"></div>
 		</div>
 		
-		<div class="grid-5 screen global-q-zone">
+		<div class="grid-5 screen global-q-zone" :id="'global-q-zone-'+number">
 			<div class="col-1"></div>
 			<div class="col-3">
 
@@ -18,7 +18,7 @@
 				<div v-for="(question, index) in questions">
 
 					<div v-if="question.type == 'text'" class="question-box text-box">
-						<div :class="'flag'+index">
+						<div :id="'flag-'+index">
 							<span class="red-line"></span>
 						</div>
 
@@ -29,16 +29,22 @@
 		         :placeholder = "question.content.placeholder">
 		        </text-question>
 
+		        <button type="button" class="ok-question" v-on:click.prevent="onOk('flag-'+(index+1))">Ok</button>
+
 					</div>
 
 					<div v-if="question.type == 'radio'" class="question-box radio-box">
-						<span class="red-line"></span>
+						<div :class="'flag'+index">
+							<span class="red-line"></span>
+						</div>
 
 						<radio-question @send="send"
 						 :name = "question.content.name"
 						 :title = "question.content.title"
 						 :options = "question.content.options">
 						</radio-question>
+	
+				  	<button type="button" class="ok-question" v-on:click.prevent="onOk">Ok</button>
 
 					</div>
 
@@ -46,6 +52,8 @@
 
 				<div class="ghost-block">
 				</div>
+
+				<p id="myDivP">My Div P</p>
 				
 			</div>
 			<div class="col-1"></div>
@@ -58,6 +66,7 @@
 <script>
 import RadioQuestion from './RadioQuestion';
 import TextQuestion from './TextQuestion';
+import {TweenLite} from 'gsap'
 
 export default {
 	name: 'QuestionGroup',
@@ -67,6 +76,10 @@ export default {
 		}
 	},
 	props: {
+		number: {
+			type: String,
+			required: true
+		},
 		title: {
       type: String,
       required: true,
@@ -85,6 +98,11 @@ export default {
 			console.log('e')
 			this.$emit('send', value)
 			//document.getElementsByClassName("screen")[0].scrollTo(0,150)
+		},
+		onOk(divId) {
+			console.log('heyho', divId)
+			let zone = document.getElementById('global-q-zone-'+this.number)
+			TweenLite.to(zone, .6, {scrollTo:{y:'#'+divId, offsetY:0}});
 		}
 	},
 	components: {
@@ -109,6 +127,10 @@ button:focus {
 
 .screen {
 	overflow-x: hidden;
+}
+
+[id*="flag"] {
+	padding-top: calc(10px + .5vh);
 }
 
 .question-group {
@@ -145,6 +167,23 @@ h2 {
 div.ghost-block {
 	height: 17vh;
 	width: 1px;
+}
+
+/* ok button */
+button.ok-question {
+	background: none;
+	border: none;
+	background-color: #FBFBFB;
+	color: #303030;
+	font-weight: bold;
+	font-size: .9em;
+	border-radius: 1px;
+	border: 1px solid #D0D0D0;
+	padding: 8px;
+	width: 90px;
+	text-align: left;
+	box-shadow: 0 0 6px 1px rgba(10,10,10,.08);
+	cursor: pointer;
 }
 
 @media (max-width: 640px) {

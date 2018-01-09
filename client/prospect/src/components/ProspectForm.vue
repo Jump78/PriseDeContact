@@ -13,13 +13,13 @@
     <div class="flex global-questions-zone">
       <form class="form" action="#" method="post" @submit.prevent = "onSubmit">
         
-        <question-group @send="addParam" title="Qui êtes vous ?" :questions="nameQuestions"></question-group>
+        <!-- <question-group @send="updateParamValue" number="0" title="Qui êtes vous ?" :questions="nameQuestions" ></question-group>
 
-        <question-group @send="addParam" title="Votre formation" :questions="studyQuestions"></question-group>
+        <question-group @send="updateParamValue" number="1" title="Votre formation" :questions="studyQuestions" ></question-group>
 
-        <question-group @send="addParam" title="Coordonnés" :questions="coordinateQuestions"></question-group>
+        <question-group @send="updateParamValue" number="2" title="Coordonnés" :questions="coordinateQuestions" ></question-group> -->
 
-      <!-- <div class="block-input-text">
+      <div class="block-input-text">
         <label for="email">Email</label>
         <input v-model="prospect.email" type="email" name="email">
       </div>
@@ -86,7 +86,7 @@
       
       <div class="block-input-submit">
         <input type="submit" name="submit" value="Envoyer">
-      </div> -->
+      </div>
       </form>
     </div>
   </section>
@@ -226,7 +226,7 @@ export default {
       .then((res) => res.json)
       .catch(function(res){ console.log(res) })
     },
-    addParam( param ) {
+    updateParamValue( param ) {
       this.prospect[param.name] = param.val
     }
   }
