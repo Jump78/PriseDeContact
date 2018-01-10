@@ -163,6 +163,7 @@ h1, h2 {
 
 ul{
   overflow: auto;
+  max-height: 75vh;
 }
 
 li{
