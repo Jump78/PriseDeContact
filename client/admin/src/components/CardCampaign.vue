@@ -31,5 +31,6 @@ export default {
 <style scoped>
 div{
   border: 1px solid black;
+  padding: 0.75em 0.5em;
 }
 </style>

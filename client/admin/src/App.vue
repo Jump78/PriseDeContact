@@ -14,7 +14,6 @@ export default {
 *{
   margin: 0;
   padding: 0;
-  background-color: #E33;
 }
 
 body {

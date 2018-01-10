@@ -1,32 +1,36 @@
 <template>
   <section>
     <div v-if="allCampaigns" class="">
-      <h2>Campagnes planifiées</h2>
-      <div class="flex">
+      <div class="campaignBlock">
+        <h2>Campagnes planifiées</h2>
         <ul>
           <li v-for="item in futurCampaigns">
-              <CardCampaign :campaign="item" @deleteCampaign="deleteCampaign(item._id)"/>
+            <CardCampaign :campaign="item" @deleteCampaign="deleteCampaign(item._id)"/>
+          </li>
+          <li class="cardAddCampaign">
+            <CampaignForm @submit="addCampaign"/>
           </li>
         </ul>
-        <div class="cardAddCampaign">
-          <CampaignForm @submit="addCampaign"/>
-        </div>
       </div>
 
-      <h2>Campagnes du jour</h2>
-      <ul>
-        <li v-for="item in todayCampaigns">
+      <div class="campaignBlock">
+        <h2>Campagnes du jour</h2>
+        <ul>
+          <li v-for="item in todayCampaigns">
             <CardCampaign :campaign="item" @deleteCampaign="deleteCampaign(item._id)"/>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
 
-      <h2>Campagnes passées</h2>
-      <ul>
-        <li v-for="item in passedCampaigns">
+      <div class="campaignBlock">
+        <h2>Campagnes passées</h2>
+        <ul>
+          <li v-for="item in passedCampaigns">
             <CardCampaign :campaign="item" @deleteCampaign="deleteCampaign(item._id)"/>
-        </li>
-      </ul>
-    </div>
+          </li>
+        </ul>
+      </div>
+      </div>
 
     <div v-else class="">
       <p>Pas de data</p>
@@ -102,11 +106,25 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.flex{
-  display: flex;
-  justify-content: start;
+.campaignBlock{
+  margin: 2em 0;
 }
+.campaignBlock > h2{
+  margin-left: 0.5em;
+  margin-bottom: 1em;
+}
+
 .cardAddCampaign{
-  border: 1px dashed black
+  border: 1px dashed black;
+  padding: 0.75em 0.5em;
+}
+
+ul{
+  display: flex;
+}
+
+li{
+  list-style: none;
+  margin-left: 0.5em;
 }
 </style>
