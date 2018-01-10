@@ -26,8 +26,9 @@
         </div>
       </div>
 
-      <div>
+      <div class="chart">
         <doughnut-chart :chart-data="chartData" :options="options"></doughnut-chart>
+        <barchart :chart-data="chartData" :options="options"></barchart>
       </div>
     </div>
   </div>
@@ -41,12 +42,14 @@ import {JSONToCSVConvertor} from '../helper/exportToCSV';
 import CampaignService from '../services/CampaignService';
 
 import Doughnut  from '../chart/Doughnut';
+import Barchart  from '../chart/Barchart';
 import VueQrcode from '@xkeshi/vue-qrcode';
 import NavBar from './NavBar';
 
 export default {
   components: {
     'doughnut-chart': Doughnut,
+    'barchart': Barchart,
     'qrcode': VueQrcode,
     NavBar
   },
@@ -59,7 +62,7 @@ export default {
       prospects: [],
       chartData: null,
       options: {
-        responsive: false, maintainAspectRatio: false
+        responsive: true, maintainAspectRatio: true
       }
     }
   },
@@ -71,7 +74,7 @@ export default {
   methods: {
     fillData () {
       this.chartData = {
-        labels: ['home', 'femme'],
+        labels: ['homme', 'femme'],
         datasets: [{
             data: [
               this.prospects.filter( item => item.gender == 'm' ).length,
@@ -193,6 +196,14 @@ button[name=export]{
 
 .access button{
   display: block;
+}
+
+.chart{
+  max-width: 17vw;
+}
+
+.chart > div:first-child{
+  margin-bottom: 5vh;
 }
 
 .prospectDetails{
