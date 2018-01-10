@@ -21,7 +21,8 @@ export default {
 
 body {
 	margin: 0;
-  overflow: hidden;
+  background-color: #FAFAFA;
+  /* overflow-x: hidden; */
 }
 
 
@@ -32,17 +33,21 @@ div.header-bg-box {
 
 footer {
   display: block;
-  background-color: #FFF;
+  background-color: #FFFFFF;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  border-top: 1px solid #ECECEC;
 }
 
-.global-bar-zone,
+/* .global-bar-zone,
 .global-questions-zone,
 .global-t-zone {
   overflow-y: hidden;
-}
+} */
 
 .global-bar-zone { height: 2.8vh; }
-.global-questions-zone { height: 90vh; }
+/*.global-questions-zone { height: 90vh; }*/
 .global-questions-zone .global-t-zone { height: 15vh; }
 .global-questions-zone .global-q-zone { height: 75vh; }
 .global-footer-zone { height: 7.2vh }
@@ -59,6 +64,9 @@ footer {
 @media (max-width: 640px) {
   body {
     font-size: 12px;
+    transition:0.3s ease all; 
+    -moz-transition:0.3s ease all; 
+    -webkit-transition:0.3s ease all;
   }
 }
 

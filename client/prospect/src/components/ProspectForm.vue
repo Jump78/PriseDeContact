@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="grid-5 bg-w global-bar-zone">
+    <!-- <div class="grid-5 bg-w global-bar-zone">
       <div class="col-1"></div>
       <div class="col-3">
         <div id="bar">
@@ -8,6 +8,11 @@
         </div>
       </div>
       <div class="col-1"></div>
+    </div> -->
+    
+    <div class="title-box">
+      <span class="red-tag"></span>
+      <h2>L'Ecole Multimedia</h2>
     </div>
 
     <div class="flex global-questions-zone">
@@ -20,68 +25,81 @@
         <question-group @send="updateParamValue" number="2" title="Coordonnés" :questions="coordinateQuestions" ></question-group> -->
 
       <div class="block-input-text">
+        <input v-model="prospect.email" type="email" name="email" required>
         <label for="email">Email</label>
-        <input v-model="prospect.email" type="email" name="email">
       </div>
-        
-      <div class="block-input-text">
-        <label for="gender">Sexe</label>
-        <input v-model="prospect.gender" type="radio" name="gender" value="m">Homme
-        <input v-model="prospect.gender" type="radio" name="gender" value="f">Femme
+      
+      <div class="block-input-radio">
+        <p for="gender" class="radio-title" v-bind:class="{ ok: prospect.gender }">Sexe</p>
+        <div class="flex-options">
+
+          <div class="option" v-bind:class="{ chose: prospect.gender === 'm' }">
+            <input v-model="prospect.gender" type="radio" name="gender" value="m" id="gender_m">
+            <label for="gender_m" v-bind:class="{ chose: prospect.gender === 'm' }">
+              Homme
+            </label>
+          </div>
+          <div class="option" v-bind:class="{ chose: prospect.gender === 'f' }">
+            <input v-model="prospect.gender" type="radio" name="gender" value="f" id="gender_f">
+            <label for="gender_f" v-bind:class="{ chose: prospect.gender === 'f' }">
+              Femme
+            </label>
+          </div>
+        </div>
       </div>
       
       <div class="block-input-text">
+        <input v-model="prospect.firstname" type="text" name="firstname" required>
         <label for="firstname">Prénom</label>
-        <input v-model="prospect.firstname" type="text" name="firstname">
       </div>
       
       <div class="block-input-text">
+        <input v-model="prospect.lastname" type="text" name="lastname" required>
         <label for="lastname">Nom</label>
-        <input v-model="prospect.lastname" type="text" name="lastname">
       </div>
       
       <div class="block-input-text">
+        <input v-model="prospect.adress" type="text" name="adress" required>
         <label for="adress">Adresse</label>
-        <input v-model="prospect.adress" type="text" name="adress">
       </div>
       
       <div class="block-input-text">
+        <input v-model="prospect.postcode" type="text" name="postcode" required>
         <label for="postcode">Code postal</label>
-        <input v-model="prospect.postcode" type="text" name="postcode">
       </div>
       
       <div class="block-input-text">
+        <input v-model="prospect.city" type="text" name="city" required>
         <label for="city">Ville</label>
-        <input v-model="prospect.city" type="text" name="city">
       </div>
       
       <div class="block-select">
-        <label for="study_level">Niveau d'études</label>
         <select class="select" name="study_level" v-model="prospect.study_level">
-          <option value="" selected>Selectionner un niveau</option>
+          <option value="" selected></option>
           <option value="bac">Bac</option>
           <option value="bac+1">Bac+1</option>
           <option value="bac+2">Bac+2</option>
         </select>
+        <label for="study_level" v-bind:class="{ ok: prospect.study_level }">Niveau d'études</label>
       </div>
       
       <div class="block-select">
-        <label for="asked_class">Formation souhaitée</label>
         <select class="select" name="asked_class" v-model="prospect.asked_class">
-          <option value="" selected>Selectionner une formation</option>
+          <option value="" selected></option>
           <option value="dev">Dev</option>
           <option value="designer">Designer</option>
         </select>
+        <label for="asked_class" v-bind:class="{ ok: prospect.asked_class }">Formation souhaitée</label>
       </div>
       
       <div class="block-input-text">
+        <input type="text" name="current_class" required>
         <label for="current_class">Formation actuelle</label>
-        <input type="text" name="current_class" v-model="prospect.current_class">
       </div>
       
       <div class="block-input-text">
+        <input type="text" name="phone" v-model="prospect.phone" required>
         <label for="phone">Téléphone</label>
-        <input type="text" name="phone" v-model="prospect.phone">
       </div>
       
       <div class="block-input-submit">
@@ -248,7 +266,7 @@ async function checkErrors(resp) {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-section {
+/* section {
   height: 92vh;
   max-height: 92vh;
 }
@@ -289,30 +307,7 @@ span#progress {
   background-color: #AAA;
   width: 20%;
   height: 100%;
-}
-/* 
-input, select {
-  outline: none;
-  border: none;
-  border-bottom: 1px solid #6f6f6f;
-  background-color: transparent;
-  padding-top: 10px;
-  padding-bottom: 5px;
-}
-
-input[type="submit"]{
-  outline: none;
-  border: none;
-  padding: 10px 25px;
-  background-color: lightblue;
-  border-radius: 5px;
-  margin-top: 25px;
-}
-
-input:focus, select:focus{
-  border-color: blue;
-
-}
+} 
 
 .block-input-text label, .block-select label{
   display: block;
@@ -327,7 +322,219 @@ opacity: 0.2;
 
 .focus{
   opacity: 1
+}*/
+
+form {
+  font-size: 1.25em;
 }
-*/
+.title-box,
+.global-questions-zone {
+  display: block;
+  width: 33vw;
+  min-width: 450px;
+  margin: 0 auto;
+}
+.title-box {
+  margin-top: calc(20px + 2vh);
+}
+  .title-box span.red-tag {
+    background-color: #F03B58;
+    display: block;
+    height: 3px;
+    width: calc(100px + 6vw);
+  }
+  .title-box h2 {
+    font-size: 2.3em;
+    font-weight: 100;
+    color: #2C314E;
+    margin-top: 15px;
+  }
+.global-questions-zone {
+  background-color: #FFF;
+  padding: 1vh 10vw 3vw 10vw;
+  margin-bottom: 9vh;
+  border-radius: 3px;
+  border: 1px solid #ECECEC;
+  /* box-shadow: 0px 0px 50px 4px rgba(0,0,0,.03) */
+}
+  .global-questions-zone .block-input-text input {
+    width: 100%;
+    position: relative;
+    bottom: -0.9em;
+  }
+  .global-questions-zone .block-select select {
+    width: 100%;
+    position: relative;
+    bottom: -0.9em;
+  }
+
+  .global-questions-zone .block-input-text label {
+    position: relative;
+    bottom: .2em;
+    left: 5px;
+    color: #999;
+    pointer-events: none;
+  }
+  .global-questions-zone .block-input-radio p.radio-title {
+    position: relative;
+    left: 5px;
+    color: #999;
+    pointer-events: none;
+  }
+  .global-questions-zone .block-select label {
+    position: relative;
+    bottom: .2em;
+    left: 5px;
+    color: #999;
+    pointer-events: none;
+    transition:0.15s ease all; 
+    -moz-transition:0.15s ease all; 
+    -webkit-transition:0.15s ease all;
+  }
+
+  .global-questions-zone .block-input-radio p.radio-title.ok {
+    left: 1px;
+    color: #2C314E;
+    transition:0.15s ease all; 
+    -moz-transition:0.15s ease all; 
+    -webkit-transition:0.15s ease all;
+  }
+  .global-questions-zone .block-select label.ok {
+    left: 1px;
+    bottom: 2em;
+    color: #2C314E;
+    transition:0.15s ease all; 
+    -moz-transition:0.15s ease all; 
+    -webkit-transition:0.15s ease all;
+  }
+  .global-questions-zone .block-input-text input:focus + label,
+  .global-questions-zone .block-input-text input:valid + label {
+    position: relative;
+    bottom: 2em;
+    left: 1px;
+    color: #2C314E;
+    transition:0.15s ease all; 
+    -moz-transition:0.15s ease all; 
+    -webkit-transition:0.15s ease all;
+  }
+
+  /* radio */
+  input[type='radio'] {
+    opacity: 0.2;
+    display: none;
+  }
+  div.flex-options {
+    display: flex;
+    flex-wrap: wrap;
+    margin: calc(1px + 1vh) auto;
+  }
+    div.flex-options .option {
+      width: 33.333333%;
+    }
+      div.flex-options .option label {
+        display: inline-block;
+        width: calc(100% - 6px);
+        text-align: center;
+        background-color: #F9F9F9;
+        border-radius: 1px;
+        border: 1px solid #DEDEDE;
+        margin: 3px 0;
+        padding: 1px 0;
+        cursor: pointer;
+      }
+      div.flex-options .option label:hover {
+        border: 1px solid #B0B0B0;
+        background-color: #FBFBFB;
+      }
+      div.flex-options .option .chose,
+      div.flex-options .option .chose:hover {
+        background-color: #2C314E; /* blue EcoleM */
+        border-color: #2C314E; /* blue EcoleM */
+        color: #FFFFFF;
+      }
+
+input,
+select,
+button,
+input:focus,
+select:focus,
+button:focus {
+  outline: none;
+  border: none;
+}
+
+
+input, select {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #bfbfbf;
+  background-color: transparent;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  font-size: 1.3em;
+}
+
+input:focus {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #bfbfbf;
+}
+
+input[type="submit"]{
+  outline: none;
+  border: 1px solid #DEDEDE;
+  box-shadow: 0 0 20px 1px rgba(0,0,0,0.04);
+  padding: 10px 25px;
+  background-color: #FFF;
+  border-radius: 3px;
+  margin-top: 20px;
+  font-size: 1.1em;
+  color: #333;
+  position: relative;
+  right: 0;
+  transition:0.15s ease all; 
+  -moz-transition:0.15s ease all; 
+  -webkit-transition:0.15s ease all;
+}
+input[type="submit"]:hover{
+  border-color: #FFF;
+  box-shadow: 0 0 20px 2px rgba(0,0,0,0.15);
+  background-color: #F03B58;
+  color: #fff;
+  cursor: pointer;
+  transition:0.15s ease all; 
+  -moz-transition:0.15s ease all; 
+  -webkit-transition:0.15s ease all;
+}
+
+input:focus, select:focus{
+  border-color: #2C314E;
+}
+
+div[class^="block-"]{
+  margin-top: 50px;
+}
+
+@media (max-width: 640px) {
+  .title-box,
+  .global-questions-zone {
+    /*border: none;
+    background: none;*/
+    width: 75vw;
+    min-width: 200px;
+  }
+  .title-box span.red-tag {
+    height: 1.5px;
+    transition:0.5s ease all; 
+    -moz-transition:0.5s ease all; 
+    -webkit-transition:0.5s ease all;
+  }
+  div.flex-options .option {
+    width: 50%;
+  }
+  div.flex-options .option label {
+    padding: 3px 0;
+  }
+}
 
 </style>
