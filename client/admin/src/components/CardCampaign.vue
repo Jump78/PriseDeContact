@@ -2,7 +2,7 @@
   <div @click="$emit('click')">
     <!-- <p>{{campaign.name}}</p> -->
     <router-link :to="{ name: 'HomeCampaign', params: {id: campaign._id} }">{{campaign.name}}</router-link>
-    <p>{{campaign.date}}</p>
+    <p>{{campaign.date | date}}</p>
     <a href="#" @click.prevent="deleteCampaign(campaign._id)">X</a>
     <router-link :to="{ name: 'EditCampaign', params: {id: campaign._id} }">Edit</router-link>
   </div>
@@ -23,6 +23,12 @@ export default {
     deleteCampaign (id) {
       this.$emit('deleteCampaign', id);
     },
+  },
+  filters: {
+    date: (data) => {
+      console.log(new Date(parseInt(data)));
+      return new Date(parseInt(data)).toLocaleDateString();
+    }
   }
 }
 </script>

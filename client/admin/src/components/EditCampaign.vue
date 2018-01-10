@@ -35,7 +35,12 @@ export default {
   },
   created () {
     this.campaignService.find(this.$route.params.id)
-      .then( res => this.campaign = res[0] )
+      .then( res => {
+        this.campaign = res.content;
+        let date = moment(parseInt(this.campaign.date));
+        console.log(date.format('YYYY-MM-DD'));
+        this.campaign.date = date.format('YYYY-MM-DD');
+      } )
       .catch( err => console.log(err) );
   }
 }
