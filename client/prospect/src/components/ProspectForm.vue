@@ -93,7 +93,7 @@
       </div>
       
       <div class="block-input-text">
-        <input type="text" name="current_class" required>
+        <input type="text" name="current_class" v-model="prospect.current_class"required>
         <label for="current_class">Formation actuelle</label>
       </div>
       
