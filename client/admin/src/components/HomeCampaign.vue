@@ -62,7 +62,7 @@ export default {
   name: 'HomeCampaign',
   data () {
     return {
-      formUrl : config.formUrl + '/' + config.formPort,
+      formUrl : config.formUrl + ':' + config.formPort,
       selectedProspect: null,
       charDataShow : 'asked_class',
       campaignService: new CampaignService(),
