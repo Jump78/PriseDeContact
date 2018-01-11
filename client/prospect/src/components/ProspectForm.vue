@@ -93,7 +93,7 @@
       </div>
       
       <div class="block-input-text">
-        <input type="text" name="current_class" required>
+        <input type="text" name="current_class" v-model="prospect.current_class"required>
         <label for="current_class">Formation actuelle</label>
       </div>
       
@@ -356,6 +356,11 @@ form {
   border-radius: 3px;
   border: 1px solid #ECECEC;
   /* box-shadow: 0px 0px 50px 4px rgba(0,0,0,.03) */
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #FFF inset;
 }
   .global-questions-zone .block-input-text input {
     width: 100%;
