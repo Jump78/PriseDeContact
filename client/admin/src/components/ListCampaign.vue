@@ -1,6 +1,6 @@
 <template>
-  <section>
-    <div v-if="allCampaigns" class="">
+  <section class="all-campaigns">
+    <div v-if="allCampaigns">
       <div class="campaignBlock">
         <h2>Campagnes planifiées</h2>
         <ul>
@@ -106,25 +106,31 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+section.all-campaigns {
+  margin-left: calc(10px + 2vw);
+}
 .campaignBlock{
   margin: 2em 0;
 }
 .campaignBlock > h2{
   margin-left: 0.5em;
   margin-bottom: 1em;
+  font-weight: 200;
+  font-size: 2em;
 }
-
-.cardAddCampaign{
-  border: 1px dashed black;
-  padding: 0.75em 0.5em;
+.campaignBlock > ul {
+  display: flex;
 }
 
 ul{
   display: flex;
+  width: 90vw;
+  flex-wrap: wrap;
 }
 
 li{
   list-style: none;
-  margin-left: 0.5em;
+  margin-left: 0.7em;
+  margin-bottom: 0.75em;
 }
 </style>

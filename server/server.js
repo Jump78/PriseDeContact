@@ -55,6 +55,9 @@ let cookieNoCheck = [
 	{
 		path: '/admin/login',
 		method: 'POST'
+	},	{
+		path: '/admin',
+		method: 'POST'
 	},
 	{
 		path: '/campaign',
