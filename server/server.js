@@ -68,7 +68,7 @@ let cookieNoCheck = [
 		method: 'OPTIONS'
 	},
 	{
-		path: '/propsect',
+		path: '/prospect',
 		method: 'POST'
 	}
 ]
@@ -78,7 +78,7 @@ app.use( (req, res, next) => {
 	let token = req.cookies['access_token'];
 
 	let test = cookieNoCheck.filter( (item) => req.url === item.path && req.method == item.method);
-
+	console.log(req.url, req.method)
 	if (!test.length && req.method != 'OPTIONS') {
 		if (!csrfToken) {
 			res.status(400);

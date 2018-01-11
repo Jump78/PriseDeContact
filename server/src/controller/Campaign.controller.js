@@ -138,10 +138,7 @@ module.exports = {
 				camp.type = req.body.type || camp.type
 				camp.date = req.body.date || camp.date
 				camp.outro_text = req.body.outro_text || camp.outro_text
-
-				if (req.body.prospects) {
-					camp.prospects = camp.prospects.concat( req.body.prospects )
-				}
+				camp.prospects = req.body.prospects || camp.prospects
 
 				return camp.save()
 			})
