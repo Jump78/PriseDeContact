@@ -4,17 +4,17 @@
     <p v-if="message" class="message">{{message}}</p>
     <form @submit.prevent="login">
       <div class="group-input">
-        <input type="email" name="email" v-model="data.login">
+        <input type="email" name="email" v-model="data.login" v-bind:class="{ ok: data.login }" required>
         <label for="email">Email</label>
       </div>
 
       <div class="group-input">
-        <input type="password" name="password" v-model="data.password" >
+        <input type="password" name="password" v-model="data.password" required>
         <label for="password">Mot de passe</label>
       </div>
 
       <div class="group-input ">
-        <input type="submit" value="connect">
+        <input type="submit" value="Se connecter">
       </div>
     </form>
   </div>
@@ -79,13 +79,17 @@ h1{
 
 .message{
   margin-bottom: 0.7em;
+  color: #F03B58;
 }
 
 .container {
-  border: 1px solid black;
+  border: 1px solid #EDEDED;
+  border-radius: 3px;
   width: 25vw;
-  margin: 40vh auto;
-  padding: 0 1em;
+  min-width: 350px;
+  margin: 21vh auto;
+  padding: calc(5px + 1.5vw) calc(20px + 5vw);
+  background-color: #FFF;
 }
 
 form{
@@ -100,18 +104,26 @@ form{
 }
 
 label{
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
+  bottom: .2em;
+  left: 5px;
+  color: #999;
   pointer-events: none;
+  transition:0.15s ease all; 
+  -moz-transition:0.15s ease all; 
+  -webkit-transition:0.15s ease all;
 }
 
-input:focus ~ label{
-  transform: translateY(-20px);
-}
-
-input{
-    width: 100%;
+input:focus + label,
+input:valid + label,
+input.ok + label {
+  position: relative;
+  bottom: 2.2em;
+  left: 1px;
+  color: #2C314E;
+  transition:0.15s ease all; 
+  -moz-transition:0.15s ease all; 
+  -webkit-transition:0.15s ease all;
 }
 
 input:autofill{
@@ -121,6 +133,18 @@ input:autofill{
   transition: background-color 5000s ease-in-out 0s;
 }
 
+input {
+  width: 100%;
+  position: relative;
+  bottom: -0.9em;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #bfbfbf;
+  background-color: transparent;
+  padding: 10px 0 5px 3px;
+  font-size: 1.3em;
+  color: #333;
+}
 
 input:focus{
   outline: none;
@@ -129,6 +153,50 @@ input:focus{
 input:not([type = submit]){
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid red;
+  border-bottom: 1px solid #bfbfbf;
 }
+
+input[type="submit"]{
+  outline: none;
+  border: 1px solid #DEDEDE;
+  box-shadow: 0 0 20px 1px rgba(0,0,0,0.04);
+  padding: 10px 25px;
+  background-color: #FFF;
+  border-radius: 3px;
+  font-size: 1.1em;
+  color: #333;
+  position: relative;
+  right: 0;
+  transition:0.15s ease all; 
+  -moz-transition:0.15s ease all; 
+  -webkit-transition:0.15s ease all;
+}
+input[type="submit"]:hover{
+  border-color: #FFF;
+  box-shadow: 0 0 20px 2px rgba(0,0,0,0.15);
+  background-color: #F03B58;
+  color: #fff;
+  cursor: pointer;
+  transition:0.15s ease all; 
+  -moz-transition:0.15s ease all; 
+  -webkit-transition:0.15s ease all;
+}
+
+@media (max-width: 640px) {
+  .container {
+  	font-size: 1em;
+  	width: 62vw;
+  	min-width: 200px;
+  	padding: 30px 18vw;
+  }
+}
+@media (max-width: 439px) {
+  .container {
+  	font-size: 1em;
+  	border-radius: 0;
+  	width: 90vw;
+  	padding: 30px 5vw;
+  }
+}
+
 </style>
