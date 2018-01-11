@@ -27,6 +27,9 @@
       </div>
 
       <div class="chart">
+        <button type="button" name="gender" @click="charDataShow = 'gender'; fillData()">Sexe</button>
+        <button type="button" name="asked_class" @click="charDataShow = 'asked_class'; fillData()">Formation</button>
+        <button type="button" name="postcode" @click="charDataShow = 'postcode'; fillData()">Region</button>
         <doughnut-chart :chart-data="chartData" :options="options"></doughnut-chart>
         <barchart :chart-data="chartData" :options="options"></barchart>
       </div>
@@ -57,12 +60,14 @@ export default {
   data () {
     return {
       selectedProspect: null,
+      charDataShow : 'asked_class',
       campaignService: new CampaignService(),
       campaign: {},
       prospects: [],
       chartData: null,
       options: {
-        responsive: true, maintainAspectRatio: true
+        responsive: true,
+        maintainAspectRatio: true
       }
     }
   },
@@ -73,13 +78,27 @@ export default {
   },
   methods: {
     fillData () {
+      let data = {};
+      const self = this;
+
+      this.prospects.forEach((item) => {
+        let key = item[self.charDataShow].toString();
+
+        if (self.charDataShow == 'postcode') {
+          key = key.substring(0,2);
+        }
+
+        if (!data.hasOwnProperty(key)) {
+          data[key] = 1;
+        } else {
+          data[key]++;
+        }
+      });
+
       this.chartData = {
-        labels: ['homme', 'femme'],
+        labels: Object.keys(data),
         datasets: [{
-            data: [
-              this.prospects.filter( item => item.gender == 'm' ).length,
-              this.prospects.filter( item => item.gender == 'f' ).length
-            ],
+            data: Object.values(data),
             backgroundColor: [
               'rgb(0, 100, 150)',
               'rgb(150, 0, 75)',

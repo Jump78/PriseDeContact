@@ -31,7 +31,7 @@ app.use(cookieParser())
 // Création du server
 app.use( express.static('client') );
 
-// middleware qui permet d'autoriser les requête Ajax provenant d'un autre domaine
+//middleware qui permet d'autoriser les requête Ajax provenant d'un autre domaine
 app.use( (req, res, next) => {
 	res.header('Access-Control-Allow-Credentials', true);
 	// le serveur accepte les requête ajax provenant de certains domaines
@@ -61,6 +61,10 @@ let cookieNoCheck = [
 		method: 'GET'
 	},
 	{
+		path: '/campaign',
+		method: 'OPTIONS'
+	},
+	{
 		path: '/propsect',
 		method: 'POST'
 	}
@@ -72,7 +76,7 @@ app.use( (req, res, next) => {
 
 	let test = cookieNoCheck.filter( (item) => req.url === item.path && req.method == item.method);
 
-	if (!test.length) {
+	if (!test.length && req.method != 'OPTIONS') {
 		if (!csrfToken) {
 			res.status(400);
 			res.send('Headers authorization not found')
@@ -103,6 +107,35 @@ io.on('connection', (socket) => {
 	socket.join('room-'+roomId);
 	io.sockets.in("room-"+roomId).emit('connectToRoom', "You are in room"+roomId);
 })
+
+// let soap = require('soap');
+// let url = 'http://lemws.agate-erp.fr/Tiers.svc?wsdl';
+// let args = {
+// 	loginUtilisateur: 'familletebouldecata@hotmail.fr',
+// 	motDePasseUtilisateur: 'teboul'
+// };
+// app.get 		('/test', (req, res) => {
+// 	console.log('test');
+// 	soap.createClient(url, function(err, client) {
+//     client.GetUserIdByAccount(args, function(err, result) {
+// 			console.log(result);
+// 				if (result.GetUserIdByAccountResult.Succes) {
+// 					let url2 = 'http://lemws.agate-erp.fr/Inscriptions.svc?wsdl';
+// 					let args2 = {
+// 						idtiers: 1,
+// 					};
+//
+// 					soap.createClient(url2, function(err, client) {
+// 						client.GetAllInscriptionsByTiersId(args2, function(err, result){
+// 							console.log(result.GetAllInscriptionsByTiersIdResult.Erreurs.Erreur);
+// 						})
+// 					})
+// 				} else {
+// 					console.log(result)
+// 				}
+//     });
+// 	});
+// })
 
 // CRUD Prospects
 const prospect = require('./src/controller/Prospect.controller')
