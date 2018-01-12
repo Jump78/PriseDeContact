@@ -8,16 +8,16 @@
       </p>
     </div>
     <div class="flex">
-      <div class="prospectList">
+      <div class="prospect-list">
         <ul>
           <li v-for="prospect in prospects" @click="selectedProspect = objectToDOM(prospect)">{{prospect.firstname}} {{prospect.lastname}}</li>
         </ul>
-        <button type="button" name="export" @click="exportCSV">Export</button>
+        <button type="button" name="export" @click="exportCSV" alt="Exporter les prospects dans un tableur">Exporter</button>
         <div class="clear"></div>
       </div>
 
-      <div>
-        <p class="prospectNumber">{{ prospects.length }} prospects</p>
+      <div class="center">
+        <p class="prospect-number"><span class="nb">{{ prospects.length }}</span> prospects</p>
         <div class="access">
           <p>Acces au formulaire</p>
           <button class="clipboard" type="button" name="copyLink" data-clipboard-target="#linkValue">Copier le lien</button>
@@ -29,11 +29,13 @@
       </div>
 
       <div class="chart">
-        <button type="button" name="gender" @click="charDataShow = 'gender'; fillData()">Sexe</button>
-        <button type="button" name="asked_class" @click="charDataShow = 'asked_class'; fillData()">Formation</button>
-        <button type="button" name="postcode" @click="charDataShow = 'postcode'; fillData()">Region</button>
+        <div class="buttons">
+          <button type="button" name="gender" @click="charDataShow = 'gender'; fillData()">Sexe</button>
+          <button type="button" name="asked_class" @click="charDataShow = 'asked_class'; fillData()">Formation</button>
+          <button type="button" name="postcode" @click="charDataShow = 'postcode'; fillData()">Region</button>
+        </div>
         <doughnut-chart :chart-data="chartData" :options="options"></doughnut-chart>
-        <barchart :chart-data="chartData" :options="options"></barchart>
+        <!-- <barchart :chart-data="chartData" :options="options"></barchart> -->
       </div>
     </div>
   </div>
@@ -223,21 +225,39 @@ li{
 button[name=export]{
   float: right;
   margin-top: 3vh;
+  margin-right: 30px;
 }
 
 .flex{
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-.prospectNumber{
+div.prospect-list {
+  padding: 20px 0;
+  border-right: 1px solid #DEDEDE;
+  width: 18vw;
+}
+div.prospect-list li {
+  margin-left: calc(15px + 1.5vw);
+  margin-right: calc(15px + 1.5vw);
+}
+
+div.center {
+  width: 23vw;
+}
+.prospect-number{
   margin-top: 10vh;
+  font-size: 2em;
 }
-
+.prospect-number span.nb{
+  font-size: 3.2em;
+}
 .access{
-  border: 1px solid black;
-  margin-top: 30vh;
-  padding: 1em;
+  border: 1px solid #DEDEDE;
+  margin-top: calc(120px + 8vh);
+  padding: 1em 2em;
+  background-color: #FFF;
 }
 
 .access > * {
@@ -245,15 +265,44 @@ button[name=export]{
 }
 
 .access button{
+  font-family: 'Avenir', Arial, sans-serif;
   display: block;
+  width: 100%;
+  border: 1px solid #DEDEDE;
+  background-color: #FFF;
+  padding: 5px 0;
 }
 
 .chart{
-  max-width: 17vw;
+  max-width: 45vw;
+  margin-right: calc(20px + 2vw);
 }
 
 .chart > div:first-child{
   margin-bottom: 5vh;
+}
+.chart .buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.chart .buttons button {
+  background-color: rgba(255,255,255,.1);
+  color: #2C314E;
+  border: 1px solid #2C314E;
+  border-radius: 3px;
+  padding: 4px 12px;
+  margin: 0 2px;
+  cursor: pointer;
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
+  -webkit-transition:0.2s ease all;
+}
+.chart .buttons button:hover,
+.chart .buttons button:focus {
+  outline: none;
+  background-color: #2C314E;
+  color: #FFF;
 }
 
 .prospectDetails{
@@ -264,4 +313,25 @@ button[name=export]{
   background-color: #FFFFFFFF;
   padding: 0.5em;
 }
+
+button[name="export"] {
+  background-color: #FFF;
+  border: 1px solid #2C314E;
+  padding: 4px 0;
+  width: 110px;
+  color: #2C314E;
+  cursor: pointer;
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
+  -webkit-transition:0.2s ease all;
+}
+
+button[name="export"]:hover {
+  background-color: #2C314E;
+  color: #FFF;
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
+  -webkit-transition:0.2s ease all;
+}
+
 </style>
