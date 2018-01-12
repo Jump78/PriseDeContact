@@ -9,7 +9,7 @@
       </div>
       <div class="col-1"></div>
     </div> -->
-    
+
     <div class="title-box">
       <span class="red-tag"></span>
       <h2>L'Ecole Multimedia</h2>
@@ -17,7 +17,7 @@
 
     <div class="flex global-questions-zone">
       <form class="form" action="#" method="post" @submit.prevent = "onSubmit">
-        
+
         <!-- <question-group @send="updateParamValue" number="0" title="Qui êtes vous ?" :questions="nameQuestions" ></question-group>
 
         <question-group @send="updateParamValue" number="1" title="Votre formation" :questions="studyQuestions" ></question-group>
@@ -28,7 +28,7 @@
         <input v-model="prospect.email" type="email" name="email" required>
         <label for="email">Email</label>
       </div>
-      
+
       <div class="block-input-radio">
         <p for="gender" class="radio-title" v-bind:class="{ ok: prospect.gender }">Sexe</p>
         <div class="flex-options">
@@ -47,32 +47,32 @@
           </div>
         </div>
       </div>
-      
+
       <div class="block-input-text">
         <input v-model="prospect.firstname" type="text" name="firstname" required>
         <label for="firstname">Prénom</label>
       </div>
-      
+
       <div class="block-input-text">
         <input v-model="prospect.lastname" type="text" name="lastname" required>
         <label for="lastname">Nom</label>
       </div>
-      
+
       <div class="block-input-text">
         <input v-model="prospect.adress" type="text" name="adress" required>
         <label for="adress">Adresse</label>
       </div>
-      
+
       <div class="block-input-text">
         <input v-model="prospect.postcode" type="text" name="postcode" required>
         <label for="postcode">Code postal</label>
       </div>
-      
+
       <div class="block-input-text">
         <input v-model="prospect.city" type="text" name="city" required>
         <label for="city">Ville</label>
       </div>
-      
+
       <div class="block-select">
         <select class="select" name="study_level" v-model="prospect.study_level">
           <option value="" selected></option>
@@ -82,7 +82,7 @@
         </select>
         <label for="study_level" v-bind:class="{ ok: prospect.study_level }">Niveau d'études</label>
       </div>
-      
+
       <div class="block-select">
         <select class="select" name="asked_class" v-model="prospect.asked_class">
           <option value="" selected></option>
@@ -91,17 +91,17 @@
         </select>
         <label for="asked_class" v-bind:class="{ ok: prospect.asked_class }">Formation souhaitée</label>
       </div>
-      
+
       <div class="block-input-text">
         <input type="text" name="current_class" v-model="prospect.current_class"required>
         <label for="current_class">Formation actuelle</label>
       </div>
-      
+
       <div class="block-input-text">
         <input type="text" name="phone" v-model="prospect.phone" required>
         <label for="phone">Téléphone</label>
       </div>
-      
+
       <div class="block-input-submit">
         <input type="submit" name="submit" value="Envoyer">
       </div>
@@ -241,7 +241,7 @@ export default {
           body: JSON.stringify(this.prospect)
       })
       .then(checkErrors)
-      .then((res) => res.json)
+      .then((res) => this.$router.push({name:'ValidatedForm', params:{id: this.$route.params.id}}))
       .catch(function(res){ console.log(res) })
     },
     updateParamValue( param ) {
@@ -307,7 +307,7 @@ span#progress {
   background-color: #AAA;
   width: 20%;
   height: 100%;
-} 
+}
 
 .block-input-text label, .block-select label{
   display: block;
@@ -392,24 +392,24 @@ input:-webkit-autofill:focus {
     left: 5px;
     color: #999;
     pointer-events: none;
-    transition:0.15s ease all; 
-    -moz-transition:0.15s ease all; 
+    transition:0.15s ease all;
+    -moz-transition:0.15s ease all;
     -webkit-transition:0.15s ease all;
   }
 
   .global-questions-zone .block-input-radio p.radio-title.ok {
     left: 1px;
     color: #2C314E;
-    transition:0.15s ease all; 
-    -moz-transition:0.15s ease all; 
+    transition:0.15s ease all;
+    -moz-transition:0.15s ease all;
     -webkit-transition:0.15s ease all;
   }
   .global-questions-zone .block-select label.ok {
     left: 1px;
     bottom: 2em;
     color: #2C314E;
-    transition:0.15s ease all; 
-    -moz-transition:0.15s ease all; 
+    transition:0.15s ease all;
+    -moz-transition:0.15s ease all;
     -webkit-transition:0.15s ease all;
   }
   .global-questions-zone .block-input-text input:focus + label,
@@ -418,8 +418,8 @@ input:-webkit-autofill:focus {
     bottom: 2em;
     left: 1px;
     color: #2C314E;
-    transition:0.15s ease all; 
-    -moz-transition:0.15s ease all; 
+    transition:0.15s ease all;
+    -moz-transition:0.15s ease all;
     -webkit-transition:0.15s ease all;
   }
 
@@ -497,8 +497,8 @@ input[type="submit"]{
   color: #333;
   position: relative;
   right: 0;
-  transition:0.15s ease all; 
-  -moz-transition:0.15s ease all; 
+  transition:0.15s ease all;
+  -moz-transition:0.15s ease all;
   -webkit-transition:0.15s ease all;
 }
 input[type="submit"]:hover{
@@ -507,8 +507,8 @@ input[type="submit"]:hover{
   background-color: #F03B58;
   color: #fff;
   cursor: pointer;
-  transition:0.15s ease all; 
-  -moz-transition:0.15s ease all; 
+  transition:0.15s ease all;
+  -moz-transition:0.15s ease all;
   -webkit-transition:0.15s ease all;
 }
 
@@ -530,8 +530,8 @@ div[class^="block-"]{
   }
   .title-box span.red-tag {
     height: 1.5px;
-    transition:0.5s ease all; 
-    -moz-transition:0.5s ease all; 
+    transition:0.5s ease all;
+    -moz-transition:0.5s ease all;
     -webkit-transition:0.5s ease all;
   }
   div.flex-options .option {
