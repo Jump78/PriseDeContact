@@ -29,7 +29,11 @@ export default {
   methods: {
     submit (campaign) {
       this.campaignService.update(this.$route.params.id, campaign)
-        .then( res => console.log(res) )
+        .then( res => {
+          if (res.success) {
+            this.$router.push({name:'HomeCampaign', params:{id: this.$route.params.id}})
+          }
+        } )
         .catch( err => console.log(err) )
     },
   },
