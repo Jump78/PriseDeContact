@@ -20,9 +20,11 @@
         <p class="prospect-number"><span class="nb">{{ prospects.length }}</span> prospects</p>
         <div class="access">
           <p>Acces au formulaire</p>
-          <button type="button" name="copyLink">Copier le lien</button>
-          <button type="button" name="copyCode">Imprimer le QRCode</button>
-          <!-- <qrcode value="http://192.168.21.124:8081/"></qrcode> -->
+          <button class="clipboard" type="button" name="copyLink" data-clipboard-target="#linkValue">Copier le lien</button>
+          <input type="hidden" id="linkValue" name="linkValue" :value="formUrl">
+
+          <button type="button" name="copyQrcode" @click="printCanvas('qrcode')">Imprimer le QRCode</button>
+          <qrcode id="qrcode" :value="formUrl" hidden></qrcode>
         </div>
       </div>
 
@@ -50,6 +52,7 @@ import Doughnut  from '../chart/Doughnut';
 import Barchart  from '../chart/Barchart';
 import VueQrcode from '@xkeshi/vue-qrcode';
 import NavBar from './NavBar';
+import Clipboard from 'clipboard';
 
 export default {
   components: {
@@ -61,6 +64,7 @@ export default {
   name: 'HomeCampaign',
   data () {
     return {
+      formUrl : config.formUrl + ':' + config.formPort,
       selectedProspect: null,
       charDataShow : 'asked_class',
       campaignService: new CampaignService(),
@@ -134,9 +138,35 @@ export default {
         'formation actuelle' : item.current_class,
         'campagne visitée' : item.campaigns.length
       }
+    },
+    printCanvas(target){
+      const dataUrl = document.getElementById(target).toDataURL();
+
+      let windowContent = '<!DOCTYPE html>';
+      windowContent += '<html>';
+      windowContent += '<body>';
+      windowContent += '<img src="' + dataUrl + '" style="width: 100%">';
+      windowContent += '</body>';
+      windowContent += '</html>';
+
+      const printWin = window.open('', '', 'width=' + screen.availWidth + ',height=' + screen.availHeight);
+      printWin.document.write(windowContent);
+
+      printWin.document.addEventListener('load', function() {
+          printWin.focus();
+          printWin.print();
+          printWin.document.close();
+          printWin.close();
+      }, true);
     }
   },
   created () {
+    let clipboard = new Clipboard('.clipboard',{
+      text: function() {
+          return document.querySelector('input[type=hidden]').value;
+      }
+    });
+
     var socket = io(config.apiEndPoint+":"+config.apiPort, {query: 'roomId='+this.$route.params.id});
     socket.on('prospectAdd', (data) => {
       this.prospects.push(data);

@@ -12,6 +12,7 @@
   "dependencies": {
     "@xkeshi/vue-qrcode": "^0.3.0",
     "chart.js": "^2.7.1",
+    "clipboard": "^1.7.1",
     "moment": "^2.19.2",
     "socket.io": "^2.0.4",
     "vue": "^2.5.2",
