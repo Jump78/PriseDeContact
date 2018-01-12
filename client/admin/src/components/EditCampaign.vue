@@ -2,7 +2,9 @@
   <section>
     <NavBar :id="this.$route.params.id"/>
     <h1>Edit campaign</h1>
-    <CampaignForm :campaign="campaign" @submit="submit"/>
+    <div class="campaign-form-box">
+      <CampaignForm :campaign="campaign" :isEdit="true" @submit="submit"/>
+    </div>
   </section>
 </template>
 
@@ -54,5 +56,9 @@ export default {
 }
 .cardAddCampaign{
   border: 1px dashed black
+}
+div.campaign-form-box {
+  width: 50vw;
+  margin: 10px auto;
 }
 </style>

@@ -30,7 +30,7 @@
       </div>
 
       <div class="buttons">
-        <button type="button" name="cancel" @click="cancelAddCampaign">Annuler</button>
+        <button v-if="!isEdit" type="button" name="cancel" @click="cancelAddCampaign">Annuler</button>
         <button type="submit" name="validate" @click="submitCampaign">Ajouter</button>
       </div>
     </form>
@@ -44,13 +44,26 @@ import moment from 'moment';
 export default {
   name: 'CampaignForm',
   props: {
+    isEdit: {
+      type: Boolean,
+      default: function() {
+        return false
+      }
+    },
     campaign: {
       type: Object,
       default: function() {
         return {}
       }
-    },
-    deployed: false
+    }
+  },
+  data () {
+    return {
+      deployed: false
+    }
+  },
+  created () {
+    this.deployed = this.isEdit
   },
   methods: {
     openAddCampain () {
