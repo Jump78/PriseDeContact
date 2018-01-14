@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     async login () {
-      await fetch(config.apiEndPoint+':'+config.apiPort+'/admin/login',{
+      await fetch(config.apiEndPoint+'/api/admin/login',{
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -109,8 +109,8 @@ label{
   left: 5px;
   color: #999;
   pointer-events: none;
-  transition:0.15s ease all; 
-  -moz-transition:0.15s ease all; 
+  transition:0.15s ease all;
+  -moz-transition:0.15s ease all;
   -webkit-transition:0.15s ease all;
 }
 
@@ -121,8 +121,8 @@ input.ok + label {
   bottom: 2.2em;
   left: 1px;
   color: #2C314E;
-  transition:0.15s ease all; 
-  -moz-transition:0.15s ease all; 
+  transition:0.15s ease all;
+  -moz-transition:0.15s ease all;
   -webkit-transition:0.15s ease all;
 }
 
@@ -167,8 +167,8 @@ input[type="submit"]{
   color: #333;
   position: relative;
   right: 0;
-  transition:0.15s ease all; 
-  -moz-transition:0.15s ease all; 
+  transition:0.15s ease all;
+  -moz-transition:0.15s ease all;
   -webkit-transition:0.15s ease all;
 }
 input[type="submit"]:hover{
@@ -177,8 +177,8 @@ input[type="submit"]:hover{
   background-color: #F03B58;
   color: #fff;
   cursor: pointer;
-  transition:0.15s ease all; 
-  -moz-transition:0.15s ease all; 
+  transition:0.15s ease all;
+  -moz-transition:0.15s ease all;
   -webkit-transition:0.15s ease all;
 }
 

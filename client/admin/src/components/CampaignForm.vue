@@ -106,8 +106,8 @@ div#open-add-campain {
   width: 72px;
   text-align: center;
   cursor: pointer;
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
   -webkit-transition:0.2s ease all;
 }
 div#open-add-campain p {
@@ -118,16 +118,16 @@ div#open-add-campain:hover {
   color: #333;
   width: 76px;
   cursor: pointer;
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
   -webkit-transition:0.2s ease all;
 }
 form {
   min-height: 130px;
   min-width: 260px;
   padding: 20px 35px;
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
   -webkit-transition:0.2s ease all;
 }
 form.closed{
@@ -137,8 +137,8 @@ form.closed{
   width: 1px;
   min-height: 1px;
   min-width: 1px;
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
   -webkit-transition:0.2s ease all;
 }
 form > div {
@@ -174,8 +174,8 @@ form > div > div > label.selected {
   border: 1px solid #ECECEC;
   background-color: #333350;
   color: #FFF;
-  transition:0.12s all; 
-  -moz-transition:0.12s all; 
+  transition:0.12s all;
+  -moz-transition:0.12s all;
   -webkit-transition:0.12s all;
 }
 

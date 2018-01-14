@@ -26,7 +26,6 @@ export default {
   },
   filters: {
     date: (data) => {
-      console.log(new Date(parseInt(data)));
       return new Date(parseInt(data)).toLocaleDateString();
     }
   }

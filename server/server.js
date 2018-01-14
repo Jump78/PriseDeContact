@@ -35,7 +35,7 @@ app.use( express.static('client') );
 app.use( (req, res, next) => {
 	res.header('Access-Control-Allow-Credentials', true);
 	// le serveur accepte les requête ajax provenant de certains domaines
-	let p = ['http://localhost:8080', 'http://localhost:8081', 'http://192.168.21.124:8080', 'http://192.168.21.124:8081', 'http://192.168.10.101:8080']
+	let p = ['http://localhost:8080', 'http://localhost:8081', 'http://192.168.21.124:8080', 'http://192.168.21.124:8081', 'http://192.168.10.101:8080', 'http://192.168.1.18:8081']
 	if (p.indexOf(req.headers.origin) > -1) {
 		res.header('Access-Control-Allow-Origin', req.headers.origin)
 	}
@@ -49,26 +49,26 @@ app.use( (req, res, next) => {
 
 let cookieNoCheck = [
 	{
-		path: '/admin/login',
+		path: '/api/admin/login',
 		method: 'OPTIONS'
 	},
 	{
-		path: '/admin/login',
+		path: '/api/admin/login',
 		method: 'POST'
 	},	{
-		path: '/admin',
+		path: '/api/admin',
 		method: 'POST'
 	},
 	{
-		path: '/campaign',
+		path: '/api/campaign',
 		method: 'GET'
 	},
 	{
-		path: '/campaign',
+		path: '/api/campaign',
 		method: 'OPTIONS'
 	},
 	{
-		path: '/prospect',
+		path: '/api/prospect',
 		method: 'POST'
 	}
 ]
@@ -79,7 +79,7 @@ app.use( (req, res, next) => {
 
 	let test = cookieNoCheck.filter( (item) => req.url === item.path && req.method == item.method);
 	console.log(req.url, req.method)
-	if (!test.length && req.method != 'OPTIONS') {
+	if (!test.length && req.method != 'OPTIONS' && req.method != 'GET') {
 		if (!csrfToken) {
 			res.status(400);
 			res.send('Headers authorization not found')
@@ -143,7 +143,7 @@ io.on('connection', (socket) => {
 // CRUD Prospects
 const prospect = require('./src/controller/Prospect.controller')
 const campaign = require('./src/controller/Campaign.controller')
-app.post 		('/prospect', 	prospect.create, (req, res, next) => {
+app.post 		('/api/prospect', 	prospect.create, (req, res, next) => {
 	console.log( 'Prospect create pased' )
 
 	req.params.id = req.locals.campaigns[0];
@@ -155,39 +155,39 @@ app.post 		('/prospect', 	prospect.create, (req, res, next) => {
 	console.log('id: '+req.params.id)
 	io.sockets.in("room-"+req.params.id).emit( 'prospectAdd', req.locals )
 })
-app.get 		('/prospect', ( req, res ) => {
+app.get 		('/api/prospect', ( req, res ) => {
 	prospect.findAll( req, res )
 })
-app.get 		('/prospect/:id', 					prospect.find)
-app.get 		('/prospect/:id/campaign', 	prospect.findMyCampaigns)
-app.put 		('/prospect/:id', 					prospect.update)
-app.post 		('/prospect/:id/campaign', 	prospect.addOneCampaign)
-app.delete 	('/prospect/:id', 					prospect.remove)
-app.delete 	('/prospect/:prospectid/campaign/:campaignid', 	prospect.removeOneCampaign)
+app.get 		('/api/prospect/:id', 					prospect.find)
+app.get 		('/api/prospect/:id/campaign', 	prospect.findMyCampaigns)
+app.put 		('/api/prospect/:id', 					prospect.update)
+app.post 		('/api/prospect/:id/campaign', 	prospect.addOneCampaign)
+app.delete 	('/api/prospect/:id', 					prospect.remove)
+app.delete 	('/api/prospect/:prospectid/campaign/:campaignid', 	prospect.removeOneCampaign)
 
 // CRUD Campaigns
-app.post 		('/campaign', 				(req, res) => {
+app.post 		('/api/campaign', 				(req, res) => {
 	campaign.create(req, res)
 	io.sockets.emit( 'campaignAdd', req.body )
 })
-app.get 		('/campaign', 									campaign.findAll)
-app.get 		('/campaign/:id', 							campaign.find)
-app.get 		('/campaign/:id/prospect', 			campaign.findMyProspects)
-app.put 		('/campaign/:id', 							campaign.update)
-app.post 		('/campaign/:id/prospect', 			campaign.addOneProspect)
-app.delete 	('/campaign/:id', 							campaign.remove)
-app.delete 	('/campaign/:campaignid/prospect/:prospectid', 	campaign.removeOneProspect)
+app.get 		('/api/campaign', 									campaign.findAll)
+app.get 		('/api/campaign/:id', 							campaign.find)
+app.get 		('/api/campaign/:id/prospect', 			campaign.findMyProspects)
+app.put 		('/api/campaign/:id', 							campaign.update)
+app.post 		('/api/campaign/:id/prospect', 			campaign.addOneProspect)
+app.delete 	('/api/campaign/:id', 							campaign.remove)
+app.delete 	('/api/campaign/:campaignid/prospect/:prospectid', 	campaign.removeOneProspect)
 
 // CRUD Admin accounts
 const admin = require('./src/controller/Admin.controller')
-app.post 		('/admin', 				(req, res) => {
+app.post 		('/api/admin', 				(req, res) => {
 	admin.create(req, res)
 })
-app.post 		('/admin/login', 				admin.connect)
-app.get 		('/admin', 							admin.findAll)
-app.get 		('/admin/:id', 					admin.find)
-app.put 		('/admin/:id', 					admin.update)
-app.delete 	('/admin/:id', 					admin.remove)
+app.post 		('/api/admin/login', 				admin.connect)
+app.get 		('/api/admin', 							admin.findAll)
+app.get 		('/api/admin/:id', 					admin.find)
+app.put 		('/api/admin/:id', 					admin.update)
+app.delete 	('/api/admin/:id', 					admin.remove)
 
 // Indique à mongoose que les promesse à utiliser
 // sont celles par défaut dans Node.js (objet global)

@@ -1,7 +1,7 @@
 <template>
   <nav>
     <div id="logo">
-      <img src="/src/assets/lecole-multimedia-logo.png" alt="logo">
+      <img src="/admin/src/assets/lecole-multimedia-logo.png" alt="logo">
     </div>
     <ul>
       <li>
@@ -57,7 +57,7 @@ export default {
     height: 10px;
     margin: -6px 0 0 15px;
   }
-  
+
   div#logo img {
     width: 110px;
   }

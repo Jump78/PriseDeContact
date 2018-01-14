@@ -231,7 +231,7 @@ export default {
   },*/
   methods: {
     onSubmit () {
-      fetch(config.apiEndPoint+":"+config.apiPort+"/prospect",
+      fetch(config.apiEndPoint+"/api/prospect",
       {
           headers: {
             'Accept': 'application/json',

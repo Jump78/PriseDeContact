@@ -35,7 +35,6 @@
           <button type="button" name="postcode" @click="charDataShow = 'postcode'; fillData()">Region</button>
         </div>
         <doughnut-chart :chart-data="chartData" :options="options"></doughnut-chart>
-        <!-- <barchart :chart-data="chartData" :options="options"></barchart> -->
       </div>
     </div>
   </div>
@@ -64,7 +63,7 @@ export default {
   name: 'HomeCampaign',
   data () {
     return {
-      formUrl : config.formUrl + ':' + config.formPort,
+      formUrl : config.formUrl,
       selectedProspect: null,
       charDataShow : 'asked_class',
       campaignService: new CampaignService(),
@@ -167,7 +166,7 @@ export default {
       }
     });
 
-    var socket = io(config.apiEndPoint+":"+config.apiPort, {query: 'roomId='+this.$route.params.id});
+    var socket = io(config.apiEndPoint, {path: '/api/socket.io', query: 'roomId='+this.$route.params.id});
     socket.on('prospectAdd', (data) => {
       this.prospects.push(data);
       this.fillData();
@@ -183,25 +182,6 @@ export default {
         this.fillData();
       } )
       .catch( err => console.log(err) );
-
-    // fetch(config.apiEndPoint+":"+config.apiPort+'/prospect')
-    //   .then( (res) =>{
-    //     if (res.status>= '200' && res.status<'300') {
-    //       return res.json()
-    //     }
-    //     return {
-    //       error: 1,
-    //       message: 'Error server'
-    //     }
-    //    })
-    //   .then( (res) => {
-    //     if (res.error) {
-    //         throw "Http error";
-    //     }
-    //     this.prospects = res.content;
-    //     this.fillData();
-    //   })
-    //   .catch( (err) => console.log(err));
   },
 }
 </script>

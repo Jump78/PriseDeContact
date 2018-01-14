@@ -3,7 +3,7 @@ import config from '../../config/config';
 export default class {
 
   constructor () {
-    this.baseUrl= config.apiEndPoint+':'+config.apiPort;
+    this.baseUrl= config.apiEndPoint+'/api';
   }
 
   async checkErrors(res) {

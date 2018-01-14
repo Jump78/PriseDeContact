@@ -44,7 +44,6 @@ export default {
       .then( res => {
         this.campaign = res.content;
         let date = moment(parseInt(this.campaign.date));
-        console.log(date.format('YYYY-MM-DD'));
         this.campaign.date = date.format('YYYY-MM-DD');
       } )
       .catch( err => console.log(err) );
