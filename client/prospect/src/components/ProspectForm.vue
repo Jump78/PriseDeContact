@@ -89,8 +89,31 @@
       <div class="block-select">
         <select class="select" name="asked_class" v-model="prospect.asked_class">
           <option value="" selected></option>
-          <option value="dev">Dev</option>
-          <option value="designer">Designer</option>
+          <!-- <option value="dev">Dev</option>
+          <option value="designer">Designer</option> -->
+          <option value="">Prépa</option>
+          <option value="prepa-digitale">Prépa Digitale</option>
+          <option value="">Communication digitale :</option>
+          <option value="chef-de-projet-digital">Chef de projet digital</option>
+          <option value="charge-de-communication-digitale">Chargé de communication digitale</option>
+          <option value="community-manager">Community manager</option>
+          <option value="marketeur-digital">Marketeur digital</option>
+          <option value="ux-designer">UX designer</option>
+          <option value="editeur-digital-secretaire-de-redaction">Editeur digital - Secrétaire de rédaction</option>
+          <option value="responsable-strategie-et-innovation-de-la-communication">Responsable stratégie et innovation de la communication</option>
+          <option value="">Création Digitale :</option>
+          <option value="directeur-artistique-multimedia">Directeur artistique multimédia</option>
+          <option value="graphiste-multimedia–ui-designer">Graphiste multimédia – UI designer</option>
+          <option value="directeur-artistique-multimedia">Directeur artistique multimédia</option>
+          <option value="graphiste-motion-designer">Graphiste motion designer</option>
+          <option value="concepteur-realisateur-vr-et-realite-augmentee">Concepteur réalisateur VR et réalité augmentée</option>
+          Responsable stratégie et innovation de la création
+          <option value="">Développement web :</option>
+          <option value="developpeur-multimedia">Développeur multimédia</option>
+          <option value="developpeur-d-applications-mobiles">Développeur d’applications mobiles</option>
+          <option value="developpeur-front-end">Développeur front-end</option>
+          <option value="game-programmeur">Game programmeur</option>
+          <option value="responsable-stratégie-et-innovation-digitales">Responsable stratégie et innovation digitales</option>
         </select>
         <label for="asked_class" v-bind:class="{ ok: prospect.asked_class }">Formation souhaitée</label>
       </div>
