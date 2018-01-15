@@ -79,6 +79,9 @@
           <option value="bac">Bac</option>
           <option value="bac+1">Bac+1</option>
           <option value="bac+2">Bac+2</option>
+          <option value="bac+3">Bac+3</option>
+          <option value="bac+4">Bac+4</option>
+          <option value="bac+5">Bac+5</option>
         </select>
         <label for="study_level" v-bind:class="{ ok: prospect.study_level }">Niveau d'études</label>
       </div>
