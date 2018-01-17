@@ -55,6 +55,10 @@ body {
   color: #2c3e50;
 }
 
+span.underline {
+  text-decoration: underline;
+}
+
 @media (max-width: 640px) {
   body {
   	font-size: 13px;

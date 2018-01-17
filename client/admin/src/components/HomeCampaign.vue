@@ -1,10 +1,10 @@
 <template>
   <div>
     <NavBar :id="this.$route.params.id"/>
-    <div v-if="selectedProspect" class="prospectDetails">
-      <p @click="selectedProspect = null">X</p>
+    <div v-if="selectedProspect" class="prospect-details">
+      <p @click="selectedProspect = null" class="quit">X</p>
       <p v-for="(value, index) in selectedProspect">
-        {{index}} : {{value}}
+        <span class="underline">{{index}}</span> : {{value}}
       </p>
     </div>
     <div class="flex">
@@ -241,6 +241,7 @@ div.prospect-list {
 div.prospect-list li {
   margin-left: calc(15px + 1.5vw);
   margin-right: calc(15px + 1.5vw);
+  cursor: pointer;
 }
 
 div.center {
@@ -305,13 +306,24 @@ div.center {
   color: #FFF;
 }
 
-.prospectDetails{
+.prospect-details{
   position: absolute;
   top: 16vh;
   left: 23vh;
-  border: 1px solid black;
+  border: 1px solid #CDCDCD;
   background-color: #FFFFFFFF;
-  padding: 0.5em;
+  box-shadow: 0 0 15px 1px rgba(0,0,0,0.1);
+  padding: 1.2em 2em;
+}
+.prospect-details .quit {
+  display: block;
+  width: 25px;
+  padding: 3px 0;
+  text-align: center;
+}
+.prospect-details .quit:hover {
+  cursor: pointer;
+  color: #F03B58;
 }
 
 button[name="export"] {
