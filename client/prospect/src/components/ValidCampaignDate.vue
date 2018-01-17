@@ -46,7 +46,30 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+* {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
 }
+h1 {
+  font-weight: 100;
+  text-align: center;
+  margin: 50px auto;
+  font-size: 2em;
+}
+a {
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  font-size: 1.2em;
+
+  margin: 10px auto;
+  display: block;
+  padding: 20px 0;
+  border: 1px solid #CDCDCD;
+  width: calc(220px + 4vw);
+}
+a:hover {
+  background-color: #F03B58;
+  color: #fff;
+}
+
 </style>

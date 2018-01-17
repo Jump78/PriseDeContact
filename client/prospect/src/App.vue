@@ -19,6 +19,34 @@ export default {
 
 <style>
 
+@font-face {
+  font-family: Avenir;
+  src: url(assets/font/avenir/AvenirNextLTPro-Regular.otf);
+  font-weight: normal;
+}
+@font-face {
+  font-family: Avenir;
+  src: url(assets/font/avenir/AvenirNextLTPro-Demi.otf);
+  font-weight: bold;
+}
+@font-face {
+  font-family: Avenir;
+  src: url(assets/font/avenir/AvenirNextLTPro-Bold.otf);
+  font-weight: 900;
+}
+@font-face {
+  font-family: Avenir;
+  src: url(assets/font/avenir/AvenirNextLTPro-It.otf);
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: Avenir;
+  src: url(assets/font/avenir/AvenirNextLTPro-DemiIt.otf);
+  font-weight: bold;
+  font-style: italic;
+} 
+
 body {
 	margin: 0;
   background-color: #FAFAFA;
