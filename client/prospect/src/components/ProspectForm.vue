@@ -152,6 +152,7 @@
 <script>
 import config from '../../config/config.json';
 import QuestionGroup from './QuestionGroup';
+import idbKeyval from 'idb-keyval';
 
 export default {
   name: 'ProspectForm',
@@ -275,18 +276,41 @@ export default {
         this.prospect.current_class = this.current_class_text
       }
 
-      fetch(config.apiEndPoint+":"+config.apiPort+"/prospect",
-      {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify(this.prospect)
-      })
-      .then(checkErrors)
-      .then((res) => this.$router.push({name:'ValidatedForm', params:{id: this.$route.params.id}}))
-      .catch(function(res){ console.log(res) })
+      let self = this;
+      if ('serviceWorker' in navigator && 'SyncManager' in window) {
+        navigator.serviceWorker.ready.then(function(reg) {
+          idbKeyval.get('prospects')
+            .then(prospects => {
+              if (prospects) {
+                prospects.push(self.prospect)
+                idbKeyval.set('prospects', prospects);
+              } else {
+                idbKeyval.set('prospects', [self.prospect]);
+              }
+              return reg.sync.register('send-data');
+            });
+        }).catch(function() {
+          // system was unable to register for a sync,
+          // this could be an OS-level restriction
+          postDataFromThePage();
+        });
+      } else {
+        // serviceworker/sync not supported
+        postDataFromThePage();
+      }
+
+      // fetch(config.apiEndPoint+":"+config.apiPort+"/prospect",
+      // {
+      //     headers: {
+      //       'Accept': 'application/json',
+      //       'Content-Type': 'application/json'
+      //     },
+      //     method: "POST",
+      //     body: JSON.stringify(this.prospect)
+      // })
+      // .then(checkErrors)
+      // .then((res) => this.$router.push({name:'ValidatedForm', params:{id: this.$route.params.id}}))
+      // .catch(function(res){ console.log(res) })
     },
     updateParamValue( param ) {
       this.prospect[param.name] = param.val
