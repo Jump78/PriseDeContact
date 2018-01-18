@@ -8,7 +8,7 @@
             <CardCampaign :campaign="item" @deleteCampaign="deleteCampaign(item._id)"/>
           </li>
           <li class="cardAddCampaign">
-            <CampaignForm @submit="addCampaign"/>
+            <CampaignForm :campaign="campaignToAdd"  @submit="addCampaign"/>
           </li>
         </ul>
       </div>
@@ -60,6 +60,7 @@ export default {
       futurCampaigns: [],
       todayCampaigns: [],
       passedCampaigns: [],
+      campaignToAdd: {}
     }
   },
   watch: {
@@ -79,6 +80,7 @@ export default {
       this.campaignService.delete(id);
      },
     addCampaign (campaign) {
+      this.campaignToAdd = {};
       this.campaignService
           .add(campaign)
           .then( res => this.populateArray(res.content));
