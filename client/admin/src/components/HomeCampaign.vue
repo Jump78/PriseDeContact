@@ -30,8 +30,9 @@
 
       <div class="chart">
         <div class="buttons">
-          <button type="button" name="gender" @click="charDataShow = 'gender'; fillData()">Sexe</button>
-          <button type="button" name="asked_class" @click="charDataShow = 'asked_class'; fillData()">Formation</button>
+          <button type="button" name="gender" @click="charDataShow = 'study_level'; fillData()">Niveau actuel</button>
+          <button type="button" name="asked_class" @click="charDataShow = 'asked_class'; fillData()">Formation démandée</button>
+          <button type="button" name="asked_class" @click="charDataShow = 'current_class'; fillData()">Formation actuelle</button>
           <button type="button" name="postcode" @click="charDataShow = 'postcode'; fillData()">Region</button>
         </div>
         <doughnut-chart :chart-data="chartData" :options="options"></doughnut-chart>
@@ -108,6 +109,7 @@ export default {
             backgroundColor: [
               'rgb(0, 100, 150)',
               'rgb(150, 0, 75)',
+              'rgb(150, 50, 75)',
             ],
             borderWidth: 1
         }]
