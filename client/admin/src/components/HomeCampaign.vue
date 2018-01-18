@@ -136,7 +136,7 @@ export default {
         'ville' : item.city,
         'tel' : item.phone,
         'niveau d\'étude' : item.study_level,
-        'formation souhaitée' : item.asked_class,
+        'formation souhaitée' : item.asked_class.replace(/-/g,' '),
         'formation actuelle' : item.current_class,
         'campagne visitée' : item.campaigns.length
       }
