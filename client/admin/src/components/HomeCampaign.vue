@@ -89,7 +89,7 @@ export default {
       const self = this;
 
       this.prospects.forEach((item) => {
-        let key = item[self.charDataShow].toString();
+        let key = item[self.charDataShow].toString().replace(/-/g,' ');
 
         if (self.charDataShow == 'postcode') {
           key = key.substring(0,2);
