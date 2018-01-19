@@ -153,11 +153,13 @@
 import config from '../../config/config.json';
 import QuestionGroup from './QuestionGroup';
 import idbKeyval from 'idb-keyval';
+import ProspectService from '../services/ProspectService';
 
 export default {
   name: 'ProspectForm',
   data () {
     return {
+      prospectService: new ProspectService(),
       current_class_text: '',
       prospect: {
         firstname: '',
@@ -292,11 +294,11 @@ export default {
         }).catch(function() {
           // system was unable to register for a sync,
           // this could be an OS-level restriction
-          postDataFromThePage();
+          this.prospectService.add(self.prospect)
         });
       } else {
         // serviceworker/sync not supported
-        postDataFromThePage();
+        this.prospectService.add(self.prospect)
       }
 
       // fetch(config.apiEndPoint+":"+config.apiPort+"/prospect",
