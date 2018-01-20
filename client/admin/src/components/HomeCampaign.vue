@@ -65,7 +65,7 @@ export default {
   name: 'HomeCampaign',
   data () {
     return {
-      formUrl : config.formUrl + ':' + config.formPort,
+      formUrl : config.formUrl,
       selectedProspect: null,
       charDataShow : 'asked_class',
       campaignService: new CampaignService(),
@@ -169,7 +169,7 @@ export default {
       }
     });
 
-    var socket = io(config.apiEndPoint+":"+config.apiPort, {query: 'roomId='+this.$route.params.id});
+    var socket = io(config.apiEndPoint, {query: 'roomId='+this.$route.params.id});
     socket.on('prospectAdd', (data) => {
       this.prospects.push(data);
       this.fillData();
