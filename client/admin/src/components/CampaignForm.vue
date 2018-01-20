@@ -1,9 +1,6 @@
 <template>
   <section>
-    <div @click="openAddCampain" v-if="!deployed" id="open-add-campain">
-      <p>+</p>
-    </div>
-    <form @submit.prevent :class="{closed : !deployed}">
+    <form @submit.prevent>
       <div>
         <label for="type">Type</label>
         <div>
@@ -59,24 +56,11 @@ export default {
   },
   data () {
     return {
-      deployed: false
     }
   },
-  created () {
-    this.deployed = this.isEdit
-  },
   methods: {
-    openAddCampain () {
-      this.deployed = true
-    },
     cancelAddCampaign () {
-      this.deployed = false
-      this.campaign = {
-        name: '',
-        type: '',
-        date: '',
-        outro_text: ''
-      }
+      this.$emit('cancel');
     },
     submitCampaign () {
       let campaignToSend = {};
@@ -100,45 +84,12 @@ section {
   overflow: hidden;
   border: 1px solid #ECECEC;
 }
-div#open-add-campain {
-  color: #777;
-  height: 60px;
-  width: 72px;
-  text-align: center;
-  cursor: pointer;
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
-  -webkit-transition:0.2s ease all;
-}
-div#open-add-campain p {
-  font-size: 3em;
-  margin: 0;
-}
-div#open-add-campain:hover {
-  color: #333;
-  width: 76px;
-  cursor: pointer;
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
-  -webkit-transition:0.2s ease all;
-}
 form {
   min-height: 130px;
   min-width: 260px;
   padding: 20px 35px;
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
-  -webkit-transition:0.2s ease all;
-}
-form.closed{
-  opacity: 0;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  min-height: 1px;
-  min-width: 1px;
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
   -webkit-transition:0.2s ease all;
 }
 form > div {
@@ -174,8 +125,8 @@ form > div > div > label.selected {
   border: 1px solid #ECECEC;
   background-color: #333350;
   color: #FFF;
-  transition:0.12s all; 
-  -moz-transition:0.12s all; 
+  transition:0.12s all;
+  -moz-transition:0.12s all;
   -webkit-transition:0.12s all;
 }
 
