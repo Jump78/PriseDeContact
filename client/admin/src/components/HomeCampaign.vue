@@ -30,8 +30,9 @@
 
       <div class="chart">
         <div class="buttons">
-          <button type="button" name="gender" @click="charDataShow = 'gender'; fillData()">Sexe</button>
-          <button type="button" name="asked_class" @click="charDataShow = 'asked_class'; fillData()">Formation</button>
+          <button type="button" name="gender" @click="charDataShow = 'study_level'; fillData()">Niveau actuel</button>
+          <button type="button" name="asked_class" @click="charDataShow = 'asked_class'; fillData()">Formation démandée</button>
+          <button type="button" name="asked_class" @click="charDataShow = 'current_class'; fillData()">Formation actuelle</button>
           <button type="button" name="postcode" @click="charDataShow = 'postcode'; fillData()">Region</button>
         </div>
         <doughnut-chart :chart-data="chartData" :options="options"></doughnut-chart>
@@ -64,7 +65,7 @@ export default {
   name: 'HomeCampaign',
   data () {
     return {
-      formUrl : config.formUrl + ':' + config.formPort,
+      formUrl : config.formUrl,
       selectedProspect: null,
       charDataShow : 'asked_class',
       campaignService: new CampaignService(),
@@ -88,7 +89,7 @@ export default {
       const self = this;
 
       this.prospects.forEach((item) => {
-        let key = item[self.charDataShow].toString();
+        let key = item[self.charDataShow].toString().replace(/-/g,' ');
 
         if (self.charDataShow == 'postcode') {
           key = key.substring(0,2);
@@ -108,6 +109,7 @@ export default {
             backgroundColor: [
               'rgb(0, 100, 150)',
               'rgb(150, 0, 75)',
+              'rgb(150, 50, 75)',
             ],
             borderWidth: 1
         }]
@@ -134,7 +136,7 @@ export default {
         'ville' : item.city,
         'tel' : item.phone,
         'niveau d\'étude' : item.study_level,
-        'formation souhaitée' : item.asked_class,
+        'formation souhaitée' : item.asked_class.replace(/-/g,' '),
         'formation actuelle' : item.current_class,
         'campagne visitée' : item.campaigns.length
       }
@@ -167,7 +169,7 @@ export default {
       }
     });
 
-    var socket = io(config.apiEndPoint+":"+config.apiPort, {query: 'roomId='+this.$route.params.id});
+    var socket = io(config.apiEndPoint, {query: 'roomId='+this.$route.params.id});
     socket.on('prospectAdd', (data) => {
       this.prospects.push(data);
       this.fillData();

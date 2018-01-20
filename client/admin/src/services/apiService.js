@@ -1,11 +1,20 @@
+/*** Import ***/
 import config from '../../config/config';
 
+/**
+ * Base class for all service
+ */
 export default class {
 
   constructor () {
-    this.baseUrl= config.apiEndPoint+':'+config.apiPort;
+    this.baseUrl= config.apiEndPoint;
   }
 
+  /**
+   * Check the http error (300 && 400)
+   * @param  Response  res request's response
+   * @return {Promise}     Return res if no probleme, else throw the error
+   */
   async checkErrors(res) {
     if(res.ok) return res;
 

@@ -8,7 +8,10 @@
             <CardCampaign :campaign="item" @deleteCampaign="deleteCampaign(item._id)"/>
           </li>
           <li class="cardAddCampaign">
-            <CampaignForm @submit="addCampaign"/>
+            <div @click="openAddCampain" v-if="!deployed" id="open-add-campain">
+              <p>+</p>
+            </div>
+            <CampaignForm class="transition" :campaign="campaignToAdd"  @submit="addCampaign" @cancel="deployed = false; campaignToAdd = {}" :class="{closed : !deployed}"/>
           </li>
         </ul>
       </div>
@@ -55,11 +58,12 @@ export default {
   data () {
     return {
       campaignService: new CampaignService(),
-
+      deployed: false,
       allCampaigns: [],
       futurCampaigns: [],
       todayCampaigns: [],
       passedCampaigns: [],
+      campaignToAdd: {}
     }
   },
   watch: {
@@ -71,6 +75,9 @@ export default {
     }
   },
   methods: {
+    openAddCampain () {
+      this.deployed = true
+    },
     goToDetail (id) {
       this.$router.push({name: 'HomeCampaign', params:{id:id}});
     },
@@ -79,6 +86,8 @@ export default {
       this.campaignService.delete(id);
      },
     addCampaign (campaign) {
+      this.campaignToAdd = {};
+      this.deployed = false;
       this.campaignService
           .add(campaign)
           .then( res => this.populateArray(res.content));
@@ -132,5 +141,46 @@ li{
   list-style: none;
   margin-left: 0.7em;
   margin-bottom: 0.75em;
+}
+
+div#open-add-campain {
+  color: #777;
+  height: 60px;
+  width: 72px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #FFF;
+  overflow: hidden;
+  border: 1px solid #ECECEC;
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
+  -webkit-transition:0.2s ease all;
+}
+div#open-add-campain p {
+  font-size: 3em;
+  margin: 0;
+}
+div#open-add-campain:hover {
+  color: #333;
+  width: 76px;
+  cursor: pointer;
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
+  -webkit-transition:0.2s ease all;
+}
+.closed{
+  opacity: 0;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  min-height: 1px;
+  min-width: 1px;
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
+  -webkit-transition:0.2s ease all;
+}
+
+.transition{
+  transition:0.2s ease all;
 }
 </style>

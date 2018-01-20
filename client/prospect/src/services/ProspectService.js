@@ -20,7 +20,7 @@ export default class extends ApiService{
       .catch( err => console.log(err) )
   }
 
-  add (campaign) {
+  add (prospect) {
     return fetch(this.baseUrl+'/'+this.ressource,
     {
       headers: {
@@ -28,14 +28,14 @@ export default class extends ApiService{
         'Content-Type': 'application/json'
       },
       method: "POST",
-      body: JSON.stringify(campaign)
+      body: JSON.stringify(prospect)
     })
     .then( this.checkErrors )
     .then( res => res.json() )
     .catch( err => console.log(err) )
   }
 
-  update (id, campaign) {
+  update (id, prospect) {
     return fetch(this.baseUrl+'/'+this.ressource+'/'+id,
     {
       headers: {
@@ -43,7 +43,7 @@ export default class extends ApiService{
         'Content-Type': 'application/json'
       },
       method: "PUT",
-      body: JSON.stringify(campaign)
+      body: JSON.stringify(prospect)
     })
     .then( this.checkErrors )
     .then( res => res.json() )

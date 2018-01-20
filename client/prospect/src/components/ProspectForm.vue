@@ -165,11 +165,14 @@ import config from '../../config/config.json';
 import QuestionGroup from './QuestionGroup';
 import RadioOption from './RadioOption';
 import RadioQuestion from './RadioQuestion';
+import idbKeyval from 'idb-keyval';
+import ProspectService from '../services/ProspectService';
 
 export default {
   name: 'ProspectForm',
   data () {
     return {
+      prospectService: new ProspectService(),
       current_class_text: '',
       prospect: {
         firstname: '',
@@ -289,18 +292,41 @@ export default {
         this.prospect.current_class = this.current_class_text
       }
 
-      fetch(config.apiEndPoint+":"+config.apiPort+"/prospect",
-      {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify(this.prospect)
-      })
-      .then(checkErrors)
-      .then((res) => this.$router.push({name:'ValidatedForm', params:{id: this.$route.params.id}}))
-      .catch(function(res){ console.log(res) })
+      let self = this;
+      if ('serviceWorker' in navigator && 'SyncManager' in window) {
+        navigator.serviceWorker.ready.then(function(reg) {
+          idbKeyval.get('prospects')
+            .then(prospects => {
+              if (prospects) {
+                prospects.push(self.prospect)
+                idbKeyval.set('prospects', prospects);
+              } else {
+                idbKeyval.set('prospects', [self.prospect]);
+              }
+              return reg.sync.register('send-data');
+            });
+        }).catch(function() {
+          // system was unable to register for a sync,
+          // this could be an OS-level restriction
+          this.prospectService.add(self.prospect)
+        });
+      } else {
+        // serviceworker/sync not supported
+        this.prospectService.add(self.prospect)
+      }
+
+      // fetch(config.apiEndPoint+":"+config.apiPort+"/prospect",
+      // {
+      //     headers: {
+      //       'Accept': 'application/json',
+      //       'Content-Type': 'application/json'
+      //     },
+      //     method: "POST",
+      //     body: JSON.stringify(this.prospect)
+      // })
+      // .then(checkErrors)
+      // .then((res) => this.$router.push({name:'ValidatedForm', params:{id: this.$route.params.id}}))
+      // .catch(function(res){ console.log(res) })
     },
     updateParamValue( param ) {
       console.log(param)

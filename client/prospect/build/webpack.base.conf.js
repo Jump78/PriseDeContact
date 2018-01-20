@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
@@ -63,5 +64,10 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  plugins: [
+  new ServiceWorkerWebpackPlugin({
+    entry: path.join(__dirname, '../src/sw.js'),
+  }),
+],
 }
