@@ -33,15 +33,15 @@
         <p for="gender" class="radio-title" v-bind:class="{ ok: prospect.gender }">Sexe</p>
         <div class="flex-options">
 
-          <div class="option" v-bind:class="{ chose: prospect.gender === 'm' }">
+          <div class="option" v-bind:class="{ choose: prospect.gender === 'm' }">
             <input v-model="prospect.gender" type="radio" name="gender" value="m" id="gender_m">
-            <label for="gender_m" v-bind:class="{ chose: prospect.gender === 'm' }">
+            <label for="gender_m" v-bind:class="{ choose: prospect.gender === 'm' }">
               Homme
             </label>
           </div>
-          <div class="option" v-bind:class="{ chose: prospect.gender === 'f' }">
+          <div class="option" v-bind:class="{ choose: prospect.gender === 'f' }">
             <input v-model="prospect.gender" type="radio" name="gender" value="f" id="gender_f">
-            <label for="gender_f" v-bind:class="{ chose: prospect.gender === 'f' }">
+            <label for="gender_f" v-bind:class="{ choose: prospect.gender === 'f' }">
               Femme
             </label>
           </div>
@@ -87,35 +87,46 @@
       </div>
 
       <div class="block-select">
-        <select class="select" name="asked_class" v-model="prospect.asked_class">
+        <select class="select" name="asked_class_categorie" v-model="prospect.asked_class_categorie">
           <option value="" selected></option>
-          <!-- <option value="dev">Dev</option>
-          <option value="designer">Designer</option> -->
-          <option value="" disabled>Prépa</option>
-          <option value="prepa-digitale">Prépa Digitale</option>
-          <option value="" disabled>Communication digitale :</option>
-          <option value="chef-de-projet-digital">Chef de projet digital</option>
-          <option value="charge-de-communication-digitale">Chargé de communication digitale</option>
-          <option value="community-manager">Community manager</option>
-          <option value="marketeur-digital">Marketeur digital</option>
-          <option value="ux-designer">UX designer</option>
-          <option value="editeur-digital-secretaire-de-redaction">Editeur digital - Secrétaire de rédaction</option>
-          <option value="responsable-strategie-et-innovation-de-la-communication">Responsable stratégie et innovation de la communication</option>
-          <option value="" disabled>Création Digitale :</option>
-          <option value="directeur-artistique-multimedia">Directeur artistique multimédia</option>
-          <option value="graphiste-multimedia–ui-designer">Graphiste multimédia – UI designer</option>
-          <option value="directeur-artistique-multimedia">Directeur artistique multimédia</option>
-          <option value="graphiste-motion-designer">Graphiste motion designer</option>
-          <option value="concepteur-realisateur-vr-et-realite-augmentee">Concepteur réalisateur VR et réalité augmentée</option>
-          Responsable stratégie et innovation de la création
-          <option value="" disabled>Développement web :</option>
-          <option value="developpeur-multimedia">Développeur multimédia</option>
-          <option value="developpeur-d-applications-mobiles">Développeur d’applications mobiles</option>
-          <option value="developpeur-front-end">Développeur front-end</option>
-          <option value="game-programmeur">Game programmeur</option>
-          <option value="responsable-stratégie-et-innovation-digitales">Responsable stratégie et innovation digitales</option>
+          <option value="prepa" >Prépa</option>
+          <option value="communication-digitale" >Communication digitale</option>
+          <option value="creation-digitale" >Création Digitale</option>
+          <option value="developpement-web" >Développement web</option>
         </select>
-        <label for="asked_class" v-bind:class="{ ok: prospect.asked_class }">Formation souhaitée</label>
+        <label for="asked_class" v-bind:class="{ up: prospect.asked_class_categorie, ok: prospect.asked_class }">Formation souhaitée</label>
+      </div>
+      <div class="block-input-radio">
+        <!-- prepa answer -->
+        <div class="flex-options" id="pre" v-if="prospect.asked_class_categorie == 'prepa'">
+          <radio-option @send="updateParamValue" name="asked_class" value="prepa-digitale" label="Prépa Digitale" v-bind:class="{ choose: prospect.asked_class === 'prepa-digitale' }"></radio-option>
+        </div>
+        <!-- Communication digitale answers -->
+        <div class="flex-options" id="com-dig" v-if="prospect.asked_class_categorie == 'communication-digitale'">
+          <radio-option @send="updateParamValue" name="asked_class" value="chef-de-projet-digital" label="Chef de projet digitale" v-bind:class="{ choose: prospect.asked_class === 'chef-de-projet-digital' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="charge-de-communication-digitale" label="Chargé de communication digitale" v-bind:class="{ choose: prospect.asked_class === 'charge-de-communication-digitale' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="community-manager" label="Community manager" v-bind:class="{ choose: prospect.asked_class === 'community-manager' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="marketeur-digital" label="Marketeur digital" v-bind:class="{ choose: prospect.asked_class === 'marketeur-digital' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="ux-designer" label="UX designer" v-bind:class="{ choose: prospect.asked_class === 'ux-designer' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="editeur-digital-secretaire-de-redaction" label="Editeur digital - Secrétaire de rédaction" v-bind:class="{ choose: prospect.asked_class === 'editeur-digital-secretaire-de-redaction' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="responsable-strategie-et-innovation-de-la-communication" label="Responsable stratégie et innovation de la communication" v-bind:class="{ choose: prospect.asked_class === 'responsable-strategie-et-innovation-de-la-communication' }"></radio-option>
+        </div>
+
+        <div class="flex-options" id="com-dig" v-if="prospect.asked_class_categorie == 'creation-digitale'">
+          <radio-option @send="updateParamValue" name="asked_class" value="directeur-artistique-multimedia" label="Directeur artistique multimédia" v-bind:class="{ choose: prospect.asked_class === 'directeur-artistique-multimedia' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="graphiste-multimedia–ui-designer" label="Graphiste multimédia – UI designer" v-bind:class="{ choose: prospect.asked_class === 'graphiste-multimedia–ui-designer' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="graphiste-motion-designer" label="Graphiste motion designer" v-bind:class="{ choose: prospect.asked_class === 'graphiste-motion-designer' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="concepteur-realisateur-vr-et-realite-augmentee" label="Concepteur réalisateur VR et réalité augmentée" v-bind:class="{ choose: prospect.asked_class === 'concepteur-realisateur-vr-et-realite-augmentee' }"></radio-option>
+        </div>
+
+        <div class="flex-options" id="dev-web" v-if="prospect.asked_class_categorie == 'developpement-web'">
+          <radio-option @send="updateParamValue" name="asked_class" value="developpeur-multimedia" label="Développeur multimédia" v-bind:class="{ choose: prospect.asked_class === 'developpeur-multimedia' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="developpeur-d-applications-mobiles" label="Développeur d’applications mobiles" v-bind:class="{ choose: prospect.asked_class === 'developpeur-d-applications-mobiles' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="developpeur-front-end" label="Développeur front-end" v-bind:class="{ choose: prospect.asked_class === 'developpeur-front-end' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="game-programmeur" label="Game programmeur" v-bind:class="{ choose: prospect.asked_class === 'game-programmeur' }"></radio-option>
+          <radio-option @send="updateParamValue" name="asked_class" value="responsable-stratégie-et-innovation-digitales" label="Responsable stratégie et innovation digitales" v-bind:class="{ choose: prospect.asked_class === 'responsable-stratégie-et-innovation-digitales' }"></radio-option>
+        </div>
+
       </div>
 
       <div class="block-select">
@@ -152,6 +163,8 @@
 <script>
 import config from '../../config/config.json';
 import QuestionGroup from './QuestionGroup';
+import RadioOption from './RadioOption';
+import RadioQuestion from './RadioQuestion';
 
 export default {
   name: 'ProspectForm',
@@ -166,6 +179,7 @@ export default {
         city: '',
         email: '',
         study_level: '',
+        asked_class_categorie: '',
         asked_class: '',
         current_class: '',
         phone:'',
@@ -252,7 +266,7 @@ export default {
     }
   },
   components: {
-    QuestionGroup
+    QuestionGroup, RadioOption, RadioQuestion
   },
 /*  props: {
     prospect: {
@@ -289,7 +303,13 @@ export default {
       .catch(function(res){ console.log(res) })
     },
     updateParamValue( param ) {
+      console.log(param)
       this.prospect[param.name] = param.val
+    }
+  },
+  watch: {
+    'prospect.asked_class_categorie': function() {
+      this.prospect.asked_class = ''
     }
   }
 }
@@ -456,6 +476,12 @@ input:-webkit-autofill:focus {
     -moz-transition:0.15s ease all;
     -webkit-transition:0.15s ease all;
   }
+  .global-questions-zone .block-select label.up {
+    bottom: 2em;
+    transition:0.15s ease all;
+    -moz-transition:0.15s ease all;
+    -webkit-transition:0.15s ease all;
+  }
   .global-questions-zone .block-input-text input:focus + label,
   .global-questions-zone .block-input-text input:valid + label {
     position: relative;
@@ -495,8 +521,8 @@ input:-webkit-autofill:focus {
         border: 1px solid #B0B0B0;
         background-color: #FBFBFB;
       }
-      div.flex-options .option .chose,
-      div.flex-options .option .chose:hover {
+      div.flex-options .choose label,
+      div.flex-options .choose:hover label{
         background-color: #2C314E; /* blue EcoleM */
         border-color: #2C314E; /* blue EcoleM */
         color: #FFFFFF;
