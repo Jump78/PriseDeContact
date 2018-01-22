@@ -152,6 +152,10 @@
         <label for="phone">Téléphone</label>
       </div>
 
+      <div class="block-input-checkbox">
+        <input type="checkbox" id="wanna_newsletter" name="wanna_newsletter" value="true" v-model="prospect.wanna_newsletter"> <label for="wanna_newsletter">je veux reçevoir les dernières actus de l'école multimédia</label>
+      </div>
+
       <div class="block-input-submit">
         <input type="submit" name="submit" value="Envoyer">
       </div>
@@ -185,7 +189,8 @@ export default {
         asked_class_categorie: '',
         asked_class: '',
         current_class: '',
-        phone:'',
+        phone: '',
+        wanna_newsletter: false,
         campaign_id: this.$route.params.id
       },
       nameQuestions: [
@@ -416,6 +421,9 @@ opacity: 0.2;
 
 form {
   font-size: 1.25em;
+}
+label {
+  user-select: none;
 }
 .title-box,
 .global-questions-zone {
