@@ -7,8 +7,9 @@
       </div>
     </div>
 
-    <div v-if="!campaigns.length">
+    <div v-if="!campaigns.length" class="no-campaign">
       <p>Aucun evenement aujourd'hui</p>
+      <!-- <p>Pour découvrir les formations de l'Ecole Multimédia, rendez-vous sur <a href="https://www.ecole-multimedia.com/">www.ecole-multimédia.com</a></p> -->
     </div>
   </section>
 </template>
@@ -70,6 +71,26 @@ a {
 a:hover {
   background-color: #F03B58;
   color: #fff;
+}
+
+div.no-campaign {
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  font-size: 1.2em;
+
+  margin: calc(20px + 2vh) auto;
+  display: block;
+  padding: calc(20px + 3vh) calc(30px + 3vw);
+  border: 1px solid #CDCDCD;
+  width: calc(220px + 4vw);
+}
+
+@media (max-width: 640px){
+  div.no-campaign {
+    border-right: none;
+    border-left: none;
+  }
 }
 
 </style>
