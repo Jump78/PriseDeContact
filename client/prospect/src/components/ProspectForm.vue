@@ -315,6 +315,7 @@ export default {
         this.prospectService.add(self.prospect)
       }
 
+      this.$router.push({name:'ValidatedForm', params:{id: this.$route.params.id}})
       // fetch(config.apiEndPoint+":"+config.apiPort+"/prospect",
       // {
       //     headers: {
