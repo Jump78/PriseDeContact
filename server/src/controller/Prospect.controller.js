@@ -65,6 +65,15 @@ module.exports = {
 			})
 	},
 
+	addOneCampaigntId : ( idProspect, idCampaign ) => {
+		return Prospect
+			.findOne( {_id: idProspect} )
+			.then( ppct => {
+				ppct.campaigns.push( idCampaign )
+				return ppct.save()
+			})
+	},
+
 	removeOneCampaign : ( req, res ) => {
 		Prospect
 			.findOne( {_id: req.params.prospectid} )
@@ -108,6 +117,11 @@ module.exports = {
 			})
 	},
 
+	findByEmail : ( email ) => {
+		return Prospect
+			.findOne( {email: email} )
+	},
+
 	create : ( req, res, next ) => {
 		let newPpct = req.body
 		newPpct.campaigns = [req.body.campaign_id]
@@ -127,6 +141,11 @@ module.exports = {
 				next()
 			})
 			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
+	},
+	createData : ( data ) => {
+		const newProspect = new Prospect( data )
+		//console.log("newPpct", newPpct)
+		return newProspect.save()
 	},
 
 	update : ( req, res ) => {

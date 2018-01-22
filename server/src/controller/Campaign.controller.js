@@ -66,6 +66,15 @@ module.exports = {
 			})
 	},
 
+	addOneProspectId : ( idCampaign, idProspect ) => {
+		return Campaign
+			.findOne( {_id: idCampaign} )
+			.then( camp => {
+				camp.prospects.push( idProspect )
+				return camp.save()
+			})
+	},
+
 	removeOneProspect : ( req, res ) => {
 		Campaign
 			.findOne( {_id: req.params.campaignid} )
