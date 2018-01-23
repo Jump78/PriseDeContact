@@ -1,15 +1,5 @@
 <template>
   <section>
-    <!-- <div class="grid-5 bg-w global-bar-zone">
-      <div class="col-1"></div>
-      <div class="col-3">
-        <div id="bar">
-          <span id="progress"></span>
-        </div>
-      </div>
-      <div class="col-1"></div>
-    </div> -->
-
     <div class="title-box">
       <span class="red-tag"></span>
       <h2>L'Ecole Multimedia</h2>
@@ -17,154 +7,142 @@
 
     <div class="flex global-questions-zone">
       <form class="form" action="#" method="post" @submit.prevent = "onSubmit">
+        <div class="block-input-text">
+          <input v-model="prospect.email" type="email" name="email" required>
+          <label for="email">Email</label>
+        </div>
 
-        <!-- <question-group @send="updateParamValue" number="0" title="Qui êtes vous ?" :questions="nameQuestions" ></question-group>
+        <div class="block-input-radio">
+          <p for="gender" class="radio-title" v-bind:class="{ ok: prospect.gender }">Sexe</p>
+          <div class="flex-options">
 
-        <question-group @send="updateParamValue" number="1" title="Votre formation" :questions="studyQuestions" ></question-group>
-
-        <question-group @send="updateParamValue" number="2" title="Coordonnés" :questions="coordinateQuestions" ></question-group> -->
-
-      <div class="block-input-text">
-        <input v-model="prospect.email" type="email" name="email" required>
-        <label for="email">Email</label>
-      </div>
-
-      <div class="block-input-radio">
-        <p for="gender" class="radio-title" v-bind:class="{ ok: prospect.gender }">Sexe</p>
-        <div class="flex-options">
-
-          <div class="option" v-bind:class="{ choose: prospect.gender === 'm' }">
-            <input v-model="prospect.gender" type="radio" name="gender" value="m" id="gender_m">
-            <label for="gender_m" v-bind:class="{ choose: prospect.gender === 'm' }">
-              Homme
-            </label>
-          </div>
-          <div class="option" v-bind:class="{ choose: prospect.gender === 'f' }">
-            <input v-model="prospect.gender" type="radio" name="gender" value="f" id="gender_f">
-            <label for="gender_f" v-bind:class="{ choose: prospect.gender === 'f' }">
-              Femme
-            </label>
+            <div class="option" v-bind:class="{ choose: prospect.gender === 'm' }">
+              <input v-model="prospect.gender" type="radio" name="gender" value="m" id="gender_m">
+              <label for="gender_m" v-bind:class="{ choose: prospect.gender === 'm' }">
+                Homme
+              </label>
+            </div>
+            <div class="option" v-bind:class="{ choose: prospect.gender === 'f' }">
+              <input v-model="prospect.gender" type="radio" name="gender" value="f" id="gender_f">
+              <label for="gender_f" v-bind:class="{ choose: prospect.gender === 'f' }">
+                Femme
+              </label>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="block-input-text">
-        <input v-model="prospect.firstname" type="text" name="firstname" required>
-        <label for="firstname">Prénom</label>
-      </div>
-
-      <div class="block-input-text">
-        <input v-model="prospect.lastname" type="text" name="lastname" required>
-        <label for="lastname">Nom</label>
-      </div>
-
-      <div class="block-input-text">
-        <input v-model="prospect.adress" type="text" name="adress" required>
-        <label for="adress">Adresse</label>
-      </div>
-
-      <div class="block-input-text">
-        <input v-model="prospect.postcode" type="text" name="postcode" required>
-        <label for="postcode">Code postal</label>
-      </div>
-
-      <div class="block-input-text">
-        <input v-model="prospect.city" type="text" name="city" required>
-        <label for="city">Ville</label>
-      </div>
-
-      <div class="block-select">
-        <select class="select" name="study_level" v-model="prospect.study_level">
-          <option value="" selected></option>
-          <option value="bac">Bac</option>
-          <option value="bac+1">Bac+1</option>
-          <option value="bac+2">Bac+2</option>
-          <option value="bac+3">Bac+3</option>
-          <option value="bac+4">Bac+4</option>
-          <option value="bac+5">Bac+5</option>
-        </select>
-        <label for="study_level" v-bind:class="{ ok: prospect.study_level }">Niveau d'études</label>
-      </div>
-
-      <div class="block-select">
-        <select class="select" name="asked_class_categorie" v-model="prospect.asked_class_categorie">
-          <option value="" selected></option>
-          <option value="prepa" >Prépa</option>
-          <option value="communication-digitale" >Communication digitale</option>
-          <option value="creation-digitale" >Création Digitale</option>
-          <option value="developpement-web" >Développement web</option>
-        </select>
-        <label for="asked_class" v-bind:class="{ up: prospect.asked_class_categorie, ok: prospect.asked_class }">Formation souhaitée</label>
-      </div>
-      <div class="block-input-radio">
-        <!-- prepa answer -->
-        <div class="flex-options" id="pre" v-if="prospect.asked_class_categorie == 'prepa'">
-          <radio-option @send="updateParamValue" name="asked_class" value="prepa-digitale" label="Prépa Digitale" v-bind:class="{ choose: prospect.asked_class === 'prepa-digitale' }"></radio-option>
-        </div>
-        <!-- Communication digitale answers -->
-        <div class="flex-options" id="com-dig" v-if="prospect.asked_class_categorie == 'communication-digitale'">
-          <radio-option @send="updateParamValue" name="asked_class" value="chef-de-projet-digital" label="Chef de projet digitale" v-bind:class="{ choose: prospect.asked_class === 'chef-de-projet-digital' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="charge-de-communication-digitale" label="Chargé de communication digitale" v-bind:class="{ choose: prospect.asked_class === 'charge-de-communication-digitale' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="community-manager" label="Community manager" v-bind:class="{ choose: prospect.asked_class === 'community-manager' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="marketeur-digital" label="Marketeur digital" v-bind:class="{ choose: prospect.asked_class === 'marketeur-digital' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="ux-designer" label="UX designer" v-bind:class="{ choose: prospect.asked_class === 'ux-designer' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="editeur-digital-secretaire-de-redaction" label="Editeur digital - Secrétaire de rédaction" v-bind:class="{ choose: prospect.asked_class === 'editeur-digital-secretaire-de-redaction' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="responsable-strategie-et-innovation-de-la-communication" label="Responsable stratégie et innovation de la communication" v-bind:class="{ choose: prospect.asked_class === 'responsable-strategie-et-innovation-de-la-communication' }"></radio-option>
+        <div class="block-input-text">
+          <input v-model="prospect.firstname" type="text" name="firstname" required>
+          <label for="firstname">Prénom</label>
         </div>
 
-        <div class="flex-options" id="com-dig" v-if="prospect.asked_class_categorie == 'creation-digitale'">
-          <radio-option @send="updateParamValue" name="asked_class" value="directeur-artistique-multimedia" label="Directeur artistique multimédia" v-bind:class="{ choose: prospect.asked_class === 'directeur-artistique-multimedia' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="graphiste-multimedia–ui-designer" label="Graphiste multimédia – UI designer" v-bind:class="{ choose: prospect.asked_class === 'graphiste-multimedia–ui-designer' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="graphiste-motion-designer" label="Graphiste motion designer" v-bind:class="{ choose: prospect.asked_class === 'graphiste-motion-designer' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="concepteur-realisateur-vr-et-realite-augmentee" label="Concepteur réalisateur VR et réalité augmentée" v-bind:class="{ choose: prospect.asked_class === 'concepteur-realisateur-vr-et-realite-augmentee' }"></radio-option>
+        <div class="block-input-text">
+          <input v-model="prospect.lastname" type="text" name="lastname" required>
+          <label for="lastname">Nom</label>
         </div>
 
-        <div class="flex-options" id="dev-web" v-if="prospect.asked_class_categorie == 'developpement-web'">
-          <radio-option @send="updateParamValue" name="asked_class" value="developpeur-multimedia" label="Développeur multimédia" v-bind:class="{ choose: prospect.asked_class === 'developpeur-multimedia' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="developpeur-d-applications-mobiles" label="Développeur d’applications mobiles" v-bind:class="{ choose: prospect.asked_class === 'developpeur-d-applications-mobiles' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="developpeur-front-end" label="Développeur front-end" v-bind:class="{ choose: prospect.asked_class === 'developpeur-front-end' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="game-programmeur" label="Game programmeur" v-bind:class="{ choose: prospect.asked_class === 'game-programmeur' }"></radio-option>
-          <radio-option @send="updateParamValue" name="asked_class" value="responsable-stratégie-et-innovation-digitales" label="Responsable stratégie et innovation digitales" v-bind:class="{ choose: prospect.asked_class === 'responsable-stratégie-et-innovation-digitales' }"></radio-option>
+        <div class="block-input-text">
+          <input v-model="prospect.adress" type="text" name="adress" required>
+          <label for="adress">Adresse</label>
         </div>
 
-      </div>
+        <div class="block-input-text">
+          <input v-model="prospect.postcode" type="text" name="postcode" required>
+          <label for="postcode">Code postal</label>
+        </div>
 
-      <div class="block-select">
-          <select class="select" name="current_class" v-model="prospect.current_class"required>
-          <option value="bac">Bac</option>
-          <option value="bacpro">Bac pro</option>
-          <option value="bts">BTS</option>
-          <option value="dut">DUT</option>
-          <option value="license">License</option>
-          <option value="master">Master</option>
-          <option value="autre">Autre</option>
-        </select>
-        <label for="current_class" v-bind:class="{ ok: prospect.current_class }">Formation actuelle</label>
-      </div>
+        <div class="block-input-text">
+          <input v-model="prospect.city" type="text" name="city" required>
+          <label for="city">Ville</label>
+        </div>
 
-      <div class="block-input-text other-class" v-bind:class="{ show: prospect.current_class == 'autre'}">
-        <input type="text" name="current_class_text" v-model="current_class_text" :required = "prospect.current_class == 'autre'">
-        <label for="current_class_text">Entrez votre formation</label>
-      </div>
+        <div class="block-select">
+          <select class="select" name="study_level" v-model="prospect.study_level">
+            <option value="bac">Bac</option>
+            <option value="bac+1">Bac+1</option>
+            <option value="bac+2">Bac+2</option>
+            <option value="bac+3">Bac+3</option>
+            <option value="bac+4">Bac+4</option>
+            <option value="bac+5">Bac+5</option>
+          </select>
+          <label for="study_level" v-bind:class="{ ok: prospect.study_level }">Niveau d'études</label>
+        </div>
 
-      <div class="block-input-text">
-        <input type="text" name="phone" v-model="prospect.phone" required>
-        <label for="phone">Téléphone</label>
-      </div>
+        <div class="block-select">
+          <select class="select" name="asked_class_categorie" v-model="prospect.asked_class_categorie">
+            <option value="prepa" >Prépa</option>
+            <option value="communication-digitale" >Communication digitale</option>
+            <option value="creation-digitale" >Création Digitale</option>
+            <option value="developpement-web" >Développement web</option>
+          </select>
+          <label for="asked_class" v-bind:class="{ up: prospect.asked_class_categorie, ok: prospect.asked_class }">Formation souhaitée</label>
+        </div>
+        <div class="block-input-radio">
+          <!-- prepa answer -->
+          <div class="flex-options" id="pre" v-if="prospect.asked_class_categorie == 'prepa'">
+            <radio-option @send="updateParamValue" name="asked_class" value="prepa-digitale" label="Prépa Digitale" v-bind:class="{ choose: prospect.asked_class === 'prepa-digitale' }"></radio-option>
+          </div>
+          <!-- Communication digitale answers -->
+          <div class="flex-options" id="com-dig" v-if="prospect.asked_class_categorie == 'communication-digitale'">
+            <radio-option @send="updateParamValue" name="asked_class" value="chef-de-projet-digital" label="Chef de projet digitale" v-bind:class="{ choose: prospect.asked_class === 'chef-de-projet-digital' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="charge-de-communication-digitale" label="Chargé de communication digitale" v-bind:class="{ choose: prospect.asked_class === 'charge-de-communication-digitale' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="community-manager" label="Community manager" v-bind:class="{ choose: prospect.asked_class === 'community-manager' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="marketeur-digital" label="Marketeur digital" v-bind:class="{ choose: prospect.asked_class === 'marketeur-digital' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="ux-designer" label="UX designer" v-bind:class="{ choose: prospect.asked_class === 'ux-designer' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="editeur-digital-secretaire-de-redaction" label="Editeur digital - Secrétaire de rédaction" v-bind:class="{ choose: prospect.asked_class === 'editeur-digital-secretaire-de-redaction' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="responsable-strategie-et-innovation-de-la-communication" label="Responsable stratégie et innovation de la communication" v-bind:class="{ choose: prospect.asked_class === 'responsable-strategie-et-innovation-de-la-communication' }"></radio-option>
+          </div>
 
-      <div class="block-input-submit">
-        <input type="submit" name="submit" value="Envoyer">
-      </div>
+          <div class="flex-options" id="com-dig" v-if="prospect.asked_class_categorie == 'creation-digitale'">
+            <radio-option @send="updateParamValue" name="asked_class" value="directeur-artistique-multimedia" label="Directeur artistique multimédia" v-bind:class="{ choose: prospect.asked_class === 'directeur-artistique-multimedia' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="graphiste-multimedia–ui-designer" label="Graphiste multimédia – UI designer" v-bind:class="{ choose: prospect.asked_class === 'graphiste-multimedia–ui-designer' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="graphiste-motion-designer" label="Graphiste motion designer" v-bind:class="{ choose: prospect.asked_class === 'graphiste-motion-designer' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="concepteur-realisateur-vr-et-realite-augmentee" label="Concepteur réalisateur VR et réalité augmentée" v-bind:class="{ choose: prospect.asked_class === 'concepteur-realisateur-vr-et-realite-augmentee' }"></radio-option>
+          </div>
+
+          <div class="flex-options" id="dev-web" v-if="prospect.asked_class_categorie == 'developpement-web'">
+            <radio-option @send="updateParamValue" name="asked_class" value="developpeur-multimedia" label="Développeur multimédia" v-bind:class="{ choose: prospect.asked_class === 'developpeur-multimedia' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="developpeur-d-applications-mobiles" label="Développeur d’applications mobiles" v-bind:class="{ choose: prospect.asked_class === 'developpeur-d-applications-mobiles' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="developpeur-front-end" label="Développeur front-end" v-bind:class="{ choose: prospect.asked_class === 'developpeur-front-end' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="game-programmeur" label="Game programmeur" v-bind:class="{ choose: prospect.asked_class === 'game-programmeur' }"></radio-option>
+            <radio-option @send="updateParamValue" name="asked_class" value="responsable-stratégie-et-innovation-digitales" label="Responsable stratégie et innovation digitales" v-bind:class="{ choose: prospect.asked_class === 'responsable-stratégie-et-innovation-digitales' }"></radio-option>
+          </div>
+
+        </div>
+
+        <div class="block-select">
+            <select class="select" name="current_class" v-model="prospect.current_class"required>
+            <option value="bac">Bac</option>
+            <option value="bacpro">Bac pro</option>
+            <option value="bts">BTS</option>
+            <option value="dut">DUT</option>
+            <option value="license">License</option>
+            <option value="master">Master</option>
+            <option value="other">Autre</option>
+          </select>
+          <label for="current_class" v-bind:class="{ ok: prospect.current_class }">Formation actuelle</label>
+        </div>
+
+        <div class="block-input-text other-class" v-bind:class="{ show: prospect.current_class == 'autre'}">
+          <input type="text" name="current_class_text" v-model="current_class_text" :required = "prospect.current_class == 'autre'">
+          <label for="current_class_text">Entrez votre formation</label>
+        </div>
+
+        <div class="block-input-text">
+          <input type="text" name="phone" v-model="prospect.phone" required>
+          <label for="phone">Téléphone</label>
+        </div>
+
+        <div class="block-input-submit">
+          <input type="submit" name="submit" value="Envoyer">
+        </div>
       </form>
     </div>
   </section>
 </template>
 
 <script>
-import config from '../../config/config.json';
-import QuestionGroup from './QuestionGroup';
 import RadioOption from './RadioOption';
-import RadioQuestion from './RadioQuestion';
 import idbKeyval from 'idb-keyval';
 import ProspectService from '../services/ProspectService';
 
@@ -188,122 +166,30 @@ export default {
         phone:'',
         campaign_id: this.$route.params.id
       },
-      nameQuestions: [
-        {
-          type: 'text',
-          content: {
-            type: 'text',
-            name: 'firstname',
-            title: 'Prénom',
-            placeholder: 'Doe'
-          }
-        },
-        {
-          type: 'text',
-          content: {
-            type: 'text',
-            name: 'lastname',
-            title: 'Nom',
-            placeholder: 'John'
-          }
-        }
-      ],
-      studyQuestions: [
-        {
-          type: 'radio',
-          content: {
-            name: 'study_level',
-            title: 'Niveau d\'études',
-            options: [
-              { label: 'Bac+1', value: 'bac+1' },
-              { label: 'Bac+2', value: 'bac+2' },
-              { label: 'Bac+3', value: 'bac+3' }
-            ]
-          }
-        },
-        {
-          type: 'text',
-          content: {
-            type: 'text',
-            name: 'current_class',
-            title: 'Formation actuelle',
-            placeholder: 'DUT, bac scientifique...'
-          }
-        },
-        {
-          type: 'radio',
-          content: {
-            name: 'asked_class',
-            title: 'Formation souhaitée',
-            options: [
-              { label: 'Ba1', value: 'ba1' },
-              { label: 'Ba2', value: 'ba2' },
-              { label: 'Ba3', value: 'ba3' }
-            ]
-          }
-        }
-      ],
-      coordinateQuestions: [
-        {
-          type: 'radio',
-          content: {
-            name: 'panana',
-            title: 'Niveau d\'études',
-            options: [
-              { label: 'Bac+1', value: 'bac+1' },
-              { label: 'Bac+2', value: 'bac+2' },
-              { label: 'Bac+3', value: 'bac+3' }
-            ]
-          }
-        },
-        {
-          type: 'text',
-          content: {
-            type: 'text',
-            name: 'current_class',
-            title: 'Formation actuelle',
-            placeholder: 'DUT, bac scientifique...'
-          }
-        }
-      ]
     }
   },
   components: {
-    QuestionGroup, RadioOption, RadioQuestion
+    RadioOption
   },
-/*  props: {
-    prospect: {
-      firstname: '',
-      lastname: '',
-      adress: '',
-      postcode: '',
-      city: '',
-      email: '',
-      study_level: '',
-      asked_class: '',
-      current_class: '',
-      phone:'',
-      campaign_id: this.$route.params.id
-    }
-  },*/
   methods: {
     onSubmit () {
-      if (this.current_class_text != '' && this.prospect.current_class == 'autre') {
-        this.prospect.current_class = this.current_class_text
+      //Check if the prospect has selected the "other" option of "current_class" select
+      if (this.current_class_text != '' && this.prospect.current_class == 'other') {
+        this.prospect.current_class = this.current_class_text //Set the current_class class value to the value write by the prospect
       }
 
-      let self = this;
-      if ('serviceWorker' in navigator && 'SyncManager' in window) {
+      let self = this; //Save the context
+      if ('serviceWorker' in navigator && 'SyncManager' in window) { //Check if serviceWorker and Sync is supported
         navigator.serviceWorker.ready.then(function(reg) {
-          idbKeyval.get('prospects')
+          idbKeyval.get('prospects') //Get prospects from the cach
             .then(prospects => {
-              if (prospects) {
-                prospects.push(self.prospect)
-                idbKeyval.set('prospects', prospects);
-              } else {
-                idbKeyval.set('prospects', [self.prospect]);
+              if (prospects) { //We already have some prospect
+                prospects.push(self.prospect) //We push the new one
+                idbKeyval.set('prospects', prospects); //And save the array
+              } else { //We haven't prospect
+                idbKeyval.set('prospects', [self.prospect]); //We save a array with the prospect inside
               }
-              return reg.sync.register('send-data');
+              return reg.sync.register('send-data'); //Register the send-data event in service worker
             });
         }).catch(function() {
           // system was unable to register for a sync,
@@ -315,22 +201,12 @@ export default {
         this.prospectService.add(self.prospect)
       }
 
+      //Redirection to end screen
       this.$router.push({name:'ValidatedForm', params:{id: this.$route.params.id}})
-      // fetch(config.apiEndPoint+":"+config.apiPort+"/prospect",
-      // {
-      //     headers: {
-      //       'Accept': 'application/json',
-      //       'Content-Type': 'application/json'
-      //     },
-      //     method: "POST",
-      //     body: JSON.stringify(this.prospect)
-      // })
-      // .then(checkErrors)
-      // .then((res) => this.$router.push({name:'ValidatedForm', params:{id: this.$route.params.id}}))
-      // .catch(function(res){ console.log(res) })
     },
+
+    // Update a prospect's props
     updateParamValue( param ) {
-      console.log(param)
       this.prospect[param.name] = param.val
     }
   },
@@ -340,81 +216,10 @@ export default {
     }
   }
 }
-
-async function checkErrors(resp) {
-  if(resp.ok) return resp;
-
-  let errorMsg = `ERROR ${resp.status} (${resp.statusText})`;
-  let serverText = await resp.text();
-  if(serverText) errorMsg = `${errorMsg}: ${serverText}`;
-
-  var error = new Error(errorMsg);
-  error.response = resp;
-  throw error;
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-/* section {
-  height: 92vh;
-  max-height: 92vh;
-}
-
-form {
-  font-size: 1.2em;
-  display: flex;
-}
-form>question-group {
-  width: 99.9vw;
-}
-
-input,
-select,
-button,
-input:focus,
-select:focus,
-button:focus {
-  outline: none;
-  border: none;
-}
-
-.flex {
-  display: flex;
-  width: 100vw;
-  overflow: hidden;
-}
-
-div#bar {
-  display: block;
-  background-color: #EEE;
-  width: 100%;
-  height: 1.2vh;
-  margin: 1.5vh auto 0 auto;
-}
-span#progress {
-  display: block;
-  background-color: #AAA;
-  width: 20%;
-  height: 100%;
-}
-
-.block-input-text label, .block-select label{
-  display: block;
-  width: 150px;
-  float: left;
-}
-
-.block-input-text, .block-select, .block-input-submit{
-opacity: 0.2;
-  margin-top: 0.5em;
-}
-
-.focus{
-  opacity: 1
-}*/
-
 form {
   font-size: 1.25em;
 }
