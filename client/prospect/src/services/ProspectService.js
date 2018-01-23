@@ -1,11 +1,19 @@
 import ApiService from './apiService';
 
+/**
+ * Prospect service class
+ * @type {Class}
+ */
 export default class extends ApiService{
   constructor () {
     super();
     this.ressource = 'prospect';
   }
 
+  /**
+   * Get all prospect from the server
+   * @return {Promise} JSON's Request response
+   */
   getAll () {
     return fetch(this.baseUrl+'/'+this.ressource)
       .then( this.checkErrors )
@@ -13,6 +21,11 @@ export default class extends ApiService{
       .catch( err => console.log(err) )
   }
 
+  /**
+   * Get the prospect with this id
+   * @param  {int} id Prospect's id
+   * @return {Promise} JSON's Request response
+   */
   find (id) {
     return fetch(this.baseUrl+'/'+this.ressource+'/'+id)
       .then( this.checkErrors )
@@ -20,6 +33,11 @@ export default class extends ApiService{
       .catch( err => console.log(err) )
   }
 
+  /**
+   * Add one prospect
+   * @param {[type]} prospect The prospect's data
+   * @return {Promise} JSON's Request response
+   */
   add (prospect) {
     return fetch(this.baseUrl+'/'+this.ressource,
     {
@@ -35,6 +53,12 @@ export default class extends ApiService{
     .catch( err => console.log(err) )
   }
 
+  /**
+   * Update the prospect
+   * @param  {int} id       Prospect's id
+   * @param  {obj} prospect The new data
+   * @return {Promise} JSON's Request response
+   */
   update (id, prospect) {
     return fetch(this.baseUrl+'/'+this.ressource+'/'+id,
     {
@@ -50,6 +74,11 @@ export default class extends ApiService{
     .catch( err => console.log(err) )
   }
 
+  /**
+   * Delete the prospect
+   * @param  {int} id   The prospect's id
+   * @return {Promise} JSON's Request response
+   */
   delete (id) {
     return fetch(this.baseUrl+'/'+this.ressource+'/'+id,
     {
