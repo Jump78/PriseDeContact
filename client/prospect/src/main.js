@@ -4,6 +4,7 @@ import router from './router'
 
 import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
+// Register the serviceWorker if he's supported by the navigator
 if ('serviceWorker' in navigator) {
   const registration = runtime.register();
 }
