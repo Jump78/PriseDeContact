@@ -4,12 +4,12 @@
     <p v-if="message" class="message">{{message}}</p>
     <form @submit.prevent="login">
       <div class="group-input">
-        <input type="email" name="email" v-model="data.login" v-bind:class="{ ok: data.login }" required>
+        <input type="email" name="email" v-model="credentials.login" v-bind:class="{ ok: credentials.login }" required>
         <label for="email">Email</label>
       </div>
 
       <div class="group-input">
-        <input type="password" name="password" v-model="data.password" required>
+        <input type="password" name="password" v-model="credentials.password" required>
         <label for="password">Mot de passe</label>
       </div>
 
@@ -21,47 +21,37 @@
 </template>
 
 <script>
-import config from '../../config/config';
+import AdminService from '../services/AdminService';
 
 export default {
   name: 'Login',
   data () {
     return {
+      adminService: new AdminService(),
       message: '',
-      data:{
+      credentials:{
         login:'',
         password: ''
       }
     }
   },
   methods: {
-    async login () {
-      await fetch(config.apiEndPoint+'/admin/login',{
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        method: "POST",
-        body: JSON.stringify(this.data)
-      })
-      .then( res => {
-        if (!res.ok) {
-          this.message = "Erreur serveur"
-          return false;
-        }
-
-        let json = res.json().then(json => {
-          if (json.error) {
-            this.message = json.message;
-            return false;
+    login () {
+      this.adminService.login(this.credentials)
+      .then( json => {
+        if (json.error) { //Check errors
+          if (json.message == "login / password couple not found") {
+            this.message = "L'adresse email et le mot de passe ne correspondent pas";
           } else {
-            sessionStorage.setItem('token', json.content)
-            this.$router.push({name:'ListCampaign'})
+            this.message = json.message;
           }
-        });
+          return false; //Return the function
+        } else {
+          sessionStorage.setItem('token', json.content); //Set the token in storage
+          this.$router.push({name:'ListCampaign'}); //Redirect the admin
+        }
       })
-      .catch( err => console.log(err))
+      .catch( err => console.log(err) )
     }
   },
 }
