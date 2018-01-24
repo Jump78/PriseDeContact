@@ -1,5 +1,6 @@
 <template>
   <section class="all-campaigns">
+    <p v-if="message != ''">{{message}}</p>
     <div v-if="allCampaigns">
       <div class="campaignBlock">
         <h2>Campagnes planifiées</h2>
@@ -58,6 +59,7 @@ export default {
   data () {
     return {
       campaignService: new CampaignService(),
+      message: '',
       deployed: false,
       allCampaigns: [],
       futurCampaigns: [],
@@ -67,11 +69,11 @@ export default {
     }
   },
   watch: {
-    allCampaigns: function (val) {
+    allCampaigns: function (val) { //Watch this array to refill the array of each kind of campaigns
       this.futurCampaigns = [];
       this.todayCampaigns = [];
       this.passedCampaigns = [];
-      val.map( (item) => this.populateArray(item) )
+      val.map( (item) => this.populateCampaignTypeArray(item) )
     }
   },
   methods: {
@@ -82,7 +84,8 @@ export default {
       this.$router.push({name: 'HomeCampaign', params:{id:id}});
     },
     deleteCampaign (id) {
-      this.allCampaigns = this.allCampaigns.filter(item => item._id !== id);
+      console.log(id);
+      this.allCampaigns = this.allCampaigns.filter( item => item._id !== id );
       this.campaignService.delete(id);
      },
     addCampaign (campaign) {
@@ -90,9 +93,10 @@ export default {
       this.deployed = false;
       this.campaignService
           .add(campaign)
-          .then( res => this.populateArray(res.content));
+          .then( res => this.allCampaigns = this.allCampaigns.concat(res.content) )
+          .catch( err => this.message = 'Erreur server');
     },
-    populateArray (item){
+    populateCampaignTypeArray (item){
       if (moment(parseInt(item.date)).isAfter(Date.now(), 'day')) {
         this.futurCampaigns.push(item);
       } else if (moment(parseInt(item.date)).isBefore(Date.now(), 'day')) {
@@ -106,7 +110,7 @@ export default {
     this.campaignService.getAll().then( res =>{
       this.allCampaigns = res.content;
       if (Array.isArray(this.allCampaigns)) {
-        this.allCampaigns.forEach( (item) => this.populateArray(item))
+        this.allCampaigns.forEach( (item) => this.populateCampaignTypeArray(item))
       }
     })
   },
