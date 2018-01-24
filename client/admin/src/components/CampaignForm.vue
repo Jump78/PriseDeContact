@@ -59,9 +59,11 @@ export default {
     }
   },
   methods: {
+    //Emit cancel event
     cancelAddCampaign () {
       this.$emit('cancel');
     },
+    //Emit submit event
     submitCampaign () {
       let campaignToSend = {};
       // Copy the model in a new object
