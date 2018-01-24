@@ -1,6 +1,5 @@
 <template>
   <div @click="$emit('click')">
-    <!-- <p>{{campaign.name}}</p> -->
     <router-link :to="{ name: 'HomeCampaign', params: {id: campaign._id} }" class="title">{{campaign.name}}</router-link>
     <p>{{campaign.date | date}}</p>
     <a href="#" @click.prevent="deleteCampaign(campaign._id)" class="button sup">Supprimer</a>
@@ -20,13 +19,14 @@ export default {
     }
   },
   methods: {
+    //Emit deleteCampaign event to the parent
     deleteCampaign (id) {
       this.$emit('deleteCampaign', id);
     },
   },
   filters: {
+    //Parse date to dd/mm/yyyy
     date: (data) => {
-      console.log(new Date(parseInt(data)));
       return new Date(parseInt(data)).toLocaleDateString();
     }
   }
