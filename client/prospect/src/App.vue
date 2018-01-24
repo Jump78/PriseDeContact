@@ -6,7 +6,7 @@
     <router-view/>
 
     <footer class="global-footer-zone">
-      <p>EcoleM</p>
+      <img src="../src/assets/lecole-multimedia-logo.png" alt="">
     </footer>
   </div>
 </template>
@@ -89,12 +89,23 @@ footer {
 .b{ background-color: #65E; }
 .r{ background-color: #E56; }
 
+footer img {
+  display: block;
+  width: 92px;
+  margin: 14px auto;
+}
+
 @media (max-width: 640px) {
   body {
     font-size: 12px;
     transition:0.3s ease all; 
     -moz-transition:0.3s ease all; 
     -webkit-transition:0.3s ease all;
+  }
+  footer img {
+    display: block;
+    width: 85px;
+    margin: 16px auto;
   }
 }
 

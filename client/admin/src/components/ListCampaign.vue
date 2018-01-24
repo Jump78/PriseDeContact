@@ -12,7 +12,9 @@
             <div @click="openAddCampain" v-if="!deployed" id="open-add-campain">
               <p>+</p>
             </div>
-            <CampaignForm class="transition" :campaign="campaignToAdd"  @submit="addCampaign" @cancel="deployed = false; campaignToAdd = {}" :class="{closed : !deployed}"/>
+            <div class="box-campaign-form" :class="{open : deployed}">
+              <CampaignForm class="transition" :campaign="campaignToAdd"  @submit="addCampaign" @cancel="deployed = false; campaignToAdd = {}" />
+            </div>
           </li>
         </ul>
       </div>
@@ -172,16 +174,19 @@ div#open-add-campain:hover {
   -moz-transition:0.2s ease all;
   -webkit-transition:0.2s ease all;
 }
-.closed{
+.box-campaign-form {
   opacity: 0;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  min-height: 1px;
-  min-width: 1px;
-  transition:0.2s ease all;
-  -moz-transition:0.2s ease all;
-  -webkit-transition:0.2s ease all;
+  overflow: hidden;
+  max-width: 300px;
+  max-height: 40px;
+}
+.box-campaign-form.open {
+  opacity: 1;
+  max-width: 700px;
+  max-height: 380px;
+  transition: .6s ease all;
+  -moz-transition: .6s ease all;
+  -webkit-transition: .6s ease all;
 }
 
 .transition{

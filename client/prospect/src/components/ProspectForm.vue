@@ -133,9 +133,38 @@
           <label for="phone">Téléphone</label>
         </div>
 
-        <div class="block-input-submit">
-          <input type="submit" name="submit" value="Envoyer">
-        </div>
+      </div>
+
+      <div class="block-select">
+          <select class="select" name="current_class" v-model="prospect.current_class"required>
+          <option value="bac">Bac</option>
+          <option value="bacpro">Bac pro</option>
+          <option value="bts">BTS</option>
+          <option value="dut">DUT</option>
+          <option value="license">License</option>
+          <option value="master">Master</option>
+          <option value="autre">Autre</option>
+        </select>
+        <label for="current_class" v-bind:class="{ ok: prospect.current_class }">Formation actuelle</label>
+      </div>
+
+      <div class="block-input-text other-class" v-bind:class="{ show: prospect.current_class == 'autre'}">
+        <input type="text" name="current_class_text" v-model="current_class_text" :required = "prospect.current_class == 'autre'">
+        <label for="current_class_text">Entrez votre formation</label>
+      </div>
+
+      <div class="block-input-text">
+        <input type="text" name="phone" v-model="prospect.phone" required>
+        <label for="phone">Téléphone</label>
+      </div>
+
+      <div class="block-input-checkbox">
+        <input type="checkbox" id="wanna_newsletter" name="wanna_newsletter" value="true" v-model="prospect.wanna_newsletter"> <label for="wanna_newsletter">je veux reçevoir les dernières actus de l'école multimédia</label>
+      </div>
+
+      <div class="block-input-submit">
+        <input type="submit" name="submit" value="Envoyer">
+      </div>
       </form>
     </div>
   </section>
@@ -163,7 +192,8 @@ export default {
         asked_class_categorie: '',
         asked_class: '',
         current_class: '',
-        phone:'',
+        phone: '',
+        wanna_newsletter: false,
         campaign_id: this.$route.params.id
       },
     }
@@ -222,6 +252,9 @@ export default {
 <style scoped>
 form {
   font-size: 1.25em;
+}
+label {
+  user-select: none;
 }
 .title-box,
 .global-questions-zone {
