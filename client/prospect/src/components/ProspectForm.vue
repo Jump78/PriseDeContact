@@ -133,8 +133,6 @@
           <label for="phone">Téléphone</label>
         </div>
 
-      </div>
-
       <div class="block-select">
           <select class="select" name="current_class" v-model="prospect.current_class"required>
           <option value="bac">Bac</option>
