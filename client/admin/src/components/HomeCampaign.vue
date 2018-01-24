@@ -23,7 +23,7 @@
           <button class="clipboard" type="button" name="copyLink" data-clipboard-target="#linkValue">Copier le lien</button>
           <input type="hidden" id="linkValue" name="linkValue" :value="formUrl">
 
-          <button type="button" name="copyQrcode" @click="printCanvas('qrcode')">Imprimer le QRCode</button>
+          <button type="button" name="copyQrcode" @click="printFromCanvas('qrcode')">Imprimer le QRCode</button>
           <qrcode id="qrcode" :value="formUrl" hidden></qrcode>
         </div>
       </div>
@@ -36,7 +36,6 @@
           <button type="button" name="postcode" @click="charDataShow = 'postcode'; fillData()">Region</button>
         </div>
         <doughnut-chart :chart-data="chartData" :options="options"></doughnut-chart>
-        <!-- <barchart :chart-data="chartData" :options="options"></barchart> -->
       </div>
     </div>
   </div>
@@ -79,53 +78,54 @@ export default {
     }
   },
   watch: {
-    prospects: function () {
+    prospects: function () { //Refill chart's data each time "prospects" is change
       this.fillData();
     }
   },
   methods: {
-    fillData () {
+    fillData () { //Method to fill chart's data
       let data = {};
       const self = this;
 
       this.prospects.forEach((item) => {
+        //Replace '-' by ' ' and stock it
         let key = item[self.charDataShow].toString().replace(/-/g,' ');
 
         if (self.charDataShow == 'postcode') {
-          key = key.substring(0,2);
+          key = key.substring(0,2);//Get the 2 first number of the post code
         }
 
-        if (!data.hasOwnProperty(key)) {
-          data[key] = 1;
+        if (!data.hasOwnProperty(key)) { //Check if we already stock the data
+          data[key] = 1; //We set it with a default value
         } else {
-          data[key]++;
+          data[key]++;//Increment the value
         }
       });
 
-      this.chartData = {
-        labels: Object.keys(data),
+      this.chartData = {// The chart data
+        labels: Object.keys(data), //Get each key of the object, and use them as label
         datasets: [{
-            data: Object.values(data),
+            data: Object.values(data), //Get each values of the object, and use them as data
             backgroundColor: [
               'rgb(0, 100, 150)',
               'rgb(150, 0, 75)',
-              'rgb(150, 50, 75)',
+              'rgb(150, 50, 75)'
             ],
             borderWidth: 1
         }]
       };
     },
-    exportCSV () {
-      let prompt = window.prompt('Nom du fichier');
+    exportCSV () { //Export all the prospect in a csv File
+      let prompt = window.prompt('Nom du fichier'); //Ask for the file name
       if (prompt) {
         let data = this.prospects.map( item => {
           let a = this.objectToDOM(item);
           return a;
         });
-        JSONToCSVConvertor(JSON.stringify(data), prompt, true);
+        JSONToCSVConvertor(JSON.stringify(data), prompt, true); //Convert the file and download it
       }
     },
-    objectToDOM( item ) {
+    objectToDOM( item ) { //Convert a prospect object to a prospect object to display
       return  {
         'email' : item.email,
         'prénom' : item.firstname,
@@ -141,69 +141,60 @@ export default {
         'campagne visitée' : item.campaigns.length
       }
     },
-    printCanvas(target){
-      const dataUrl = document.getElementById(target).toDataURL();
+    printFromCanvas(target){ //Method to open the print screen
+      const dataUrl = document.getElementById(target).toDataURL(); //Convert the canvas data to dataURl
 
+      //Create the content of the new window
       let windowContent = '<!DOCTYPE html>';
       windowContent += '<html>';
       windowContent += '<body>';
-      windowContent += '<img src="' + dataUrl + '" style="width: 100%">';
+      windowContent += '<img src="' + dataUrl + '" style="width: 100%">'; //Display the dataUrl in an img markup
       windowContent += '</body>';
       windowContent += '</html>';
 
+      //Opent the window
       const printWin = window.open('', '', 'width=' + screen.availWidth + ',height=' + screen.availHeight);
+      //Insert the content
       printWin.document.write(windowContent);
 
       printWin.document.addEventListener('load', function() {
-          printWin.focus();
-          printWin.print();
+          printWin.focus(); //Force the focus
+          printWin.print(); //Open print windows of chrome
+          //Close the 1st window
           printWin.document.close();
           printWin.close();
       }, true);
     }
   },
   created () {
+    //Initialize clipboard
     let clipboard = new Clipboard('.clipboard',{
       text: function() {
-          return document.querySelector('input[type=hidden]').value;
+          return document.querySelector('input[type=hidden]').value; //Set the input where choose the value to copy
       }
     });
 
+    //Connect the client to socket
     var socket = io(config.apiEndPoint, {query: 'roomId='+this.$route.params.id});
+
+    //Listen the 'prospectAdd' event from socket
     socket.on('prospectAdd', (data) => {
-      this.prospects.push(data);
-      this.fillData();
+      this.prospects.push(data); //Push the new prospect
+      this.fillData(); //Refill the chart
     })
 
+    //Get the campaign info
     this.campaignService.find(this.$route.params.id)
       .then( res => this.campaign = res.content )
       .catch( err => console.log(err) );
 
+      //Get all prospect of the campaign
     this.campaignService.getProspects(this.$route.params.id)
       .then( res => {
         this.prospects = res.content
         this.fillData();
       } )
       .catch( err => console.log(err) );
-
-    // fetch(config.apiEndPoint+":"+config.apiPort+'/prospect')
-    //   .then( (res) =>{
-    //     if (res.status>= '200' && res.status<'300') {
-    //       return res.json()
-    //     }
-    //     return {
-    //       error: 1,
-    //       message: 'Error server'
-    //     }
-    //    })
-    //   .then( (res) => {
-    //     if (res.error) {
-    //         throw "Http error";
-    //     }
-    //     this.prospects = res.content;
-    //     this.fillData();
-    //   })
-    //   .catch( (err) => console.log(err));
   },
 }
 </script>
