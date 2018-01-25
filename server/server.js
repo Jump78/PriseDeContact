@@ -1,4 +1,21 @@
 require('colors')
+require ('./config.js')
+
+const ip = process.env.ALWAYSDATA_HTTPD_IP || 'localhost'
+const port = process.env.ALWAYSDATA_HTTPD_PORT || 8020
+const apiSubDirectoy = (process.env.ALWAYSDATA_HTTPD_IP)?'/api' :'';
+const mongoUrl = (process.env.ALWAYSDATA_HTTPD_IP)? mongoProdUrl :'mongodb://localhost:27017/pdc';
+
+const socketOption = {
+	serveClient: false
+}
+
+if (process.env.ALWAYSDATA_HTTPD_IP) {
+	socketOption = {
+		path:'/api/socket.io',
+		serveClient: false
+	}
+}
 
 const path = require('path')
 const jwt = require('jsonwebtoken')
@@ -8,16 +25,11 @@ const express = require('express')
 const app = express()
 // socket
 const server = require('http').createServer(app)
-const io = require('socket.io').listen(server, {
-	serveClient: false,
-})
+const io = require('socket.io').listen(server, socketOption)
 
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-
-const port = 8020
-
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -49,26 +61,14 @@ app.use( (req, res, next) => {
 
 let cookieNoCheck = [
 	{
-		path: '/admin/login',
-		method: 'OPTIONS'
-	},
-	{
-		path: '/admin/login',
+		path: apiSubDirectoy+'/admin/login',
 		method: 'POST'
 	},	{
-		path: '/admin',
+		path: apiSubDirectoy+'/admin',
 		method: 'POST'
 	},
 	{
-		path: '/campaign',
-		method: 'GET'
-	},
-	{
-		path: '/campaign',
-		method: 'OPTIONS'
-	},
-	{
-		path: '/prospect',
+		path: apiSubDirectoy+'/prospect',
 		method: 'POST'
 	}
 ]
@@ -78,7 +78,7 @@ app.use( (req, res, next) => {
 	let token = req.cookies['access_token'];
 
 	let test = cookieNoCheck.filter( (item) => req.url === item.path && req.method == item.method);
-	if (!test.length && req.method != 'OPTIONS') {
+	if (!test.length && req.method != 'OPTIONS' && req.method != 'GET') {
 		if (!csrfToken) {
 			res.status(400);
 			res.send('Headers authorization not found')
@@ -154,7 +154,7 @@ const campaign = require('./src/controller/Campaign.controller')
 // 	console.log('id: '+req.params.id)
 // 	io.sockets.in("room-"+req.params.id).emit( 'prospectAdd', req.locals )
 // })
-app.post 		('/prospect', (req, res) => {
+app.post 		(apiSubDirectoy+'/prospect', (req, res) => {
 	prospect.findByEmail(req.body.email)
 		.then( data => {
 				if (!data) {
@@ -216,46 +216,46 @@ app.post 		('/prospect', (req, res) => {
 			}
 	)
 })
-app.get 		('/prospect', ( req, res ) => {
+app.get 		(apiSubDirectoy+'/prospect', ( req, res ) => {
 	prospect.findAll( req, res )
 })
-app.get 		('/prospect/:id', 					prospect.find)
-app.get 		('/prospect/:id/campaign', 	prospect.findMyCampaigns)
-app.put 		('/prospect/:id', 					prospect.update)
-app.post 		('/prospect/:id/campaign', 	prospect.addOneCampaign)
-app.delete 	('/prospect/:id', 					prospect.remove)
-app.delete 	('/prospect/:prospectid/campaign/:campaignid', 	prospect.removeOneCampaign)
+app.get 		(apiSubDirectoy+'/prospect/:id', 					prospect.find)
+app.get 		(apiSubDirectoy+'/prospect/:id/campaign', 	prospect.findMyCampaigns)
+app.put 		(apiSubDirectoy+'/prospect/:id', 					prospect.update)
+app.post 		(apiSubDirectoy+'/prospect/:id/campaign', 	prospect.addOneCampaign)
+app.delete 	(apiSubDirectoy+'/prospect/:id', 					prospect.remove)
+app.delete 	(apiSubDirectoy+'/prospect/:prospectid/campaign/:campaignid', 	prospect.removeOneCampaign)
 
 // CRUD Campaigns
-app.post 		('/campaign', 				(req, res) => {
+app.post 		(apiSubDirectoy+'/campaign', 				(req, res) => {
 	campaign.create(req, res)
 	io.sockets.emit( 'campaignAdd', req.body )
 })
-app.get 		('/campaign', 									campaign.findAll)
-app.get 		('/campaign/:id', 							campaign.find)
-app.get 		('/campaign/:id/prospect', 			campaign.findMyProspects)
-app.put 		('/campaign/:id', 							campaign.update)
-app.post 		('/campaign/:id/prospect', 			campaign.addOneProspect)
-app.delete 	('/campaign/:id', 							campaign.remove)
-app.delete 	('/campaign/:campaignid/prospect/:prospectid', 	campaign.removeOneProspect)
+app.get 		(apiSubDirectoy+'/campaign', 									campaign.findAll)
+app.get 		(apiSubDirectoy+'/campaign/:id', 							campaign.find)
+app.get 		(apiSubDirectoy+'/campaign/:id/prospect', 			campaign.findMyProspects)
+app.put 		(apiSubDirectoy+'/campaign/:id', 							campaign.update)
+app.post 		(apiSubDirectoy+'/campaign/:id/prospect', 			campaign.addOneProspect)
+app.delete 	(apiSubDirectoy+'/campaign/:id', 							campaign.remove)
+app.delete 	(apiSubDirectoy+'/campaign/:campaignid/prospect/:prospectid', 	campaign.removeOneProspect)
 
 // CRUD Admin accounts
 const admin = require('./src/controller/Admin.controller')
-app.post 		('/admin', 				(req, res) => {
+app.post 		(apiSubDirectoy+'/admin', 				(req, res) => {
 	admin.create(req, res)
 })
-app.post 		('/admin/login', 				admin.connect)
-app.get 		('/admin', 							admin.findAll)
-app.get 		('/admin/:id', 					admin.find)
-app.put 		('/admin/:id', 					admin.update)
-app.delete 	('/admin/:id', 					admin.remove)
+app.post 		(apiSubDirectoy+'/admin/login', 				admin.connect)
+app.get 		(apiSubDirectoy+'/admin', 							admin.findAll)
+app.get 		(apiSubDirectoy+'/admin/:id', 					admin.find)
+app.put 		(apiSubDirectoy+'/admin/:id', 					admin.update)
+app.delete 	(apiSubDirectoy+'/admin/:id', 					admin.remove)
 
 // Indique à mongoose que les promesse à utiliser
 // sont celles par défaut dans Node.js (objet global)
 mongoose.Promise = global.Promise
 
 // Connexion à la base de données MONGO
-mongoose.connect('mongodb://localhost:27017/pdc', { useMongoClient: true })
+mongoose.connect(mongoUrl, { useMongoClient: true })
 	// Une fois connecté ( .then( successCallback(), errorCallback() ) )
 	.then(
 		() => console.log(' MongoDB '.bgGreen, 'Connection établie !'.green),
@@ -267,6 +267,7 @@ mongoose.connect('mongodb://localhost:27017/pdc', { useMongoClient: true })
 			// server écoute le port PORT
 			server.listen(
 				port,
+				ip,
 				() => console.log(' App Started '.bgGreen.black, `Le serveur http://localhost:${port} est prêt !`.green))
 		}
 	)
