@@ -1,4 +1,5 @@
 const Admin = require('./../model/Admin.model')
+const sha256 = require('js-sha256')
 
 module.exports = {
 	/**
@@ -52,8 +53,8 @@ module.exports = {
 		return Admin
 					.findOne( {_id: id} )
 					.then( admin => {
-						admin.login = data || admin.login
-						admin.password = data || admin.password
+						admin.login = data.login || admin.login
+						admin.password = sha256(data.password+admin.salt) || admin.password
 						return admin.save()
 					})
 	},
