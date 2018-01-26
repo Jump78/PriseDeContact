@@ -1,8 +1,5 @@
 const Admin = require('./../model/Admin.model')
 const sha256 = require('js-sha256')
-const utils = require('./../utils')
-const randomstring = require("randomstring")
-const jwt = require('jsonwebtoken')
 
 module.exports = {
 	/**
@@ -12,13 +9,6 @@ module.exports = {
 	findAll : () => {
 		return Admin
 					.find({})
-					.then( admins => {
-						let a = []
-						admins.forEach( admin => {
-							a.push( utils.adminReturnObjectNorm( admin ) ) //Normale the admin (remove password for exemple)
-						})
-						return a
-					})
 	},
 
 	/**
@@ -63,8 +53,8 @@ module.exports = {
 		return Admin
 					.findOne( {_id: id} )
 					.then( admin => {
-						admin.login = data || admin.login
-						admin.password = data || admin.password
+						admin.login = data.login || admin.login
+						admin.password = sha256(data.password+admin.salt) || admin.password
 						return admin.save()
 					})
 	},

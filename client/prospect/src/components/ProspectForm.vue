@@ -133,6 +133,7 @@
         <!-- !!END Question 9: asked class (radio) -->
         <!-- !!END Question 9: asked class (select + radio) -->
 
+<<<<<<< HEAD
         <!-- Question 10: current class (select + optional input) -->
         <!-- Question 10: current class (select) -->
         <div class="block-select">
@@ -215,7 +216,7 @@ export default {
   methods: {
     onSubmit () {
       //Check if the prospect has selected the "other" option of "current_class" select
-      if (this.current_class_text != '' && this.prospect.current_class == 'other') {
+      if (this.current_class_text != '' && this.prospect.current_class == 'autre') {
         this.prospect.current_class = this.current_class_text //Set the current_class class value to the value write by the prospect
       }
 
