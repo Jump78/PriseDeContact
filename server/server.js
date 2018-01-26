@@ -1,11 +1,10 @@
 require('colors')
-require ('./config.js')
+const config = require ('./config.js')
 
 const ip = process.env.ALWAYSDATA_HTTPD_IP || 'localhost'
 const port = process.env.ALWAYSDATA_HTTPD_PORT || 8020
 const apiSubDirectoy = (process.env.ALWAYSDATA_HTTPD_IP)?'/api' :'';
-const mongoUrl = (process.env.ALWAYSDATA_HTTPD_IP)? mongoProdUrl :'mongodb://localhost:27017/pdc';
-
+const mongoUrl = (process.env.ALWAYSDATA_HTTPD_IP)? config.mongoProdUrl :'mongodb://localhost:27017/pdc';
 const socketOption = {
 	serveClient: false
 }
@@ -268,6 +267,6 @@ mongoose.connect(mongoUrl, { useMongoClient: true })
 			server.listen(
 				port,
 				ip,
-				() => console.log(' App Started '.bgGreen.black, `Le serveur http://localhost:${port} est prêt !`.green))
+				() => console.log(' App Started '.bgGreen.black, `Le serveur http://${ip}:${port} est prêt !`.green))
 		}
 	)
