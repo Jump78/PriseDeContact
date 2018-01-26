@@ -110,29 +110,6 @@
 
         </div>
 
-        <div class="block-select">
-            <select class="select" name="current_class" v-model="prospect.current_class"required>
-            <option value="bac">Bac</option>
-            <option value="bacpro">Bac pro</option>
-            <option value="bts">BTS</option>
-            <option value="dut">DUT</option>
-            <option value="license">License</option>
-            <option value="master">Master</option>
-            <option value="other">Autre</option>
-          </select>
-          <label for="current_class" v-bind:class="{ ok: prospect.current_class }">Formation actuelle</label>
-        </div>
-
-        <div class="block-input-text other-class" v-bind:class="{ show: prospect.current_class == 'autre'}">
-          <input type="text" name="current_class_text" v-model="current_class_text" :required = "prospect.current_class == 'autre'">
-          <label for="current_class_text">Entrez votre formation</label>
-        </div>
-
-        <div class="block-input-text">
-          <input type="text" name="phone" v-model="prospect.phone" required>
-          <label for="phone">Téléphone</label>
-        </div>
-
       <div class="block-select">
           <select class="select" name="current_class" v-model="prospect.current_class"required>
           <option value="bac">Bac</option>
@@ -202,7 +179,7 @@ export default {
   methods: {
     onSubmit () {
       //Check if the prospect has selected the "other" option of "current_class" select
-      if (this.current_class_text != '' && this.prospect.current_class == 'other') {
+      if (this.current_class_text != '' && this.prospect.current_class == 'autre') {
         this.prospect.current_class = this.current_class_text //Set the current_class class value to the value write by the prospect
       }
 
