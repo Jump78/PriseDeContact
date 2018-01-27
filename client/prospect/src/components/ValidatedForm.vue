@@ -33,4 +33,19 @@ export default {
 h1, h2 {
   font-weight: normal;
 }
+div {
+  display: block;
+  width: 33vw;
+  min-width: 450px;
+  margin: 0 auto;
+  text-align: justify;
+}
+@media (max-width: 640px) {
+  div {
+    /*border: none;
+    background: none;*/
+    width: 98vw;
+    min-width: 200px;
+  }
+}
 </style>

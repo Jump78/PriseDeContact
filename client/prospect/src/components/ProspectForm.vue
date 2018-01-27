@@ -5,13 +5,18 @@
       <h2>L'Ecole Multimedia</h2>
     </div>
 
+    <!-- BEGIN global-questions-zone -->
     <div class="flex global-questions-zone">
       <form class="form" action="#" method="post" @submit.prevent = "onSubmit">
+
+        <!-- Question 1: email -->
         <div class="block-input-text">
           <input v-model="prospect.email" type="email" name="email" required>
           <label for="email">Email</label>
         </div>
+        <!-- !!END Question 1 -->
 
+        <!-- Question 2: gender (radio) -->
         <div class="block-input-radio">
           <p for="gender" class="radio-title" v-bind:class="{ ok: prospect.gender }">Sexe</p>
           <div class="flex-options">
@@ -30,32 +35,44 @@
             </div>
           </div>
         </div>
+        <!-- !!END Question 2 -->
 
+        <!-- Question 3: firstname (text) -->
         <div class="block-input-text">
           <input v-model="prospect.firstname" type="text" name="firstname" required>
           <label for="firstname">Prénom</label>
         </div>
+        <!-- !!END Question 3 -->
 
+        <!-- Question 4: lastname (text) -->
         <div class="block-input-text">
           <input v-model="prospect.lastname" type="text" name="lastname" required>
           <label for="lastname">Nom</label>
         </div>
+        <!-- !!END lastname -->
 
+        <!-- Question 5: address (text) -->
         <div class="block-input-text">
           <input v-model="prospect.adress" type="text" name="adress" required>
           <label for="adress">Adresse</label>
         </div>
+        <!-- !!END Question 5 -->
 
+        <!-- Question 6: postcode (text) -->
         <div class="block-input-text">
           <input v-model="prospect.postcode" type="text" name="postcode" required>
           <label for="postcode">Code postal</label>
         </div>
+        <!-- !!END Question 6 -->
 
+        <!-- Question 7: city (text) -->
         <div class="block-input-text">
           <input v-model="prospect.city" type="text" name="city" required>
           <label for="city">Ville</label>
         </div>
+        <!-- !!END Question 7 -->
 
+        <!-- Question 8: study level (select or optional text) -->
         <div class="block-select">
           <select class="select" name="study_level" v-model="prospect.study_level">
             <option value="bac">Bac</option>
@@ -67,7 +84,10 @@
           </select>
           <label for="study_level" v-bind:class="{ ok: prospect.study_level }">Niveau d'études</label>
         </div>
+        <!-- !!END Question 8 -->
 
+        <!-- Question 9: asked class (select + radio) -->
+        <!-- Question 9: asked class (select) -->
         <div class="block-select">
           <select class="select" name="asked_class_categorie" v-model="prospect.asked_class_categorie">
             <option value="prepa" >Prépa</option>
@@ -77,6 +97,8 @@
           </select>
           <label for="asked_class" v-bind:class="{ up: prospect.asked_class_categorie, ok: prospect.asked_class }">Formation souhaitée</label>
         </div>
+        <!-- !!END Question 9: asked class (select) -->
+        <!-- Question 9: asked class (radio) -->
         <div class="block-input-radio">
           <!-- prepa answer -->
           <div class="flex-options" id="pre" v-if="prospect.asked_class_categorie == 'prepa'">
@@ -107,41 +129,55 @@
             <radio-option @send="updateParamValue" name="asked_class" value="game-programmeur" label="Game programmeur" v-bind:class="{ choose: prospect.asked_class === 'game-programmeur' }"></radio-option>
             <radio-option @send="updateParamValue" name="asked_class" value="responsable-stratégie-et-innovation-digitales" label="Responsable stratégie et innovation digitales" v-bind:class="{ choose: prospect.asked_class === 'responsable-stratégie-et-innovation-digitales' }"></radio-option>
           </div>
-
         </div>
+        <!-- !!END Question 9: asked class (radio) -->
+        <!-- !!END Question 9: asked class (select + radio) -->
 
-      <div class="block-select">
+        <!-- Question 10: current class (select + optional input) -->
+        <!-- Question 10: current class (select) -->
+        <div class="block-select">
           <select class="select" name="current_class" v-model="prospect.current_class"required>
-          <option value="bac">Bac</option>
-          <option value="bacpro">Bac pro</option>
-          <option value="bts">BTS</option>
-          <option value="dut">DUT</option>
-          <option value="license">License</option>
-          <option value="master">Master</option>
-          <option value="autre">Autre</option>
-        </select>
-        <label for="current_class" v-bind:class="{ ok: prospect.current_class }">Formation actuelle</label>
-      </div>
+            <option value="bac">Bac</option>
+            <option value="bacpro">Bac pro</option>
+            <option value="bts">BTS</option>
+            <option value="dut">DUT</option>
+            <option value="license">License</option>
+            <option value="master">Master</option>
+            <option value="other">Autre</option>
+          </select>
+          <label for="current_class" v-bind:class="{ ok: prospect.current_class }">Formation actuelle</label>
+        </div>
+        <!-- !!END Question 10: current class (select) -->
+        <!-- Question 10: current class (optional text) -->
+        <div class="block-input-text other-class" v-bind:class="{ show: prospect.current_class == 'autre'}">
+          <input type="text" name="current_class_text" v-model="current_class_text" :required = "prospect.current_class == 'autre'">
+          <label for="current_class_text">Entrez votre formation</label>
+        </div>
+        <!-- !!END Question 10: current class (optional text) -->
+        <!-- !!END Question 10: current class (select + facultatif text) -->
 
-      <div class="block-input-text other-class" v-bind:class="{ show: prospect.current_class == 'autre'}">
-        <input type="text" name="current_class_text" v-model="current_class_text" :required = "prospect.current_class == 'autre'">
-        <label for="current_class_text">Entrez votre formation</label>
-      </div>
+        <!-- Question 11: phone (texte) -->
+        <div class="block-input-text">
+          <input type="text" name="phone" v-model="prospect.phone" required>
+          <label for="phone">Téléphone</label>
+        </div>
+        <!-- !!END Question 11 -->
 
-      <div class="block-input-text">
-        <input type="text" name="phone" v-model="prospect.phone" required>
-        <label for="phone">Téléphone</label>
-      </div>
+        <!-- Question 12: wanna newsletter (checkbox) -->
+        <div class="block-input-checkbox">
+          <input type="checkbox" id="wanna_newsletter" name="wanna_newsletter" value="true" v-model="prospect.wanna_newsletter"> <label for="wanna_newsletter">je veux reçevoir les dernières actus de l'école multimédia</label>
+        </div>
+        <!-- !!END Question 12 -->
 
-      <div class="block-input-checkbox">
-        <input type="checkbox" id="wanna_newsletter" name="wanna_newsletter" value="true" v-model="prospect.wanna_newsletter"> <label for="wanna_newsletter">je veux reçevoir les dernières actus de l'école multimédia</label>
-      </div>
+        <!-- submit -->
+        <div class="block-input-submit">
+          <input type="submit" name="submit" value="Envoyer">
+        </div>
+        <!-- !!END submit -->
 
-      <div class="block-input-submit">
-        <input type="submit" name="submit" value="Envoyer">
-      </div>
       </form>
     </div>
+    <!-- !!END global-questions-zone -->
   </section>
 </template>
 
