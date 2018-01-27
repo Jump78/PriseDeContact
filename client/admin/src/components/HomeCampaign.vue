@@ -176,10 +176,16 @@ export default {
     });
 
     //Connect the client to socket
-    var socket = io(config.apiEndPoint, {query: 'roomId='+this.$route.params.id});
+    var socket = io(config.apiEndPoint.replace('/api', ''),{
+      //Prod param in ( https, and server in subDirectory)
+      //secure: true,
+      //reconnect: true,
+      //rejectUnauthorized : false,
+      //path: '/api/socket.io',
+      query: 'roomId='+this.$route.params.id
+    });
 
-    //Listen the 'prospectAdd' event from socket
-    socket.on('prospectAdd', (data) => {
+    socket.on('prospectAdd', (data) => {  //Listen the 'prospectAdd' event from socket
       this.prospects.push(data); //Push the new prospect
       this.fillData(); //Refill the chart
     })
