@@ -1,184 +1,194 @@
-const Campaign = require('./../model/Campaign.model');
+const CampaignDAO = require('./../dao/Campaign.dao');
 const Prospect = require('./../model/Prospect.model');
 const utils = require('./../utils');
 
 module.exports = {
+	/**
+	 * Return all the campaign to the client
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	findAll : ( req, res ) => {
 		console.log('Campaign.findAll detected')
-		Campaign
-			.find({})
-			.then( camps => {
-				res.json({
-					status: 200,
-					success: 1,
-					message: 'all campaigns found',
-					content: camps
-				})
+		CampaignDAO.findAll()
+		.then( camps => {
+			return res.json({
+				status: 200,
+				success: 1,
+				message: 'all campaigns found',
+				content: camps
 			})
-			.catch( err => {
-				res.json( {status: 400, error: 1, message: err.message} )
-			})
+		})
+		.catch( err => {
+			return res.json( {status: 400, error: 1, message: err.message} )
+		})
 	},
 
+	/**
+	 * Return all the prospect of the given campaign
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	findMyProspects : ( req, res ) => {
 		console.log('find prospect from Campaign')
-		Campaign
-			.findOne( {_id: req.params.id} )
-			.populate('prospects')
-			.then( camp => {
-				return utils.foundVerify( camp, res, 'campaign not found' )
-			})
-			.then( camp => {
-		    res.json({
-		    	status: 200,
-		    	success: 1,
-		    	message: 'campaign prospects found',
-		    	content: camp.prospects
-		    })
-		  })
-			.catch( err => {
-				res.json( {status: 400, error: 1, message: err.message} )
-			})
+		CampaignDAO.findMyProspects(req.params.id)
+		.then( camp => {
+			if (camp === null || !camp ) {
+				return res.json( {status: 404, error: 1, message: 'camp not found'} )
+			}
+	    return res.json({
+	    	status: 200,
+	    	success: 1,
+	    	message: 'campaign prospects found',
+	    	content: camp.prospects
+	    })
+	  })
+		.catch( err => {
+			return res.json( {status: 400, error: 1, message: err.message} )
+		})
 	},
 
+	/**
+	 * Add one prospect of the given campaign
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	addOneProspect : ( req, res ) => {
-		Campaign
-			.findOne( {_id: req.params.id} )
-			.then( camp => {
-				return utils.foundVerify( camp, res, 'campaign not found' )
-			})
-			.then( camp => {
-				console.log('req.body', req.body)
-				camp.prospects.push( req.body.prospect )
+		console.log('Add prospect to campaign')
+		if (!req.body.prospect) {
+			return res.json( {status: 400, error: 1, message: 'No prospect in post data'} )
+		}
 
-				return camp.save()
-			})
-			.then( camp => {
-		    res.json({
-		    	status: 200,
-		    	success: 1,
-		    	message: 'prospect add to campain',
-		    	content: camp
-		    })
-		  })
-			.catch( err => {
-				res.json( {status: 400, error: 1, message: err.message} )
-			})
+		CampaignDAO.addOneProspect( req.params.id, req.body.prospect._id)
+		.then( camp => {
+			if (camp === null || !camp ) {
+				return res.json( {status: 404, error: 1, message: 'campaign not found'} )
+			}
+	    return res.json({
+	    	status: 200,
+	    	success: 1,
+	    	message: 'prospect add to campaign',
+	    	content: camp
+	    })
+	  })
+		.catch( err => {
+			return res.json( {status: 400, error: 1, message: err.message} )
+		})
 	},
 
-	addOneProspectId : ( idCampaign, idProspect ) => {
-		return Campaign
-			.findOne( {_id: idCampaign} )
-			.then( camp => {
-				camp.prospects.push( idProspect )
-				return camp.save()
-			})
-	},
-
+	/**
+	 * Remove one prospect of the given campaign
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	removeOneProspect : ( req, res ) => {
-		Campaign
-			.findOne( {_id: req.params.campaignid} )
-			.then( camp => {
-				return utils.foundVerify( camp, res, 'campaign not found' )
-			})
-			.then( camp => {
-				camp.prospects = camp.prospects.filter( ppct => ppct != req.params.prospectid )
-
-				return camp.save()
-			})
-			.then( camp => {
-		    res.json({
-		    	status: 200,
-		    	success: 1,
-		    	message: 'prospect remove from campain',
-		    	content: camp
-		    })
-		  })
-			.catch( err => {
-				res.json( {status: 400, error: 1, message: err.message} )
-			})
+		console.log('Remove prospect to campaign')
+		CampaignDAO.removeOneProspect( req.params.campaignid, req.params.prospectid)
+		.then( camp => {
+			if (camp === null || !camp ) {
+				return res.json( {status: 404, error: 1, message: 'campaign not found'} )
+			}
+	    return res.json({
+	    	status: 200,
+	    	success: 1,
+	    	message: 'prospect remove from campain',
+	    	content: camp
+	    })
+	  })
+		.catch( err => {
+			return res.json( {status: 400, error: 1, message: err.message} )
+		})
 	},
 
+	/**
+	 * Return the campaign by his id
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	find : ( req, res ) => {
-		Campaign
-			.findOne( {_id: req.params.id} )
-			.then( camp => {
-				return utils.foundVerify( camp, res, 'campaign not found' )
+	console.log('Campaign.find detected')
+	CampaignDAO.find( req.params.id )
+		.then( camp => {
+			if (camp === null || !camp ) {
+				return res.json( {status: 404, error: 1, message: 'campaign not found'} )
+			}
+			return res.json({
+				status: 200,
+				success: 1,
+				message: 'campaign found',
+				content: camp
 			})
-			.then( camp => {
-				res.json({
-					status: 200,
-					success: 1,
-					message: 'campaign found',
-					content: camp
-				})
-			})
-			.catch( err => {
-				res.json( {status: 400, error: 1, message: err.message} )
-			})
+		})
+		.catch( err => {
+			return res.json( {status: 400, error: 1, message: err.message} )
+		})
 	},
 
+	/**
+	 * Create campaign
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	create : ( req, res ) => {
+		console.log('Create campaign')
 		let newCamp = req.body
 		newCamp.prospects = []
-		const newCampaign = new Campaign( newCamp )
-
-		newCampaign
-			.save()
-			.then( camp => {
-				res.json({
-					status: 200,
-					success: 1,
-					message:'campaign add',
-					content: camp
-				})
+		CampaignDAO.create(newCamp)
+		.then( camp => {
+			return res.json({
+				status: 200,
+				success: 1,
+				message:'campaign add',
+				content: camp
 			})
-			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
+		})
+		.catch( err => {
+			return res.json( {status: 400, error: 1, message: err.message} )
+		})
 	},
 
+	/**
+	 * Update campaign
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	update : ( req, res ) => {
-		Campaign
-			.findOne( {_id: req.params.id} )
-			.then( camp => {
-				return utils.foundVerify( camp, res, 'campaign not found' )
+		CampaignDAO.update(req.params.id, req.body)
+		.then( camp => {
+			return res.json({
+				status: 200,
+				success: 1,
+				message:'campaign updated',
+				content: camp
 			})
-			.then( camp => {
-				camp.name = req.body.name || camp.name
-				camp.type = req.body.type || camp.type
-				camp.date = req.body.date || camp.date
-				camp.outro_text = req.body.outro_text || camp.outro_text
-				camp.prospects = req.body.prospects || camp.prospects
-
-				return camp.save()
-			})
-			.then( camp => {
-				res.json({
-					status: 200,
-					success: 1,
-					message:'campaign updated',
-					content: camp
-				})
-			})
-			.catch( err => res.json({status: 400, error: 1, message: err.message}) )
+		})
+		.catch( err => {
+			return res.json({status: 400, error: 1, message: err.message})
+		})
 	},
 
+	/**
+	 * Remove campaign
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	remove : ( req, res ) => {
-		Campaign
-			.findOne( {_id: req.params.id} )
-			.then( camp => {
-				utils.foundVerify( camp, res, 'campaign not found' )
+		CampaignDAO.remove( req.params.id )
+		.then( camp => {
+			return res.json({
+				status: 204,
+				success: 1,
+				message:'campaign deleted'
 			})
-			.then( _ => {
-				return Campaign
-					.findOneAndRemove( {_id: req.params.id} )
-					.then( camp => {
-						res.json({
-							status: 204,
-							success: 1,
-							message:'campaign deleted'
-						})
-					})
-			})
-			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
+		})
+		.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	}
 }

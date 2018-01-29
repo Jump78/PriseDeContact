@@ -33,6 +33,9 @@ module.exports = {
 		return Campaign
 					.findOne( {_id: idCampaign} )
 					.then( camp => {
+						if (camp === null || !camp ) {
+							throw new Error('campaign not found')
+						}
 						camp.prospects.push( idProspect )
 						return camp.save()
 					})
@@ -47,6 +50,9 @@ module.exports = {
 		return Campaign
 			.findOne( {_id: idCampaign} )
 			.then( camp => {
+				if (camp === null || !camp ) {
+					throw new Error('campaign not found')
+				}
 				camp.prospects = camp.prospects.filter( ppct => ppct != idProspect )
 				return camp.save()
 			})
@@ -95,10 +101,14 @@ module.exports = {
 	update : ( id, data ) => {
 		return Campaign
 					.findOne( {_id: id} )
-					.then( campaign => {
-						campaign.login = data.login || campaign.login
-						campaign.password = sha256(data.password+campaign.salt) || campaign.password
-						return campaign.save()
+					.then( camp => {
+						camp.name = data.name || camp.name
+						camp.type = data.type || camp.type
+						camp.date = data.date || camp.date
+						camp.outro_text = data.outro_text || camp.outro_text
+						camp.prospects = data.prospects || camp.prospects
+
+						return camp.save()
 					})
 	},
 
