@@ -26,6 +26,7 @@ module.exports = {
 	 * Add a prospect to the campaign
 	 * @param {int} idCampaign Campaign's id
 	 * @param {int} idProspect Prospect's id
+	 * @return {Promise} Promise response of the request
 	 */
 	addOneProspect : ( idCampaign, idProspect ) => {
 		return Campaign
@@ -43,6 +44,7 @@ module.exports = {
 	 * Remove a prospect to the campaign
 	 * @param {int} idCampaign Campaign's id
 	 * @param {int} idProspect Prospect's id
+	 * @return {Promise} Promise response of the request
 	 */
 	removeOneProspect : ( idCampaign, idProspect ) => {
 		return Campaign
@@ -66,17 +68,6 @@ module.exports = {
 	find : ( id ) => {
 		return Campaign
 					.findOne( {_id: id} )
-	},
-
-	/**
-	 * Find campaign by email
-	 * @param  {string} email The campaign's email we want to get
-	 * @return {Promise}      Promise with the campaign
-	 */
-	findByEmail : ( email ) => {
-		return Campaign
-					.findOne( {login: email} )
-
 	},
 
 	/**
@@ -111,9 +102,9 @@ module.exports = {
 	},
 
 	/**
-	 * Remove an campaign
+	 * Remove campaign
 	 * @param  {int} 	id Campaign's id we want to remove
-	 * @return {Promise}    [description]
+	 * @return {Promise} Promise response of the request
 	 */
 	remove : ( id ) => {
 		return Campaign
