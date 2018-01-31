@@ -1,6 +1,4 @@
 const Campaign = require('./../model/Campaign.model');
-const Prospect = require('./../model/Prospect.model');
-const utils = require('./../utils');
 
 module.exports = {
 
