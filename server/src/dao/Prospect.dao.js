@@ -100,6 +100,9 @@ module.exports = {
 		return Prospect
 			.findOne( {_id: id} )
 			.then( ppct => {
+				if (ppct === null || !ppct ) {
+					throw new Error('prospect not found')
+				}
 				ppct.email = data.email || ppct.email
 				ppct.firstname = data.firstname || ppct.firstname
 				ppct.lastname = data.lastname || ppct.lastname
@@ -110,6 +113,7 @@ module.exports = {
 				ppct.study_level = data.study_level || ppct.study_level
 				ppct.asked_level = data.asked_level || ppct.asked_level
 				ppct.current_level = data.current_level || ppct.current_level
+				ppct.wanna_newsletter = data.wanna_newsletter || ppct.wanna_newsletter
 
 				return ppct.save()
 			})

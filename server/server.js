@@ -153,67 +153,8 @@ const campaign = require('./src/controller/Campaign.controller')
 // 	console.log('id: '+req.params.id)
 // 	io.sockets.in("room-"+req.params.id).emit( 'prospectAdd', req.locals )
 // })
-app.post 		(apiSubDirectoy+'/prospect', (req, res) => {
-	prospect.findByEmail(req.body.email)
-		.then( data => {
-				if (!data) {
-					console.log('inscrit nul part')
-
-					let newPpct = req.body
-					newPpct.campaigns = [req.body.campaign_id]
-
-					prospect.createData(newPpct)
-						.then( ppct => {
-							io.sockets.in("room-"+req.body.campaign_id).emit( 'prospectAdd', ppct )
-							campaign.addOneProspectId(req.body.campaign_id, ppct._id)
-								.then( camp => {
-									console.log('campaign update success')
-									return res.json({
-										status: 201,
-										success: 1,
-										message: 'prospect add',
-										content: ppct
-									})
-								})
-								.catch( err => console.log(err) )
-							}
-					 	)
-					 .catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
-				} else {
-					console.log('Deja inscrit');
-					console.log(data.campaigns);
-					console.log(data.campaigns.indexOf(req.body.campaign_id))
-					if (data.campaigns.indexOf(req.body.campaign_id) == -1) {
-						console.log('Pas ici')
-						io.sockets.in("room-"+req.body.campaign_id).emit( 'prospectAdd', data )
-						let campaignAddPromose = campaign.addOneProspectId(req.body.campaign_id, data._id)
-							.then( camp => console.log('campaign update success'))
-							.catch( err => console.log(err) )
-
-						let prospectAddPromose = prospect.addOneCampaigntId(data._id, req.body.campaign_id)
-							.then( camp => console.log('prospect update success'))
-							.catch( err => console.log(err) )
-
-						Promise.all([campaignAddPromose, prospectAddPromose] )
-							.then(() => {
-								return res.json({
-									status: 204,
-									success: 1,
-									message: 'prospect update',
-								})
-							});
-
-					} else {
-						console.log('Déja ici')
-						return res.json({
-							status: 204,
-							success: 1,
-							message: 'Already subscribed',
-						})
-					}
-				}
-			}
-	)
+app.post 		(apiSubDirectoy+'/prospect', ( req, res ) => {
+	prospect.create(req, res, io)
 })
 app.get 		(apiSubDirectoy+'/prospect', ( req, res ) => {
 	prospect.findAll( req, res )

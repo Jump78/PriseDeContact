@@ -1,201 +1,261 @@
-const Prospect = require('./../model/Prospect.model')
-const Campaign = require('./../model/Campaign.model')
-const utils = require('./../utils');
+const ProspectDAO = require('./../dao/Prospect.DAO')
+const CampaignDAO = require('./../dao/Campaign.DAO')
+
+/**
+ * Create a new prospect and add him in his campaign
+ * @param  {object} data The prospect info
+ * @return {object}      Data to send
+ */
+function createNewProspect( data ){
+	let newPpct = data
+	newPpct.campaigns = [data.campaign_id] //Set the campaigns id in the prospect
+
+	return ProspectDAO.create(newPpct) //Request to create a new prospect
+	.then( ppct => {
+		CampaignDAO.addOneProspect(data.campaign_id, ppct._id) //Request to add the prospect to the Campaign
+		.then( camp => console.log('Prospect add to campaign: '+ camp._id))
+		.catch( err => console.log('Can\'t addpProspect to campaign: '+ camp._id))
+
+		//Object to send to the user if the prospect is create
+		return {
+			status: 201,
+			success: 1,
+			message: 'prospect add',
+			content: ppct
+		}
+	})
+ .catch( err => {
+	 return {status: 400, error: 1, message: err.message}
+ })
+}
+
+/**
+ * Add the prospect to the campaign, and the campaign to the prospect
+ * @param  {int} idProspect Prospect id
+ * @param  {int} idCampaign Campaign id
+ * @return {object}      Data to send
+ */
+function updateProspectAndCampaign( idProspect, idCampaign ){
+	let campaignAddPromise = CampaignDAO.addOneProspect(idCampaign, idProspect)
+		.then( camp => console.log('campaign update success'))
+		.catch( err => console.log(err) )
+
+	let ppct = null;
+	let prospectAddPromise = ProspectDAO.addOneCampaign(idProspect, idCampaign)
+		.then( prospect => {
+			ppct = prospect
+			console.log('prospect update success')
+		})
+		.catch( err => console.log(err) )
+
+	return Promise.all([campaignAddPromise, prospectAddPromise] )
+		.then(() => {
+			return {
+				status: 204,
+				success: 1,
+				message: 'prospect update and campaign update',
+				content: ppct
+			}
+		})
+}
 
 module.exports = {
+	/**
+	 * Return all the prospect to the client
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	findAll : ( req, res ) => {
 		console.log('Prospect.findAll detected')
-		Prospect
-			.find({})
-			.then( ppcts => {
-				res.json({
-					status: 200,
-					success: 1,
-					message: 'all prospects found',
-					content: ppcts
-				})
+		ProspectDAO.findAll()
+		.then( prospects => {
+			return res.json({
+				status: 200,
+				success: 1,
+				message: 'all prospects found',
+				content: prospects
 			})
-			.catch( err => {
-				res.json( {status: 400, error: 1, message: err.message} )
-			})
+		})
+		.catch( err => {
+			return res.json( {status: 400, error: 1, message: err.message} )
+		})
 	},
 
+	/**
+	 * Return all campaigns of the given prospect
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	findMyCampaigns : ( req, res ) => {
-		console.log('find campaign from Prospect')
-		Prospect
-			.findOne( {_id: req.params.id} )
-			.populate('campaigns')
-			.then( ppct => {
-				return utils.foundVerify( ppct, res, 'prospect not found' )
-			})
-			.then( ppct => {
-		    res.json({
-		    	status: 200,
-		    	success: 1,
-		    	message: 'prospect campaigns found',
-		    	content: ppct.campaigns
-		    })
-		  })
-			.catch( err => {
-				res.json( {status: 400, error: 1, message: err.message} )
-			})
+		console.log('find campaign from prospect')
+		ProspectDAO.findMyCampaigns(req.params.id)
+		.then( prospect => {
+			if (prospect === null || !prospect ) {
+				return res.json( {status: 404, error: 1, message: 'prospect not found'} )
+			}
+	    return res.json({
+	    	status: 200,
+	    	success: 1,
+	    	message: 'prospect campaigns found',
+	    	content: prospect.campaigns
+	    })
+	  })
+		.catch( err => {
+			return res.json( {status: 400, error: 1, message: err.message} )
+		})
 	},
 
+	/**
+	 * Add one campaign to the given prospect
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	addOneCampaign : ( req, res ) => {
-		Prospect
-			.findOne( {_id: req.params.id} )
-			.then( ppct => {
-				return utils.foundVerify( ppct, res, 'prospect not found' )
-			})
-			.then( ppct => {
-				ppct.campaigns = ppct.campaigns.concat( req.body.campaign )
+		console.log('Add campaign to prospect')
+		if (!req.body.campaign) {
+			return res.json( {status: 400, error: 1, message: 'no campaign in post data'} )
+		}
 
-				return ppct.save()
-			})
-			.then( ppct => {
-		    res.json({
-		    	status: 200,
-		    	success: 1,
-		    	message: 'prospect add to campain',
-		    	content: ppct
-		    })
-		  })
-			.catch( err => {
-				res.json( {status: 400, error: 1, message: err.message} )
-			})
+		ProspectDAO.addOneCampaign( req.params.id, req.body.campaign._id)
+		.then( prospect => {
+			if (prospect === null || !prospect ) {
+				return res.json( {status: 404, error: 1, message: 'prospect not found'} )
+			}
+	    return res.json({
+	    	status: 200,
+	    	success: 1,
+	    	message: 'campaign add to prospect',
+	    	content: prospect
+	    })
+	  })
+		.catch( err => {
+			return res.json( {status: 400, error: 1, message: err.message} )
+		})
 	},
 
-	addOneCampaigntId : ( idProspect, idCampaign ) => {
-		return Prospect
-			.findOne( {_id: idProspect} )
-			.then( ppct => {
-				ppct.campaigns.push( idCampaign )
-				return ppct.save()
-			})
-	},
-
+	/**
+	 * Remove one campaign of the given prospect
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	removeOneCampaign : ( req, res ) => {
-		Prospect
-			.findOne( {_id: req.params.prospectid} )
+		ProspectDAO.removeOneCampaign( req.params.prospectid, req.params.campaignid)
 			.then( ppct => {
-				return utils.foundVerify( ppct, res, 'prospect not found' )
-			})
-			.then( ppct => {
-				ppct.campaigns = ppct.campaigns.filter( ppct => ppct != req.params.campaignid )
-
-				return ppct.save()
-			})
-			.then( ppct => {
-		    res.json({
+		    return res.json({
 		    	status: 200,
 		    	success: 1,
-		    	message: 'campain remove from prospect',
+		    	message: 'campaign remove from prospect',
 		    	content: ppct
 		    })
 		  })
 			.catch( err => {
-				res.json( {status: 400, error: 1, message: err.message} )
+				return res.json( {status: 400, error: 1, message: err.message} )
 			})
 	},
 
+	/**
+	 * Return the prospect by his id
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
 	find : ( req, res ) => {
-		Prospect
-			.findOne( {_id: req.params.id} )
-			.then( ppct => {
-				return utils.foundVerify( ppct, res, 'prospect not found' )
+		ProspectDAO.find(req.params.id)
+		.then( ppct => {
+			return res.json({
+				status: 200,
+				success: 1,
+				message: 'prospect found',
+				content: ppct
 			})
-			.then( ppct => {
-				res.json({
-					status: 200,
-					success: 1,
-					message: 'prospect found',
-					content: ppct
-				})
-			})
-			.catch( err => {
-				res.json( {status: 400, error: 1, message: err.message} )
-			})
+		})
+		.catch( err => {
+			return res.json( {status: 400, error: 1, message: err.message} )
+		})
 	},
 
-	findByEmail : ( email ) => {
-		return Prospect
-			.findOne( {email: email} )
-	},
+	/**
+	 * Create prospect
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
+	create : function( req, res, io ) {
+		ProspectDAO.findByEmail(req.body.email)
+		.then( prospect => {
+				if (!prospect) { //If zero prospect is found
+					createNewProspect(req.body)
+					.then( data => {
+						io.sockets.in("room-"+req.body.campaign_id).emit( 'prospectAdd', data.content )
+						return res.json(data)
+					})
+					.catch( err => {
+						return res.json(err)
+					})
 
-	create : ( req, res, next ) => {
-		let newPpct = req.body
-		newPpct.campaigns = [req.body.campaign_id]
-		delete newPpct.campaign_id
-		const newProspect = new Prospect( newPpct )
-		//console.log("newPpct", newPpct)
-		newProspect
-			.save()
-			.then( ppct => {
-				req.locals = ppct;
-				res.json({
-					status: 200,
-					success: 1,
-					message: 'prospect add',
-					content: ppct
-				})
-				next()
-			})
-			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
-	},
-	createData : ( data ) => {
-		const newProspect = new Prospect( data )
-		//console.log("newPpct", newPpct)
-		return newProspect.save()
-	},
-
-	update : ( req, res ) => {
-		Prospect
-			.findOne( {_id: req.params.id} )
-			.then( ppct => {
-				return utils.foundVerify( ppct, res, 'prospect not found' )
-			})
-			.then( ppct => {
-				ppct.email = req.body.email || ppct.email
-				ppct.firstname = req.body.firstname || ppct.firstname
-				ppct.lastname = req.body.lastname || ppct.lastname
-				ppct.gender = req.body.gender || ppct.gender
-				ppct.postcode = req.body.postcode || ppct.postcode
-				ppct.city = req.body.city || ppct.city
-				ppct.phone = req.body.phone || ppct.phone
-				ppct.study_level = req.body.study_level || ppct.study_level
-				ppct.asked_level = req.body.asked_level || ppct.asked_level
-				ppct.current_level = req.body.current_level || ppct.current_level
-
-				return ppct.save()
-			})
-			.then( ppct => {
-				res.json({
-					status: 200,
-					success: 1,
-					message: 'prospect updated',
-					content: ppct
-				})
-			})
-			.catch(err => res.json( {status: 400, error: 1, message: err.message} ) )
-	},
-
-	remove : ( req, res ) => {
-		Prospect
-			.findOne( {_id: req.params.id} )
-			.then( ppct => {
-				utils.foundVerify( ppct, res, 'prospect not found' )
-			})
-			.then( _ => {
-				return Prospect
-					.findOneAndRemove( {_id: req.params.id} )
-					.then( ppct => {
-						res.json({
+				} else { //If a prospect is found
+					if (prospect.campaigns.indexOf(req.body.campaign_id) == -1) { //Verify if the prospect is already subscribed
+						updateProspectAndCampaign(prospect._id, req.body.campaign_id)
+						.then( data => {
+							io.sockets.in("room-"+req.body.campaign_id).emit( 'prospectAdd', data.content )
+							return res.json( data )
+						})
+						.catch(err => {
+							return res.json( {status: 400, error: 1, message: err.message} )
+						})
+					} else { //If the prospect is already subscribed
+						return res.json({
 							status: 204,
 							success: 1,
-							message: 'prospect deleted'
+							message: 'already subscribed',
 						})
-					})
+					}
+				}
+			}
+		)
+	},
+
+	/**
+	 * Update the prospect with the id pass in arg
+	 * @param  {int} 			id   	The id of the prospect we want to update
+	 * @param  {object} 	data 	New data
+	 * @return {Promise}      	Promise of the request
+	 */
+	update : ( req, res ) => {
+		ProspectDAO.update( req.params.id, req.body )
+		.then( ppct => {
+			return res.json({
+				status: 200,
+				success: 1,
+				message: 'prospect updated',
+				content: ppct
 			})
-			.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
+		})
+		.catch(err => {
+			return res.json( {status: 400, error: 1, message: err.message} )
+		})
+	},
+
+	/**
+	 * Remove campaign
+	 * @param  {int} 	id Prospect's id we want to remove
+	 * @return {Promise} Promise response of the request
+	 */
+	remove : ( req, res ) => {
+		ProspectDAO.remove( req.params.id )
+		.then( camp => {
+			return res.json({
+				status: 204,
+				success: 1,
+				message:'prospect deleted'
+			})
+		})
+		.catch( err => {
+			return res.json( {status: 400, error: 1, message: err.message})
+		})
 	}
 }
