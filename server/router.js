@@ -2,27 +2,13 @@ const express = require('express')
 const router = express.Router()
 
 const authMiddleware = require('./src/middlewares/authMiddleware');
+const corsMiddleware = require('./src/middlewares/corsMiddleware');
 
 const prospect = require('./src/controller/Prospect.controller')
 const campaign = require('./src/controller/Campaign.controller')
 const admin = require('./src/controller/Admin.controller')
 
-router.use( (req, res, next) => {
-	res.header('Access-Control-Allow-Credentials', true);
-	// le serveur accepte les requête ajax provenant de certains domaines
-	let p = ['http://localhost:8080', 'http://localhost:8081', 'http://192.168.21.124:8080', 'http://192.168.21.124:8081', 'http://192.168.10.101:8080', 'http://192.168.21.124:8080', 'http://192.168.21.124:8081']
-	if (p.indexOf(req.headers.origin) > -1) {
-		res.header('Access-Control-Allow-Origin', req.headers.origin)
-	}
-	// autorise les type de requête get put post et delete
-	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-	// autorise le Content-Type pour la réponse
-	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-// res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Credentials");
- next()
-})
-
-
+router.use(corsMiddleware)
 
 router.use(authMiddleware)
 
