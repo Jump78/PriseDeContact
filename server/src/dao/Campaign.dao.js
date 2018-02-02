@@ -3,7 +3,7 @@ const Campaign = require('./../model/Campaign.model');
 module.exports = {
 
 	/**
-	 * Get all the campaing from DB
+	 * Find all campaigns from DB
 	 * @return {Promise} Promise response of the request
 	 */
 	findAll : () => {
@@ -12,8 +12,8 @@ module.exports = {
 	},
 
 	/**
-	 * Get all prospect of one campaign
-	 * @param  {int} 	id Campaign's id
+	 * Find all prospects of one campaign
+	 * @param  {int} 	id: Campaign's id
 	 * @return {Promise} Promise response of the request
 	 */
 	findMyProspects : ( id ) => {
@@ -23,9 +23,9 @@ module.exports = {
 	},
 
 	/**
-	 * Add a prospect to the campaign
-	 * @param {int} idCampaign Campaign's id
-	 * @param {int} idProspect Prospect's id
+	 * Add one prospect in one campaign
+	 * @param {int} idCampaign: Campaign's id
+	 * @param {int} idProspect: Prospect's id
 	 * @return {Promise} Promise response of the request
 	 */
 	addOneProspect : ( idCampaign, idProspect ) => {
@@ -41,9 +41,9 @@ module.exports = {
 	},
 
 	/**
-	 * Remove a prospect to the campaign
-	 * @param {int} idCampaign Campaign's id
-	 * @param {int} idProspect Prospect's id
+	 * Remove one prospect from one campaign
+	 * @param {int} idCampaign: Campaign's id
+	 * @param {int} idProspect: Prospect's id
 	 * @return {Promise} Promise response of the request
 	 */
 	removeOneProspect : ( idCampaign, idProspect ) => {
@@ -61,8 +61,8 @@ module.exports = {
 
 
 	/**
-	 * Find the campaign by his id
-	 * @param  {int} 			id 	The campaign's id
+	 * Find one campaign by his id
+	 * @param  {int} 			id: campaign's id
 	 * @return {Promise}    	Promise with the campaign
 	 */
 	find : ( id ) => {
@@ -72,7 +72,7 @@ module.exports = {
 
 	/**
 	 * Create a new campaign
-	 * @param  {object} campaign Campaign's data
+	 * @param  {object} campaign: Campaign's data
 	 * @return {Promise}      Promise of the request
 	 */
 	create : ( campaign ) => {
@@ -82,10 +82,10 @@ module.exports = {
 	},
 
 	/**
-	 * Update the campaign with the id pass in arg
-	 * @param  {int} 			id   	The id of the campaign we want to update
-	 * @param  {object} 	data 	New data
-	 * @return {Promise}      	Promise of the request
+	 * Update one campaign
+	 * @param  {int} 			id:   	The id of the campaign we want to update
+	 * @param  {object} 	data: 	New data
+	 * @return {Promise}      	  Promise of the request
 	 */
 	update : ( id, data ) => {
 		return Campaign
@@ -102,8 +102,8 @@ module.exports = {
 	},
 
 	/**
-	 * Remove campaign
-	 * @param  {int} 	id Campaign's id we want to remove
+	 * Remove one campaign
+	 * @param  {int} 	id: Campaign's id we want to remove
 	 * @return {Promise} Promise response of the request
 	 */
 	remove : ( id ) => {

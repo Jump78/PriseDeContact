@@ -4,7 +4,7 @@ const utils = require('./../utils');
 
 module.exports = {
 	/**
-	 * Return all the campaign to the client
+	 * Return all campaigns
 	 * @param  {Request} 	req The request
 	 * @param  {Response} res The response
 	 * @return {Response}     Send the data to the client
@@ -26,7 +26,7 @@ module.exports = {
 	},
 
 	/**
-	 * Return all the prospect of the given campaign
+	 * Return all prospects of the given campaign
 	 * @param  {Request} 	req The request
 	 * @param  {Response} res The response
 	 * @return {Response}     Send the data to the client

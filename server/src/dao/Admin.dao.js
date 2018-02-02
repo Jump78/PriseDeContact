@@ -2,8 +2,9 @@ const Admin = require('./../model/Admin.model')
 const sha256 = require('js-sha256')
 
 module.exports = {
+
 	/**
-	 * Get all admin from db
+	 * Find all admins from DB
 	 * @return {Promise} Promise with all admin
 	 */
 	findAll : () => {
@@ -12,7 +13,7 @@ module.exports = {
 	},
 
 	/**
-	 * Find the admin by his id
+	 * Find one admin by his id
 	 * @param  {int} 			id 	The admin's id
 	 * @return {Promise}    	Promise with the admin
 	 */
@@ -22,7 +23,7 @@ module.exports = {
 	},
 
 	/**
-	 * Find admin by email
+	 * Find one admin by email
 	 * @param  {string} email The admin's email we want to get
 	 * @return {Promise}      Promise with the admin
 	 */
@@ -44,7 +45,7 @@ module.exports = {
 	},
 
 	/**
-	 * Update the admin with the id pass in arg
+	 * Update one admin
 	 * @param  {int} 			id   	The id of the admin we want to update
 	 * @param  {object} 	data 	New data
 	 * @return {Promise}      	Promise of the request
@@ -60,7 +61,7 @@ module.exports = {
 	},
 
 	/**
-	 * Remove an admin
+	 * Remove one admin
 	 * @param  {int} 	id Admin's id we want to remove
 	 * @return {Promise}    [description]
 	 */

@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
 	/**
-	 * Return all the admin to the client
+	 * Return all admins
 	 * @param  {Request} 	req The request
 	 * @param  {Response} res The response
 	 * @return {Response}     Send the data to the client
@@ -27,7 +27,7 @@ module.exports = {
 	},
 
 	/**
-	 * Return the admin find
+	 * Return the admin found
 	 * @param  {Request} 	req The request
 	 * @param  {Response} res The response
 	 * @return {Response}     Send the data to the client
@@ -52,7 +52,7 @@ module.exports = {
 	},
 
 	/**
-	 * Check the login and the password sent with the data from db
+	 * Check if the login and the password sent exist in the db
 	 * @param  {Request} 	req The request
 	 * @param  {Response} res The response
 	 * @return {Response}     Send the data to the client

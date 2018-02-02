@@ -1,8 +1,9 @@
 const Prospect = require('./../model/Prospect.model')
 
 module.exports = {
+
 	/**
-	 * Get all prospect from DB
+	 * Find all prospects from DB
 	 * @return {Promise} Promise response of the request
 	 */
 	findAll : () => {
@@ -11,8 +12,8 @@ module.exports = {
 	},
 
 	/**
-	 * Get all campaigns of one prospect
-	 * @param  {int} 	id Prospect's id
+	 * Find all campaigns of one prospect
+	 * @param  {int} 	id: Prospect's id
 	 * @return {Promise} Promise response of the request
 	 */
 	findMyCampaigns : ( id ) => {
@@ -23,8 +24,8 @@ module.exports = {
 
 	/**
 	 * Add a campaing to the prospect
-	 * @param {int} idProspect Prospect's id
-	 * @param {int} idCampaign Campaign's id
+	 * @param {int} idProspect: Prospect's id
+	 * @param {int} idCampaign: Campaign's id
 	 * @return {Promise} Promise response of the request
 	 */
 	addOneCampaign : ( idProspect, idCampaign ) => {
@@ -41,8 +42,8 @@ module.exports = {
 
 	/**
 	 * Remove a campaign to the prospect
-	 * @param {int} idProspect Prospect's id
-	 * @param {int} idCampaign Campaign's id
+	 * @param {int} idProspect: Prospect's id
+	 * @param {int} idCampaign: Campaign's id
 	 * @return {Promise} Promise response of the request
 	 */
 	removeOneCampaign : ( idProspect, idCampaign ) => {
@@ -59,8 +60,8 @@ module.exports = {
 	},
 
 	/**
-	 * Find the prospect by his id
-	 * @param  {int} 			id 	The prospect's id
+	 * Find one prospect by his id
+	 * @param  {int} 			id: 	The prospect's id
 	 * @return {Promise}    	Promise with the prospect
 	 */
 	find : ( id ) => {
@@ -69,8 +70,8 @@ module.exports = {
 	},
 
 	/**
-	 * Find prospect by email
-	 * @param  {string} email The campaign's email we want to get
+	 * Find one prospect by email
+	 * @param  {string} email: The campaign's email we want to get
 	 * @return {Promise}      Promise with the campaign
 	 */
 	findByEmail : ( email ) => {
@@ -81,7 +82,7 @@ module.exports = {
 
 	/**
 	 * Create a new prospect
-	 * @param  {object} prospect Prospect's data
+	 * @param  {object} prospect: Prospect's data
 	 * @return {Promise}      Promise of the request
 	 */
 	create : ( prospect ) => {
@@ -91,9 +92,9 @@ module.exports = {
 	},
 
 	/**
-	 * Update the prospect with the id pass in arg
-	 * @param  {int} 			id   	The id of the prospect we want to update
-	 * @param  {object} 	data 	New data
+	 * Update one prospect
+	 * @param  {int} 			id:   	The id of the prospect we want to update
+	 * @param  {object} 	data: 	New data
 	 * @return {Promise}      	Promise of the request
 	 */
 	update : ( id, data ) => {
@@ -120,8 +121,8 @@ module.exports = {
 	},
 
 	/**
-	 * Remove a prospect
-	 * @param  {int} 	id Prospect's id we want to remove
+	 * Remove one prospect
+	 * @param  {int} 	id: Prospect's id we want to remove
 	 * @return {Promise} Promise of the request
 	 */
 	remove : ( id ) => {
