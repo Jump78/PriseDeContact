@@ -190,7 +190,7 @@ module.exports = {
 				if (!prospect) { //If zero prospect is found
 					createNewProspect(req.body)
 					.then( data => {
-						io.sockets.in("room-"+req.body.campaign_id).emit( 'prospectAdd', data.content )
+						req.io.sockets.in("room-"+req.body.campaign_id).emit( 'prospectAdd', data.content )
 						return res.json(data)
 					})
 					.catch( err => {
@@ -201,7 +201,7 @@ module.exports = {
 					if (prospect.campaigns.indexOf(req.body.campaign_id) == -1) { //Verify if the prospect is already subscribed
 						updateProspectAndCampaign(prospect._id, req.body.campaign_id)
 						.then( data => {
-							io.sockets.in("room-"+req.body.campaign_id).emit( 'prospectAdd', data.content )
+							req.io.sockets.in("room-"+req.body.campaign_id).emit( 'prospectAdd', data.content )
 							return res.json( data )
 						})
 						.catch(err => {
