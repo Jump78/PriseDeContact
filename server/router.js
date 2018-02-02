@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const jwt = require('jsonwebtoken')
+const authMiddleware = require('./src/middlewares/authMiddleware');
 
 const prospect = require('./src/controller/Prospect.controller')
 const campaign = require('./src/controller/Campaign.controller')
@@ -22,48 +22,9 @@ router.use( (req, res, next) => {
  next()
 })
 
-let cookieNoCheck = [
-	{
-		path: '/admin/login',
-		method: 'POST'
-	},	{
-		path: '/admin',
-		method: 'POST'
-	},
-	{
-		path: '/prospect',
-		method: 'POST'
-	}
-]
 
-router.use( (req, res, next) => {
-	let csrfToken = req.headers['authorization'];
-	let token = req.cookies['access_token'];
 
-	let test = cookieNoCheck.filter( (item) => req.url === item.path && req.method == item.method);
-	if (!test.length && req.method != 'OPTIONS' && req.method != 'GET') {
-		if (!csrfToken) {
-			res.status(400);
-			return res.send('Headers authorization not found')
-		}
-
-		if (!token) {
-			res.status(400);
-			return res.send('Cookies with token not found')
-		}
-
-		jwt.verify(token, 'dEA0hDoaCc', function(err, decoded) {
-	    if (err || (decoded.csrfToken != csrfToken)) {
-			  res.status(401);
-				return res.send('Need authorization')
-	    } else {
-        next();
-	    }
-		})
-	} else {
-		next();
-	}
-})
+router.use(authMiddleware)
 
 // CRUD Prospects
 router.post 	('/prospect',					 			prospect.create)
