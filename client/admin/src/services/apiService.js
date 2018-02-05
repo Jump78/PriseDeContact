@@ -19,6 +19,10 @@ export default class {
   async checkErrors(res) {
     if(res.ok) return res;
 
+    if (res.status == 401) {
+      document.location =  '#/login' //Redirect to login component
+    }
+
     let errorMsg = `ERROR ${res.status} (${res.statusText})`;
     let serverText = await res.text();
     if(serverText) errorMsg = `${errorMsg}: ${serverText}`;
