@@ -7,15 +7,14 @@ import Login from '@/components/Login';
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
       redirect: {
         name: 'Login'
       }
-    },
-    {
+    },{
       path: '/login',
       name: 'Login',
       component: Login
@@ -34,3 +33,14 @@ export default new Router({
     },
   ]
 })
+
+// Guard for each route. Redirect to login if the user isn't connect ( He haven't token in session )
+router.beforeEach((to, from, next) => {
+  if (!sessionStorage.getItem('token') && to.name != 'Login' ) {
+   return next({name:'Login'})
+  }
+
+  return next();
+})
+
+export default router

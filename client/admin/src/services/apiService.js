@@ -1,5 +1,6 @@
 /*** Import ***/
 import config from '../../config/config';
+import Vue from 'vue';
 
 /**
  * Base class for all service
