@@ -11,9 +11,10 @@
 
         <!-- Question 1: email -->
         <div class="block-input-text">
-          <input v-model="prospect.email" type="email" name="email" required>
+          <input v-validate="'required|email'" v-model="prospect.email" type="email" name="email" :class="{'border-error': errors.has('email')}">
           <label for="email">Email</label>
         </div>
+        <p v-show="errors.has('email')" :class="{'error': errors.has('email')}">{{ errors.first('email') }}</p>
         <!-- !!END Question 1 -->
 
         <!-- Question 2: gender (radio) -->
@@ -22,59 +23,66 @@
           <div class="flex-options">
 
             <div class="option" v-bind:class="{ choose: prospect.gender === 'm' }">
-              <input v-model="prospect.gender" type="radio" name="gender" value="m" id="gender_m">
+              <input v-validate="'required|in:m,f'" v-model="prospect.gender" type="radio" name="gender" value="m" id="gender_m" :class="{'border-error': errors.has('gender')}">
               <label for="gender_m" v-bind:class="{ choose: prospect.gender === 'm' }">
                 Homme
               </label>
             </div>
             <div class="option" v-bind:class="{ choose: prospect.gender === 'f' }">
-              <input v-model="prospect.gender" type="radio" name="gender" value="f" id="gender_f">
+              <input v-model="prospect.gender" type="radio" name="gender" value="f" id="gender_f" :class="{'border-error': errors.has('gender')}">
               <label for="gender_f" v-bind:class="{ choose: prospect.gender === 'f' }">
                 Femme
               </label>
             </div>
           </div>
         </div>
+        <p v-show="errors.has('gender')" :class="{'error': errors.has('gender')}">{{ errors.first('gender') }}</p>
         <!-- !!END Question 2 -->
 
         <!-- Question 3: firstname (text) -->
         <div class="block-input-text">
-          <input v-model="prospect.firstname" type="text" name="firstname" required>
+          <input v-validate="'required|alpha_dash'" v-model="prospect.firstname" type="text" name="firstname" :class="{'border-error': errors.has('firstname')}">
           <label for="firstname">Prénom</label>
         </div>
+        <p v-show="errors.has('firstname')" :class="{'error': errors.has('firstname')}">{{ errors.first('firstname') }}</p>
         <!-- !!END Question 3 -->
 
         <!-- Question 4: lastname (text) -->
         <div class="block-input-text">
-          <input v-model="prospect.lastname" type="text" name="lastname" required>
+          <input v-validate="'required|alpha_dash'" v-model="prospect.lastname" type="text" name="lastname" :class="{'border-error': errors.has('lastname')}">
           <label for="lastname">Nom</label>
         </div>
+        <p v-show="errors.has('lastname')" :class="{'error': errors.has('lastname')}">{{ errors.first('lastname') }}</p>
         <!-- !!END lastname -->
 
         <!-- Question 5: address (text) -->
         <div class="block-input-text">
-          <input v-model="prospect.adress" type="text" name="adress" required>
+          <input v-validate="{required: true, regex: /^([0-9a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ \*\'\-])*$/}" v-model="prospect.adress" type="text" name="adress" :class="{'border-error': errors.has('adress')}">
           <label for="adress">Adresse</label>
         </div>
+        <p v-show="errors.has('adress')" :class="{'error': errors.has('adress')}">{{ errors.first('adress') }}</p>
         <!-- !!END Question 5 -->
 
         <!-- Question 6: postcode (text) -->
         <div class="block-input-text">
-          <input v-model="prospect.postcode" type="text" name="postcode" required>
+          <input v-validate="'required|numeric'" v-model="prospect.postcode" type="text" name="postcode" :class="{'border-error': errors.has('postcode')}">
           <label for="postcode">Code postal</label>
         </div>
+        <p v-show="errors.has('postcode')" :class="{'error': errors.has('postcode')}">{{ errors.first('postcode') }}</p>
         <!-- !!END Question 6 -->
 
         <!-- Question 7: city (text) -->
         <div class="block-input-text">
-          <input v-model="prospect.city" type="text" name="city" required>
+          <input v-validate="{required: true, regex: /^([a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ \*\'\-])*$/}" v-model="prospect.city" type="text" name="city" :class="{'border-error': errors.has('city')}">
           <label for="city">Ville</label>
         </div>
+        <p v-show="errors.has('city')" :class="{'error': errors.has('city')}">{{ errors.first('city') }}</p>
         <!-- !!END Question 7 -->
 
         <!-- Question 8: study level (select or optional text) -->
         <div class="block-select">
-          <select class="select" name="study_level" v-model="prospect.study_level">
+          <select v-validate="'required|in:sans-diplome,bac,bac+1,bac+2,bac+3,bac+4,bac+5'" class="select" name="study_level" v-model="prospect.study_level" :class="{'border-error': errors.has('study_level')}">
+            <option value="sans-diplome">Sans diplome</option>
             <option value="bac">Bac</option>
             <option value="bac+1">Bac+1</option>
             <option value="bac+2">Bac+2</option>
@@ -84,29 +92,31 @@
           </select>
           <label for="study_level" v-bind:class="{ ok: prospect.study_level }">Niveau d'études</label>
         </div>
+        <p v-show="errors.has('study_level')" :class="{'error': errors.has('study_level')}">{{ errors.first('study_level') }}</p>
         <!-- !!END Question 8 -->
 
         <!-- Question 9: asked class (select + radio) -->
         <!-- Question 9: asked class (select) -->
         <div class="block-select">
-          <select class="select" name="asked_class_categorie" v-model="prospect.asked_class_categorie">
+          <select v-validate="'required|in:prepa,communication-digitale,creation-digitale,developpement-web'" class="select" name="asked_class_categorie" v-model="prospect.asked_class_categorie" :class="{'border-error': errors.has('asked_class_categorie')}">
             <option value="prepa" >Prépa</option>
             <option value="communication-digitale" >Communication digitale</option>
             <option value="creation-digitale" >Création Digitale</option>
             <option value="developpement-web" >Développement web</option>
           </select>
-          <label for="asked_class" v-bind:class="{ up: prospect.asked_class_categorie, ok: prospect.asked_class }">Formation souhaitée</label>
+          <label for="asked_class_categorie" v-bind:class="{ up: prospect.asked_class_categorie, ok: prospect.asked_class }">Formation souhaitée</label>
         </div>
+        <p v-show="errors.has('asked_class_categorie')" :class="{'error': errors.has('asked_class_categorie')}">{{ errors.first('asked_class_categorie') }}</p>
         <!-- !!END Question 9: asked class (select) -->
         <!-- Question 9: asked class (radio) -->
         <div class="block-input-radio">
           <!-- prepa answer -->
           <div class="flex-options" id="pre" v-if="prospect.asked_class_categorie == 'prepa'">
-            <radio-option @send="updateParamValue" name="asked_class" value="prepa-digitale" label="Prépa Digitale" v-bind:class="{ choose: prospect.asked_class === 'prepa-digitale' }"></radio-option>
+            <radio-option v-model="prospect.asked_class" v-validate="'required|in:prepa-digitale'" @send="updateParamValue" name="asked_class" value="prepa-digitale" label="Prépa Digitale" v-bind:class="{ choose: prospect.asked_class === 'prepa-digitale' }"></radio-option>
           </div>
           <!-- Communication digitale answers -->
           <div class="flex-options" id="com-dig" v-if="prospect.asked_class_categorie == 'communication-digitale'">
-            <radio-option @send="updateParamValue" name="asked_class" value="chef-de-projet-digital" label="Chef de projet digitale" v-bind:class="{ choose: prospect.asked_class === 'chef-de-projet-digital' }"></radio-option>
+            <radio-option v-model="prospect.asked_class" v-validate="'required|in:chef-de-projet-digital,charge-de-communication-digitale,community-manager,marketeur-digital,ux-designer,editeur-digital-secretaire-de-redaction,responsable-strategie-et-innovation-de-la-communication'" @send="updateParamValue" name="asked_class" value="chef-de-projet-digital" label="Chef de projet digitale" v-bind:class="{ choose: prospect.asked_class === 'chef-de-projet-digital' }"></radio-option>
             <radio-option @send="updateParamValue" name="asked_class" value="charge-de-communication-digitale" label="Chargé de communication digitale" v-bind:class="{ choose: prospect.asked_class === 'charge-de-communication-digitale' }"></radio-option>
             <radio-option @send="updateParamValue" name="asked_class" value="community-manager" label="Community manager" v-bind:class="{ choose: prospect.asked_class === 'community-manager' }"></radio-option>
             <radio-option @send="updateParamValue" name="asked_class" value="marketeur-digital" label="Marketeur digital" v-bind:class="{ choose: prospect.asked_class === 'marketeur-digital' }"></radio-option>
@@ -115,57 +125,62 @@
             <radio-option @send="updateParamValue" name="asked_class" value="responsable-strategie-et-innovation-de-la-communication" label="Responsable stratégie et innovation de la communication" v-bind:class="{ choose: prospect.asked_class === 'responsable-strategie-et-innovation-de-la-communication' }"></radio-option>
           </div>
 
-          <div class="flex-options" id="com-dig" v-if="prospect.asked_class_categorie == 'creation-digitale'">
-            <radio-option @send="updateParamValue" name="asked_class" value="directeur-artistique-multimedia" label="Directeur artistique multimédia" v-bind:class="{ choose: prospect.asked_class === 'directeur-artistique-multimedia' }"></radio-option>
+          <div class="flex-options" id="crea" v-if="prospect.asked_class_categorie == 'creation-digitale'">
+            <radio-option v-model="prospect.asked_class" v-validate="'required|in:directeur-artistique-multimedia,graphiste-multimedia–ui-designer,graphiste-motion-designer,concepteur-realisateur-vr-et-realite-augmentee'" @send="updateParamValue" name="asked_class" value="directeur-artistique-multimedia" label="Directeur artistique multimédia" v-bind:class="{ choose: prospect.asked_class === 'directeur-artistique-multimedia' }"></radio-option>
             <radio-option @send="updateParamValue" name="asked_class" value="graphiste-multimedia–ui-designer" label="Graphiste multimédia – UI designer" v-bind:class="{ choose: prospect.asked_class === 'graphiste-multimedia–ui-designer' }"></radio-option>
             <radio-option @send="updateParamValue" name="asked_class" value="graphiste-motion-designer" label="Graphiste motion designer" v-bind:class="{ choose: prospect.asked_class === 'graphiste-motion-designer' }"></radio-option>
             <radio-option @send="updateParamValue" name="asked_class" value="concepteur-realisateur-vr-et-realite-augmentee" label="Concepteur réalisateur VR et réalité augmentée" v-bind:class="{ choose: prospect.asked_class === 'concepteur-realisateur-vr-et-realite-augmentee' }"></radio-option>
           </div>
 
           <div class="flex-options" id="dev-web" v-if="prospect.asked_class_categorie == 'developpement-web'">
-            <radio-option @send="updateParamValue" name="asked_class" value="developpeur-multimedia" label="Développeur multimédia" v-bind:class="{ choose: prospect.asked_class === 'developpeur-multimedia' }"></radio-option>
+            <radio-option v-model="prospect.asked_class" v-validate="'required|in:developpeur-multimedia,developpeur-d-applications-mobiles,developpeur-front-end,game-programmeur,responsable-stratégie-et-innovation-digitales'" @send="updateParamValue" name="asked_class" value="developpeur-multimedia" label="Développeur multimédia" v-bind:class="{ choose: prospect.asked_class === 'developpeur-multimedia' }"></radio-option>
             <radio-option @send="updateParamValue" name="asked_class" value="developpeur-d-applications-mobiles" label="Développeur d’applications mobiles" v-bind:class="{ choose: prospect.asked_class === 'developpeur-d-applications-mobiles' }"></radio-option>
             <radio-option @send="updateParamValue" name="asked_class" value="developpeur-front-end" label="Développeur front-end" v-bind:class="{ choose: prospect.asked_class === 'developpeur-front-end' }"></radio-option>
             <radio-option @send="updateParamValue" name="asked_class" value="game-programmeur" label="Game programmeur" v-bind:class="{ choose: prospect.asked_class === 'game-programmeur' }"></radio-option>
             <radio-option @send="updateParamValue" name="asked_class" value="responsable-stratégie-et-innovation-digitales" label="Responsable stratégie et innovation digitales" v-bind:class="{ choose: prospect.asked_class === 'responsable-stratégie-et-innovation-digitales' }"></radio-option>
           </div>
         </div>
+        <p v-show="errors.has('asked_class')" :class="{'error': errors.has('asked_class')}">{{ errors.first('asked_class') }}</p>
         <!-- !!END Question 9: asked class (radio) -->
         <!-- !!END Question 9: asked class (select + radio) -->
 
         <!-- Question 10: current class (select + optional input) -->
         <!-- Question 10: current class (select) -->
         <div class="block-select">
-          <select class="select" name="current_class" v-model="prospect.current_class"required>
+          <select v-validate="'required|in:bac,bacpro,bts,dut,license,master,autre'" class="select" name="current_class" v-model="prospect.current_class" :class="{'border-error': errors.has('current_class')}">
             <option value="bac">Bac</option>
             <option value="bacpro">Bac pro</option>
             <option value="bts">BTS</option>
             <option value="dut">DUT</option>
             <option value="license">License</option>
             <option value="master">Master</option>
-            <option value="other">Autre</option>
+            <option value="autre">Autre</option>
           </select>
           <label for="current_class" v-bind:class="{ ok: prospect.current_class }">Formation actuelle</label>
+          <p v-show="errors.has('current_class')" :class="{'error': errors.has('current_class')}">{{ errors.first('current_class') }}</p>
         </div>
         <!-- !!END Question 10: current class (select) -->
         <!-- Question 10: current class (optional text) -->
         <div class="block-input-text other-class" v-bind:class="{ show: prospect.current_class == 'autre'}">
-          <input type="text" name="current_class_text" v-model="current_class_text" :required = "prospect.current_class == 'autre'">
+          <input v-validate="(prospect.current_class == 'autre')?'required|alpha_spaces':''" type="text" name="current_class_text" v-model="current_class_text" :class="{'border-error': errors.has('current_class_text')}">
           <label for="current_class_text">Entrez votre formation</label>
+          <p v-show="errors.has('current_class_text')" :class="{'error': errors.has('current_class_text')}">{{ errors.first('current_class_text') }}</p>
         </div>
         <!-- !!END Question 10: current class (optional text) -->
         <!-- !!END Question 10: current class (select + facultatif text) -->
 
         <!-- Question 11: phone (texte) -->
         <div class="block-input-text">
-          <input type="text" name="phone" v-model="prospect.phone" required>
+          <input v-validate="'required|numeric'" type="text" name="phone" v-model="prospect.phone" :class="{'border-error': errors.has('phone')}">
           <label for="phone">Téléphone</label>
+          <p v-show="errors.has('phone')" :class="{'error': errors.has('phone')}">{{ errors.first('phone') }}</p>
         </div>
         <!-- !!END Question 11 -->
 
         <!-- Question 12: wanna newsletter (checkbox) -->
         <div class="block-input-checkbox">
-          <input type="checkbox" id="wanna_newsletter" name="wanna_newsletter" value="true" v-model="prospect.wanna_newsletter"> <label for="wanna_newsletter">je veux reçevoir les dernières actus de l'école multimédia</label>
+          <input v-validate="{in: [true, false]}" type="checkbox" id="wanna_newsletter" name="wanna_newsletter" value="true" v-model="prospect.wanna_newsletter" :class="{'error': errors.has('wanna_newsletter')}"> <label for="wanna_newsletter">je veux reçevoir les dernières actus de l'école multimédia</label>
+          <p v-show="errors.has('wanna_newsletter')" :class="{'error': errors.has('wanna_newsletter')}">{{ errors.first('wanna_newsletter') }}</p>
         </div>
         <!-- !!END Question 12 -->
 
@@ -185,6 +200,8 @@
 import RadioOption from './RadioOption';
 import idbKeyval from 'idb-keyval';
 import ProspectService from '../services/ProspectService';
+
+import french from 'vee-validate/dist/locale/fr'
 
 export default {
   name: 'ProspectForm',
@@ -214,6 +231,19 @@ export default {
   },
   methods: {
     onSubmit () {
+      let self = this; //Save the context
+      //Check if all the field are valid
+      this.$validator.validateAll()
+      .then( result => {
+        if (result) return self.sendProspect();
+
+        //Scroll to error element
+        this.$el.querySelector('[data-vv-id="'+this.$validator.errors.items[0].id+'"]').closest('div[class^=block-]').scrollIntoView(true);
+        return;
+      })
+    },
+
+    sendProspect () {
       //Check if the prospect has selected the "other" option of "current_class" select
       if (this.current_class_text != '' && this.prospect.current_class == 'autre') {
         this.prospect.current_class = this.current_class_text //Set the current_class class value to the value write by the prospect
@@ -255,6 +285,26 @@ export default {
     'prospect.asked_class_categorie': function() {
       this.prospect.asked_class = ''
     }
+  },
+  created () {
+    this.$validator.localize('fr', {
+      messages: french.messages,
+      attributes: {
+        email: 'L\'email ',
+        gender: 'Le sexe ',
+        firstname: 'Le prénom ',
+        lastname: 'Le nom ',
+        adress: 'L\'adresse ',
+        postcode: 'Le code postale ',
+        city: 'La ville ',
+        "study_level": 'Le niveau d\'étude ',
+        "asked_class_categorie": 'Renseigner la formation souhaitée ',
+        "asked_class": 'Renseigner la formation souhaitée ',
+        "current_class": 'Renseigner votre formation actuelle ',
+        "current_class_text": 'Renseigner votre formation actuelle',
+        phone: 'Le numero de téléphone '
+      }
+    })
   }
 }
 </script>
@@ -472,6 +522,14 @@ div[class^="block-"]{
 
 .show{
   display: block
+}
+
+.error{
+  color:  red;
+}
+
+.border-error{
+  border-bottom: 1px solid red;
 }
 
 @media (max-width: 640px) {

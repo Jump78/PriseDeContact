@@ -1,10 +1,12 @@
 <template>
 
-	<div class="option" @click.prevent="valueTransmit">
+	<div class="option" @click="valueTransmit">
 	  <input type="radio"
 	   :name="name"
 	   :id="name+'_'+value"
-	   :value="value">
+	   :value="value"
+		 data-vv-value-path="val"
+		 @change = "change">
 	  <label :for="name+'_'+value">
 	  	{{ label }}
 	  </label>
@@ -17,14 +19,21 @@ import {TweenLite, TimelineLite} from 'gsap'
 
 export default {
 	name: 'RadioOption',
+	model: {
+		prop:'checked',
+		event:'change'
+	},
 	props: {
 		name: {type: String, required: true},
     value: {type: String, required: true},
-    label: {type: String, required: true}
+    label: {type: String, required: true},
 	},
 	methods: {
 		valueTransmit() {
 			this.$emit('send', { val: this.value, name: this.name} )
+		},
+		change() {
+			this.$emit('input')
 		}
 	}
 }
