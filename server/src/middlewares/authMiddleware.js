@@ -8,6 +8,11 @@ let cookieNoCheck = [
 		type: 'regex'
 	},
 	{
+		path: /campaign\/date\/[0-9]+$/,
+		method: 'GET',
+		type: 'regex'
+	},
+	{
 		path: '/campaign',
 		method: 'GET',
 		type: 'string'

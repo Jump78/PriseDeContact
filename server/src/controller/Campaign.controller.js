@@ -130,6 +130,31 @@ module.exports = {
 	},
 
 	/**
+	 * Return the campaign by his date
+	 * @param  {Request} 	req The request
+	 * @param  {Response} res The response
+	 * @return {Response}     Send the data to the client
+	 */
+	findByDate : ( req, res ) => {
+	console.log('Campaign.findByDate detected')
+	CampaignDAO.findByDate( req.params.date )
+		.then( camp => {
+			if (camp === null || !camp || !camp.length ) {
+				return res.json( {status: 404, error: 1, message: 'campaign not found'} )
+			}
+			return res.json({
+				status: 200,
+				success: 1,
+				message: 'campaign found',
+				content: camp
+			})
+		})
+		.catch( err => {
+			return res.json( {status: 400, error: 1, message: err.message} )
+		})
+	},
+
+	/**
 	 * Create campaign
 	 * @param  {Request} 	req The request
 	 * @param  {Response} res The response

@@ -71,6 +71,16 @@ module.exports = {
 	},
 
 	/**
+	 * Find the campaign by his date
+	 * @param  {int} 			date 	The campaign's date
+	 * @return {Promise}    	Promise with the campaign
+	 */
+	findByDate : ( date ) => {
+		return Campaign
+					.find( {date: date} )
+	},
+
+	/**
 	 * Create a new campaign
 	 * @param  {object} campaign Campaign's data
 	 * @return {Promise}      Promise of the request
