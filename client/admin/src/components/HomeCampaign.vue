@@ -74,7 +74,8 @@ export default {
       options: {
         responsive: true,
         maintainAspectRatio: true
-      }
+      },
+      socket: null
     }
   },
   watch: {
@@ -176,7 +177,7 @@ export default {
     });
 
     //Connect the client to socket
-    var socket = io(config.apiEndPoint.replace('/api', ''),{
+    this.socket = io(config.apiEndPoint.replace('/api', ''),{
       //Prod param in ( https, and server in subDirectory)
       //secure: true,
       //reconnect: true,
@@ -185,7 +186,7 @@ export default {
       query: 'roomId='+this.$route.params.id
     });
 
-    socket.on('prospectAdd', (data) => {  //Listen the 'prospectAdd' event from socket
+    this.socket.on('prospectAdd', (data) => {  //Listen the 'prospectAdd' event from socket
       this.prospects.push(data); //Push the new prospect
       this.fillData(); //Refill the chart
     })
@@ -203,6 +204,10 @@ export default {
       } )
       .catch( err => console.log(err) );
   },
+  destroyed () {
+    this.socket.disconnect();
+    this.socket = null;
+  }
 }
 </script>
 
