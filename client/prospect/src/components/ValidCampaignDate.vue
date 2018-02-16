@@ -30,16 +30,20 @@ export default {
   methods: {
   },
   created () {
-    this.campaignService.getAll()
-        .then(res => {
-          this.campaigns = res.content.filter((item) => moment(parseInt(item.date)).isSame(Date.now(), 'day'));
+    // Timestamp of the day at 1 am
+    let timestamp = moment(Date.now()).hours(1).minutes(0).seconds(0).milliseconds(0).valueOf();
 
-          if (this.campaigns.length == 1) {
-            this.$router.push({name: 'ProspectForm', params:{id: this.campaigns[0]._id}})
-          }
+    // Get today event
+    this.campaignService.findByDate(timestamp)
+    .then(res => {
+      this.campaigns = res.content;
 
-        })
-        .catch(err => console.log(err));
+      if (this.campaigns.length == 1) {
+        this.$router.push({name: 'ProspectForm', params:{id: this.campaigns[0]._id}})
+      }
+
+    })
+    .catch(err => console.log(err));
   }
 }
 

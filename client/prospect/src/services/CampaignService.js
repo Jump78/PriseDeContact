@@ -34,6 +34,18 @@ export default class extends ApiService{
   }
 
   /**
+   * Find the campaign by his date
+   * @param  {int}        Campaign's date
+   * @return {Promise}    Response of the request
+   */
+  findByDate (date) {
+    return fetch(this.baseUrl+'/'+this.ressource+'/date/'+date)
+      .then( this.checkErrors )
+      .then( res => res.json() )
+      .catch( err => console.log(err) )
+  }
+
+  /**
    * Add a campaign
    * @param {object}      campaign The data of the new campaign
    * @return {Promise}    Response of the request
