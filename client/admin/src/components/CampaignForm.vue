@@ -67,6 +67,7 @@ export default {
   methods: {
     //Emit cancel event
     cancelAddCampaign () {
+      this.errors.clear();
       this.$emit('cancel');
     },
     onSubmit () {
@@ -75,9 +76,6 @@ export default {
       this.$validator.validateAll()
       .then( result => {
         if (result) return self.submitCampaign();
-
-        //Scroll to error element
-        this.$el.querySelector('[data-vv-id="'+this.$validator.errors.items[0].id+'"]').closest('div').scrollIntoView(true);
         return;
       })
     },
