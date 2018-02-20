@@ -3,6 +3,7 @@ const sha256 = require('js-sha256')
 const utils = require('./../utils')
 const randomstring = require("randomstring")
 const jwt = require('jsonwebtoken')
+const config = require('../../config')
 
 module.exports = {
 	/**
@@ -80,7 +81,7 @@ module.exports = {
 
 			let token = jwt.sign( //Create token
 				payload, //Payload
-				'dEA0hDoaCc', //Secret
+				config.jwtTokenKey, //Secret
 				{ //Option
 					expiresIn: '1 days'
 				}
@@ -155,7 +156,7 @@ module.exports = {
 		})
 		.catch( err => res.json( {status: 400, error: 1, message: err.message} ) )
 	},
-	
+
 	remove : ( req, res ) => {
 		AdminDAO
 			.remove( req.params.id )

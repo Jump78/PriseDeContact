@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const config = require('../../config')
 
 // Array of uri we don't want to check
 let cookieNoCheck = [
@@ -67,7 +68,7 @@ function authMiddleware (req, res, next) {
 		}
 
 		// Check if the token in cookie is correct
-		jwt.verify(token, 'dEA0hDoaCc', function(err, decoded) {
+		jwt.verify(token, config.jwtTokenKey, function(err, decoded) {
 	    if (err || (decoded.csrfToken != csrfToken)) { //If the token is wrong or the crsfToken is diffrent
 			  res.status(401);
 				return res.send('Need authorization') //Response an error
