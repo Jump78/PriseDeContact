@@ -4,31 +4,35 @@
       <div>
         <label for="type">Type</label>
         <div>
-          <input required type="radio" name="type" value="jpo" id="jpo" v-model="campaign.type">
+          <input v-validate="'required|in:jpo,salon'" type="radio" name="type" value="jpo" id="jpo" v-model="campaign.type">
           <label for="jpo" v-bind:class="{ selected: campaign.type == 'jpo' }">JPO</label>
-          <input required type="radio" name="type" value="salon" id="salon" v-model="campaign.type">
+          <input type="radio" name="type" value="salon" id="salon" v-model="campaign.type">
           <label for="salon" v-bind:class="{ selected: campaign.type == 'salon' }">Salon</label>
         </div>
       </div>
+      <p v-show="errors.has('type')" :class="{'error': errors.has('type')}">{{ errors.first('type') }}</p>
 
       <div>
         <label for="name">Nom</label>
-        <input required type="text" name="name" v-model="campaign.name">
+        <input v-validate="'required|alpha_spaces_dash'" type="text" name="name" v-model="campaign.name">
       </div>
+      <p v-show="errors.has('name')" :class="{'error': errors.has('name')}">{{ errors.first('name') }}</p>
 
       <div>
         <label for="date">Date</label>
-        <input required type="date" name="date" v-model="campaign.date">
+        <input v-validate="'required|date_format:YYYY-MM-DD'" type="date" name="date" v-model="campaign.date">
       </div>
+      <p v-show="errors.has('date')" :class="{'error': errors.has('date')}">{{ errors.first('date') }}</p>
 
       <div>
         <label for="outro_text">Message de fin de formulaire</label>
-        <textarea required name="outro_text" v-model="campaign.outro_text"></textarea>
+        <textarea v-validate="'required|alpha_spaces_dash'" name="outro_text" v-model="campaign.outro_text"></textarea>
       </div>
+      <p v-show="errors.has('outro_text')" :class="{'error': errors.has('outro_text')}">{{ errors.first('outro_text') }}</p>
 
       <div class="buttons">
         <button v-if="!isEdit" type="button" name="cancel" @click="cancelAddCampaign">Annuler</button>
-        <button type="submit" name="validate" @click="submitCampaign">Ajouter</button>
+        <button type="submit" name="validate" @click="onSubmit">Ajouter</button>
       </div>
     </form>
   </section>
@@ -37,6 +41,8 @@
 <script>
 import config from '../../config/config.json';
 import moment from 'moment';
+
+import french from 'vee-validate/dist/locale/fr'
 
 export default {
   name: 'CampaignForm',
@@ -63,6 +69,18 @@ export default {
     cancelAddCampaign () {
       this.$emit('cancel');
     },
+    onSubmit () {
+      let self = this; //Save the context
+      //Check if all the field are valid
+      this.$validator.validateAll()
+      .then( result => {
+        if (result) return self.submitCampaign();
+
+        //Scroll to error element
+        this.$el.querySelector('[data-vv-id="'+this.$validator.errors.items[0].id+'"]').closest('div').scrollIntoView(true);
+        return;
+      })
+    },
     //Emit submit event
     submitCampaign () {
       let campaignToSend = {};
@@ -75,6 +93,17 @@ export default {
 
       this.$emit('submit', campaignToSend);
     },
+  },
+  created () {
+    this.$validator.localize('fr', {
+      messages: french.messages,
+      attributes: {
+        type: 'Le type ',
+        name: 'Le nom ',
+        date: 'La date ',
+        outro_text: 'Le message de fin '
+      }
+    })
   }
 }
 </script>
@@ -160,6 +189,11 @@ form > div.buttons > button:hover {
   background-color: #F03B58;
   color: #FFF;
   box-shadow: 0 0 10px 1px rgba(0,0,0,0.1)
+}
+
+.error{
+  text-align: right;
+  color: red;
 }
 
 </style>

@@ -86,17 +86,16 @@ export default {
       this.$router.push({name: 'HomeCampaign', params:{id:id}});
     },
     deleteCampaign (id) {
-      console.log(id);
       this.allCampaigns = this.allCampaigns.filter( item => item._id !== id );
       this.campaignService.delete(id);
      },
     addCampaign (campaign) {
       this.campaignToAdd = {};
-      this.deployed = false;
-      this.campaignService
-          .add(campaign)
-          .then( res => this.allCampaigns = this.allCampaigns.concat(res.content) )
-          .catch( err => this.message = 'Erreur server');
+      //this.deployed = false;
+      // this.campaignService
+      //     .add(campaign)
+      //     .then( res => this.allCampaigns = this.allCampaigns.concat(res.content) )
+      //     .catch( err => this.message = 'Erreur server');
     },
     populateCampaignTypeArray (item){
       if (moment(parseInt(item.date)).isAfter(Date.now(), 'day')) {
