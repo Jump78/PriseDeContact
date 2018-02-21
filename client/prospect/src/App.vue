@@ -6,14 +6,21 @@
     <router-view/>
 
     <footer class="global-footer-zone">
-      <img src="../src/assets/lecole-multimedia-logo.png" alt="">
+      <img :src="logo" alt="">
     </footer>
   </div>
 </template>
 
 <script>
+import logo from './assets/lecole-multimedia-logo.png';
+
 export default {
-  name: 'app'
+  name: 'app',
+  data () {
+    return {
+      logo: logo
+    }
+  }
 }
 </script>
 
@@ -45,7 +52,7 @@ export default {
   src: url(assets/font/avenir/AvenirNextLTPro-DemiIt.otf);
   font-weight: bold;
   font-style: italic;
-} 
+}
 
 body {
 	margin: 0;
@@ -98,8 +105,8 @@ footer img {
 @media (max-width: 640px) {
   body {
     font-size: 12px;
-    transition:0.3s ease all; 
-    -moz-transition:0.3s ease all; 
+    transition:0.3s ease all;
+    -moz-transition:0.3s ease all;
     -webkit-transition:0.3s ease all;
   }
   footer img {
