@@ -1,7 +1,7 @@
 <template>
   <nav>
     <div id="logo">
-      <img src="/src/assets/lecole-multimedia-logo.png" alt="logo">
+      <img :src="logo" alt="logo">
     </div>
     <ul>
       <li>
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import logo from '../assets/lecole-multimedia-logo.png';
+
 export default {
   name: 'NavBar',
   props: {
@@ -29,7 +31,9 @@ export default {
     }
   },
   data () {
-    return{}
+    return{
+      logo: logo
+    }
   },
   methods: {
     logout () {
@@ -57,7 +61,7 @@ export default {
     height: 10px;
     margin: -6px 0 0 15px;
   }
-  
+
   div#logo img {
     width: 110px;
   }
