@@ -5,7 +5,7 @@ const ip = process.env.ALWAYSDATA_HTTPD_IP || 'localhost'
 const port = process.env.ALWAYSDATA_HTTPD_PORT || 8020
 const apiSubDirectoy = (process.env.ALWAYSDATA_HTTPD_IP)?'/api' :'/'
 const mongoUrl = (process.env.ALWAYSDATA_HTTPD_IP)? config.mongoProdUrl :'mongodb://localhost:27017/pdc';
-const socketOption = {
+let socketOption = {
 	serveClient: false
 }
 
