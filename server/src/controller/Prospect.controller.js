@@ -1,5 +1,5 @@
-const ProspectDAO = require('./../dao/Prospect.DAO')
-const CampaignDAO = require('./../dao/Campaign.DAO')
+const ProspectDAO = require('../dao/Prospect.dao')
+const CampaignDAO = require('../dao/Campaign.dao')
 
 /**
  * Create a new prospect and add him in his campaign
