@@ -53,6 +53,7 @@ import Barchart  from '../chart/Barchart';
 import VueQrcode from '@xkeshi/vue-qrcode';
 import NavBar from './NavBar';
 import Clipboard from 'clipboard';
+import randomColor from 'randomcolor';
 
 export default {
   components: {
@@ -75,7 +76,8 @@ export default {
         responsive: true,
         maintainAspectRatio: true
       },
-      socket: null
+      socket: null,
+      chartColor: []
     }
   },
   watch: {
@@ -98,6 +100,7 @@ export default {
 
         if (!data.hasOwnProperty(key)) { //Check if we already stock the data
           data[key] = 1; //We set it with a default value
+          this.chartColor.push(randomColor({ hue: 'red', luminosity:'bright' }));
         } else {
           data[key]++;//Increment the value
         }
@@ -106,12 +109,8 @@ export default {
       this.chartData = {// The chart data
         labels: Object.keys(data), //Get each key of the object, and use them as label
         datasets: [{
-            data: Object.values(data), //Get each values of the object, and use them as data
-            backgroundColor: [
-              'rgb(0, 100, 150)',
-              'rgb(150, 0, 75)',
-              'rgb(150, 50, 75)'
-            ],
+            data: Object.values(data).sort(), //Get each values of the object, and use them as data
+            backgroundColor: this.chartColor.sort(),
             borderWidth: 1
         }]
       };
