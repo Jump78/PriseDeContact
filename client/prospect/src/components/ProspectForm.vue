@@ -249,6 +249,12 @@ export default {
         this.prospect.current_class = this.current_class_text //Set the current_class class value to the value write by the prospect
       }
 
+      for (var prop in this.prospect) {
+        if (this.prospect.hasOwnProperty(prop) && prop != 'email' && typeof this.prospect[prop] === 'string') {
+          this.prospect[prop] = this.prospect[prop].charAt(0).toUpperCase() + this.prospect[prop].slice(1);
+        }
+      }
+
       let self = this; //Save the context
       if ('serviceWorker' in navigator && 'SyncManager' in window) { //Check if serviceWorker and Sync is supported
         navigator.serviceWorker.ready.then(function(reg) {
