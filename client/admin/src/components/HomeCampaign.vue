@@ -130,7 +130,7 @@ export default {
         'email' : item.email,
         'prénom' : item.firstname,
         'nom' : item.lastname,
-        'sexe' : (item.gender === 'm')? 'homme' :'femme',
+        'sexe' : (item.gender === 'm')? 'Homme' :'Femme',
         'adresse' : item.adress,
         'code postal' : item.postcode,
         'ville' : item.city,
