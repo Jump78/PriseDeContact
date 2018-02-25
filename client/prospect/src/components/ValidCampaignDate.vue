@@ -1,5 +1,6 @@
 <template>
   <section>
+    <p v-if="errMessage">{{errMessage}}</p>
     <div v-if="campaigns.length > 1">
       <h1>A quel evenement êtes-vous présent ?</h1>
       <div v-for="campaign in campaigns">
@@ -16,6 +17,7 @@
 
 <script>
 import CampaignService from '../services/CampaignService';
+import idbKeyval from 'idb-keyval';
 
 import moment from 'moment';
 
@@ -24,7 +26,8 @@ export default {
   data () {
     return {
       campaignService: new CampaignService(),
-      campaigns: []
+      campaigns: [],
+      errMessage: null
     }
   },
   methods: {
@@ -36,14 +39,31 @@ export default {
     // Get today event
     this.campaignService.findByDate(timestamp)
     .then(res => {
+      if (res.error) return;
       this.campaigns = res.content;
 
-      if (this.campaigns.length == 1) {
-        this.$router.push({name: 'ProspectForm', params:{id: this.campaigns[0]._id}})
-      }
+      //Check if there are any campaigns in cache
+      idbKeyval.get('campaigns')
+      .then( campaign => idbKeyval.delete('campaigns')) //Delete them
 
+      idbKeyval.set('campaigns', this.campaigns); //Save the new campaigns in cache
+
+      if (this.campaigns.length == 1) {
+        this.$router.push({name: 'ProspectForm', params:{id: this.campaigns[0]._id}});
+      }
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      this.errMessage = 'Impossible d\'actualiser les données. Verifiez votre connection internet.'
+      idbKeyval.get('campaigns')
+      .then( campaigns =>  {
+        this.campaigns = campaigns
+        if (this.campaigns.length == 1) {
+          this.$router.push({name: 'ProspectForm', params:{id: this.campaigns[0]._id}});
+        }
+      })
+      .catch( err => console.log('No campaigns in cache'));
+      console.log(err)
+    });
   }
 }
 

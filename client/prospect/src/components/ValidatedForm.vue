@@ -7,22 +7,22 @@
 </template>
 
 <script>
-import CampaignService from '../services/CampaignService';
+import idbKeyval from 'idb-keyval';
 
 export default {
   name: 'ValidatedForm',
   data () {
     return {
-      campaignService: new CampaignService(),
       message: ''
     }
   },
   created () {
-    this.campaignService.find(this.$route.params.id)
-        .then(res => {
-          this.message = res.content.outro_text;
-        })
-        .catch(err => console.log(err));
+    idbKeyval.get('campaigns')
+    .then( campaigns =>  {
+      let selectedCampaign = campaigns.filter( item => item._id === this.$route.params.id);
+      this.message = selectedCampaign[0].outro_text;
+    })
+    .catch( err => console.log('No campaigns in cache'));
   }
 }
 

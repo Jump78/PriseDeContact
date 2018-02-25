@@ -4,6 +4,7 @@ const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -66,8 +67,44 @@ module.exports = {
     ]
   },
   plugins: [
-  new ServiceWorkerWebpackPlugin({
-    entry: path.join(__dirname, '../src/sw.js'),
-  }),
-],
+    new ServiceWorkerWebpackPlugin({
+      entry: path.join(__dirname, '../src/sw.js'),
+    }),
+    new WebpackPwaManifest({
+      "short_name": "pdc",
+      "name": "prise de contact",
+      "description": "Application de recolte d'information",
+      "display": "standalone",
+      "theme-color": "#01579b",
+      "theme_color": "#01579b",
+      "background_color": "#01579b",
+      "start_url": "/#/evenements-ecole-multimedia",
+      "icons": [
+        {
+          "src": path.resolve("src/assets/lecole-multimedia-logo.48x48.png"),
+          "type": "image/png",
+          "sizes": "48x48",
+          destination: path.join('assets', 'icons')
+        },
+        {
+          "src": path.resolve("src/assets/lecole-multimedia-logo.96x96.png"),
+          "type": "image/png",
+          "sizes": "96x96",
+          destination: path.join('assets', 'icons')
+        },
+        {
+          "src": path.resolve("src/assets/lecole-multimedia-logo.192x192.png"),
+          "type": "image/png",
+          "sizes": "192x192",
+          destination: path.join('assets', 'icons')
+        },
+        {
+          "src": path.resolve("src/assets/lecole-multimedia-logo.512x512.png"),
+          "type": "image/png",
+          "sizes": "512x512",
+          destination: path.join('assets', 'icons')
+        }
+      ]
+    })
+  ],
 }
