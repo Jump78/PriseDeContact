@@ -39,12 +39,9 @@ export default {
     // Get today event
     this.campaignService.findByDate(timestamp)
     .then(res => {
-      if (res.error) return;
-      this.campaigns = res.content;
+      if (!res || res.error) throw new Error( (res)? res.message : 'Request error');
 
-      //Check if there are any campaigns in cache
-      idbKeyval.get('campaigns')
-      .then( campaign => idbKeyval.delete('campaigns')) //Delete them
+      this.campaigns = res.content;
 
       idbKeyval.set('campaigns', this.campaigns); //Save the new campaigns in cache
 
