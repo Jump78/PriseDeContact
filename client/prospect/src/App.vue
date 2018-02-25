@@ -1,8 +1,6 @@
 <template>
 
   <div id="app">
-    <link rel="stylesheet" href="src/assets/kna.css">
-
     <router-view/>
 
     <footer class="global-footer-zone">
