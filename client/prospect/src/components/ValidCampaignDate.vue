@@ -39,9 +39,9 @@ export default {
     // Get today event
     this.campaignService.findByDate(timestamp)
     .then(res => {
-      if (!res || res.error) throw new Error( (res)? res.message : 'Request error');
+      if (!res || (res.error && res.status != 404)) throw new Error( (res)? res.message : 'Request error');
 
-      this.campaigns = res.content;
+      this.campaigns = res.content || [];
 
       idbKeyval.set('campaigns', this.campaigns); //Save the new campaigns in cache
 
