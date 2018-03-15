@@ -176,14 +176,19 @@ export default {
     });
 
     //Connect the client to socket
-    this.socket = io(config.apiEndPoint.replace('/api', ''),{
-      //Prod param in ( https, and server in subDirectory)
-      //secure: true,
-      //reconnect: true,
-      //rejectUnauthorized : false,
-      //path: '/api/socket.io',
-      query: 'roomId='+this.$route.params.id
-    });
+    if (process.env.NODE_ENV == "development") {
+      this.socket = io(process.env.apiEndPoint,{
+        query: 'roomId='+this.$route.params.id
+      });
+    } else {
+      this.socket = io(process.env.apiEndPoint,{
+        secure: true,
+        reconnect: true,
+        rejectUnauthorized : false,
+        path: '/api/socket.io',
+        query: 'roomId='+this.$route.params.id
+      });
+    }
 
     this.socket.on('prospectAdd', (data) => {  //Listen the 'prospectAdd' event from socket
       this.prospects.push(data); //Push the new prospect
