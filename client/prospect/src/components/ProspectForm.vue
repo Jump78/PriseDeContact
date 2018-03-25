@@ -41,7 +41,7 @@
 
         <!-- Question 3: firstname (text) -->
         <div class="block-input-text">
-          <input v-validate="'required|alpha_dash'" v-model="prospect.firstname" type="text" name="firstname" :class="{'border-error': errors.has('firstname')}">
+          <input v-validate="{required: true, regex: /^([0-9a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ \*\'\-])*$/}" v-model="prospect.firstname" type="text" name="firstname" :class="{'border-error': errors.has('firstname')}">
           <label for="firstname">Prénom</label>
         </div>
         <p v-show="errors.has('firstname')" :class="{'error': errors.has('firstname')}">{{ errors.first('firstname') }}</p>
@@ -49,7 +49,7 @@
 
         <!-- Question 4: lastname (text) -->
         <div class="block-input-text">
-          <input v-validate="'required|alpha_dash'" v-model="prospect.lastname" type="text" name="lastname" :class="{'border-error': errors.has('lastname')}">
+          <input v-validate="{required: true, regex: /^([0-9a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ \*\'\-])*$/}" v-model="prospect.lastname" type="text" name="lastname" :class="{'border-error': errors.has('lastname')}">
           <label for="lastname">Nom</label>
         </div>
         <p v-show="errors.has('lastname')" :class="{'error': errors.has('lastname')}">{{ errors.first('lastname') }}</p>
