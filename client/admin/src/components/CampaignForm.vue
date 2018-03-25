@@ -26,7 +26,7 @@
 
       <div>
         <label for="outro_text">Message de fin de formulaire</label>
-        <textarea v-validate="'required|alpha_spaces_dash'" name="outro_text" v-model="campaign.outro_text"></textarea>
+        <textarea v-validate="{required: true, regex: /^([:);.!,?(/0-9a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ \*\'\-])*$/}" name="outro_text" v-model="campaign.outro_text"></textarea>
       </div>
       <p v-show="errors.has('outro_text')" :class="{'error': errors.has('outro_text')}">{{ errors.first('outro_text') }}</p>
 
