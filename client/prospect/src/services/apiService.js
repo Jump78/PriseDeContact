@@ -1,5 +1,3 @@
-import config from '../../config/config';
-
 /**
  * Base class of service
  * @type class
@@ -7,7 +5,7 @@ import config from '../../config/config';
 export default class {
 
   constructor () {
-    this.baseUrl= config.apiEndPoint;
+    this.baseUrl= process.env.apiEndPoint;
   }
 
   //Check for http errors
