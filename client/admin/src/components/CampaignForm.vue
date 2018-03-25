@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import config from '../../config/config.json';
 import moment from 'moment';
 
 import french from 'vee-validate/dist/locale/fr'

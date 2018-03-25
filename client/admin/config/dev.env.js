@@ -4,6 +4,6 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  apiEndPoint: '"https://localhost:8020"',
-  formUrl: '"https://localhost:8080"'
+  apiEndPoint: '"http://localhost:8020"',
+  formUrl: '"http://localhost:8080"'
 })

@@ -1,5 +1,4 @@
 /*** Import ***/
-import config from '../../config/config';
 import Vue from 'vue';
 
 /**
@@ -8,7 +7,7 @@ import Vue from 'vue';
 export default class {
 
   constructor () {
-    this.baseUrl= config.apiEndPoint;
+    this.baseUrl= process.env.apiEndPoint;
   }
 
   /**

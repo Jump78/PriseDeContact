@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import config from '../../config/config';
 import io from 'socket.io-client';
 import {JSONToCSVConvertor} from '../helper/exportToCSV';
 
@@ -65,7 +64,7 @@ export default {
   name: 'HomeCampaign',
   data () {
     return {
-      formUrl : config.formUrl,
+      formUrl : process.env.formUrl,
       selectedProspect: null,
       charDataShow : 'asked_class',
       campaignService: new CampaignService(),
