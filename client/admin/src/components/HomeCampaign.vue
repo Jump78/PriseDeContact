@@ -180,7 +180,7 @@ export default {
         query: 'roomId='+this.$route.params.id
       });
     } else {
-      this.socket = io(process.env.apiEndPoint,{
+      this.socket = io(process.env.apiEndPoint.replace('/api', ''),{
         secure: true,
         reconnect: true,
         rejectUnauthorized : false,
