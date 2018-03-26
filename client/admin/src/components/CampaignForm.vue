@@ -83,10 +83,8 @@ export default {
       let campaignToSend = {};
       // Copy the model in a new object
       Object.assign(campaignToSend, this.campaign);
-      // Convert the date in a date instance
-      let date = new Date(campaignToSend.date);
       // Get the timestamp
-      campaignToSend.date = date.getTime();
+      campaignToSend.date = moment(campaignToSend.date).hours(1).minutes(0).seconds(0).milliseconds(0).valueOf();
 
       this.$emit('submit', campaignToSend);
     },
