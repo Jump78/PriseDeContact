@@ -1,5 +1,7 @@
 <template>
-  <section class="all-campaigns">
+  <div class="">
+    <NavBar :id="this.$route.params.id"/>
+    <section class="all-campaigns">
     <p v-if="message != ''">{{message}}</p>
     <div v-if="allCampaigns">
       <div class="campaignBlock">
@@ -42,6 +44,7 @@
       <p>Pas de data</p>
     </div>
   </section>
+  </div>
 </template>
 
 <script>
@@ -51,12 +54,14 @@ import moment from 'moment';
 
 import CampaignForm from './CampaignForm';
 import CardCampaign from './CardCampaign';
+import NavBar from './NavBar';
 
 export default {
   name: 'ListCampaign',
   components: {
     CampaignForm,
-    CardCampaign
+    CardCampaign,
+    NavBar
   },
   data () {
     return {

@@ -4,14 +4,17 @@
       <img :src="logo" alt="logo">
     </div>
     <ul>
-      <li>
-        <router-link :to="{ name: 'ListCampaign'}" class="link">Accueil</router-link>
+      <li v-if="!id">
+        <p>Prise de contact</p>
       </li>
       <li>
-        <router-link :to="{ name: 'HomeCampaign', params: {id: id} }" class="link">Campagne</router-link>
+        <router-link v-if="id" :to="{ name: 'ListCampaign'}" class="link">Accueil</router-link>
       </li>
       <li>
-        <router-link :to="{ name: 'EditCampaign', params: {id: id} }" class="link">Editer</router-link>
+        <router-link v-if="id" :to="{ name: 'HomeCampaign', params: {id: id} }" class="link">Campagne</router-link>
+      </li>
+      <li>
+        <router-link v-if="id" :to="{ name: 'EditCampaign', params: {id: id} }" class="link">Editer</router-link>
       </li>
       <li>
         <button type="button" name="logout" @click="logout">Déconnexion</button>
